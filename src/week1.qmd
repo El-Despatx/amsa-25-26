@@ -80,6 +80,8 @@ Please read first the "Really Recommended References", and then try to do this e
 
 -   Play a little bit with your UEFI Boot Manager Configuration (section The UEFI boot manager) : <https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/>
 
+-   TODO: Do this: https://0pointer.net/blog/fitting-everything-together.html
+
 ## Lab 1:
 
 -   We'll add a systemd unit that, when our system finishes booting, it prints on the systemd journaling our name in ASCII art style.
