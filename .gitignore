@@ -3,3 +3,5 @@
 result
 docs
 _site
+src/.quarto
+.direnv
