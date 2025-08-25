@@ -5,11 +5,87 @@ subtitle: "Week 1: System boot intro + 1st exercise"
 
 ## Goals for today
 
-- Misco
-- Masco
-- Mosco
-- Ref to other slides: [Check last week >](week0.html)
+-   Learn how your Linux system boots, from zero to a working environment
+-   Present Lab 1.
 
----
+------------------------------------------------------------------------
 
-<!-- ## References {.smaller footer=false} -->
+## Booting process
+
+### Hardware Part
+
+-   Magical Power Button: As soon as you press the magical power button on your laptop or desktop
+    computer, it starts working. The motherboard sends a signal to the [power supply](https://en.wikipedia.org/wiki/Power_supply) device.
+
+-   After receiving the signal, the power supply provides the proper amount
+    of electricity to the computer. Once the motherboard receives the [power good signal](https://en.wikipedia.org/wiki/Power_good_signal), it tries to start the CPU.
+
+-   The CPU resets it's registers, and the next instruction on the EIP is (`0xfffffff0)`. It's the memory location at which the CPU expects to find the first instruction to execute after reset. It contains a [jump](https://en.wikipedia.org/wiki/JMP_%28x86_instruction%29) (`jmp`) instruction that usually points to the firmware of your pc/laptop/server entry point.
+
+### Firmware Part
+
+-   But wait.... What's does the firmware of our pc? What's UEFI? What's the BIOS? TODO: Explain and add examples for watching the NVRAM values that the UEFI firmware uses for booting.
+
+-   Bootloader: Explain what is, Loads the version of the Kernel that you choose inside ram, and follows the "contract" that it has with the linux kernel.
+
+### Software Part
+
+-   Kernel: Explain that's only a program, what it does, etc, etc. We'll explain a little bit more about the kernel in the following sessions, but for today, for watching what the kernel does
+
+-   Initramfs: What happens if you encrypt the pc? How can you decrypt it? Etc.
+
+    `$ sudo dmesg | head -n 10`
+
+    `initrd=\EFI\nixos\m9zbpy56cvgqgrvgkcksr8kx1qgdv6nx-initrd-linux-6.12.40-initrd.efi init=/nix/store/m4lrjsqxrwrj0j5b0l66yjv8hnz23mbr-nixos-system-legolas-25.11.20250731.94def63/i nit loglevel=4 lsm=landlock,yama,bpf`
+
+-   Init process:
+
+    `sudo dmesg | grep "init process"`
+
+-   Systemd: Explain what it does and journalctl (Print log entries from the systemd journal)
+
+-   TTY and login.
+
+## Questions:
+
+-   Si me peta el pc i sol em mostra el grub, que pot ser que falli?
+
+-   Si arranca el sistema, mostra lletretes de que està iniciant el kernel, i
+
+-   Realment fa falta un bootloader a linux? Que ens aporta?
+
+## References
+
+### Really Recommended References:
+
+-   Understanding UEFI and BIOS: <https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/>
+
+-   Why should someone write an EFI program?: <https://www.rodsbooks.com/efi-programming/why.html>
+
+-   Running Arch-Linux without a bootloader, only with the EFI compatible Linux Kernel: <https://www.codejam.info/2021/08/super-fast-boot-linux-efistub.html>
+
+### Recommended References 
+
+This can be hard to follow, use ChatGPT or ask the Lab Teachers if you don't get some parts:
+
+-   <https://0xax.gitbooks.io/linux-insides/content/Booting/linux-bootstrap-1.html>
+
+-   <https://wiki.archlinux.org/title/Arch_boot_process>
+
+## Additional Exercices (if you really want to understand a little bit more what happens under the hood): 
+
+Please read first the "Really Recommended References", and then try to do this exercises):
+
+-   <https://amsa-2425.github.io/Laboratoris/Booting/uefi.html> (be aware that in VirtualBox, for accessing the UEFI interface, you should do: TODO ADD)
+
+-   Play a little bit with your UEFI Boot Manager Configuration (section The UEFI boot manager) : <https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/>
+
+## Lab 1:
+
+-   We'll add a systemd unit that, when our system finishes booting, it prints on the systemd journaling our name in ASCII art style.
+
+-   You can test if it works doing:
+
+    `journalctl -r | grep "your-systemd-unit-name-here"`
+
+-   More info inside the Lab 1 page.
