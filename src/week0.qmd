@@ -3,21 +3,115 @@ subtitle: "Week 0: Introduction + Exercises workflow"
 bibliography: references/week0.bib
 ---
 
-## Goals for today
-- Misco
-- Masco
-- Mosco
+## Hey! We’re Ferran, Pablo & Oriol 👋
 
-::: {.callout-note title="Example references"}
+-   PhD candidates at **UdL**
+-   Degree + Master in **Computer Science**
+-   We studied here, we teach here… we basically live here
+-   You can find us at **EPS 3.07**
 
-1. @florensa2023low -> Low-dose acetylsalicylic acid for cancer prevention
-2. @florensa2023diabetes -> Metformin and association with pancreas cancer
+::: {.fragment style="text-align:center;"}
+<img src="figures/week0/crabs.png" style="width:50%;"/>
 :::
 
-## Example image
+## Methodology
 
-![](figures/week0/example.png){width=60%}
+We are going to be your teachers during the **lab sessions** every Wednesday morning.
+
+This sessions are structured in **two parts**:
+
+::::::: columns
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### Part 1 — Introduction & guidance
+
+-   Explanation of the lab exercise\
+-   Short theory recap if needed\
+:::
+::::
+
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### Part 2 — Hands-on work
+
+-   Time to work directly on the lab\
+-   Ask us questions whenever you need\
+:::
+::::
+:::::::
+
+------------------------------------------------------------------------
+
+### Delivery and follow-up of activities
+
+-   There will be a total of **4 activities**
+-   Each activity is divided into **sub-deliveries**
+-   **Evaluation:**
+    -   Done **only at the final deadline** of the full activity
+    -   The actual content is graded at that point
+
+------------------------------------------------------------------------
+
+### Sub-deliveries
+
+-   It is a **recommended pace**
+-   Each sub-delivery is submitted through the **Virtual Campus** (just provide a **link to your GitHub repo**)
+-   **Extra points** for those who keep up with the pace
+
+::: {.callout-warning .fragment}
+Not following the sub-deadlines **never penalizes you**. They are only meant to help you stay on track.
+:::
+
+------------------------------------------------------------------------
+
+### Pace of the labs
+
+We will follow 4 main practices (**PRAC-1 … PRAC-4**) divided into sub-deliveries.
+
+Only the **final delivery** of each practice is graded.
+
+::: {.callout-note .fragment}
+## Doubt sessions
+
+We may give you an extra week for final deliveries so we can have doubt sessions. And we may also use sessions before exams for doubts.
+:::
+
+------------------------------------------------------------------------
+
+## Pace of the labs (Weeks 0 → 8) {.smaller}
+
+| Week  | Contents                                                           |
+| ----- | ------------------------------------------------------------------ |
+| **0** | 🎯 Subject **Intro**                                               |
+| **1** | 📖 Explain **PRAC-1**                                              |
+| **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1**  *(Final PRAC-1)*🏆                |
+| **3** | 📖 Explain **PRAC-2.2** ➝ 📤 Deliver **PRAC-2.1**                  |
+| **4** | 📖 Explain **PRAC-2.3** ➝ 📤 Deliver **PRAC-2.2**                  |
+| **5** | 📖 Explain **PRAC-3.1** ➝ 📤 Deliver **PRAC-2.3** *(Final PRAC-2)*🏆 |
+| **6** | 📖 Explain **PRAC-3.2** ➝ 📤 Deliver **PRAC-3.1**                  |
+| **7** | 📖 Explain **PRAC-3.3** ➝ 📤 Deliver **PRAC-3.2**                  |
+| **8** | 📝 Exams ➝ 📤 Deliver **PRAC-3.3** *(Final PRAC-3)*🏆                |
 
 ---
 
-## References {.smaller footer=false}
+## Pace of the labs (Weeks 9 → 17) {.smaller}
+
+| Week      | Contents                                          |
+| --------- | ------------------------------------------------- |
+| **9**     | 🖥️ **Virtualization & Containers** intro         |
+| **10**    | 📖 Explain **PRAC-4.1**                           |
+| **11**    | 📖 Explain **PRAC-4.2** ➝ 📤 Deliver **PRAC-4.1** |
+| **12**    | ☁️ **AWS Intro** ➝ 📤 Deliver **PRAC-4.2**        |
+| **13**    | 📖 Explain **PRAC-4.3**                           |
+| **14**    | 📖 Explain **PRAC-4.4** ➝ 📤 Deliver **PRAC-4.3** |
+| **15**    | 📤 Deliver **PRAC-4.4** *(Final PRAC-4)*🏆          |
+| **16–17** | 📝 **Final Exams**                                |
+
+---
+
+
+## Subject scoring
+
+<!-- Note: No recuparables
+
+Note: Percentatges de lo que conten (10% pracs i 45 45 examens, on el 25 de cada un anira sobre la practica) -->
