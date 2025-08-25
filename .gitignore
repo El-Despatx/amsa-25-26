@@ -1,2 +1,5 @@
 /.quarto/
 .DS_Store
+result
+docs
+_site
