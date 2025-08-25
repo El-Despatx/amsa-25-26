@@ -1,0 +1,15 @@
+---
+subtitle: "Week 1: System boot intro + 1st exercise"
+# bibliography: references/week1.bib
+---
+
+## Goals for today
+
+- Misco
+- Masco
+- Mosco
+- Ref to other slides: [Check last week >](week0.html)
+
+---
+
+<!-- ## References {.smaller footer=false} -->

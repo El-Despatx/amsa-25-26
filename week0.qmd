@@ -1,0 +1,23 @@
+---
+subtitle: "Week 0: Introduction + Exercises workflow"
+bibliography: references/week0.bib
+---
+
+## Goals for today
+- Misco
+- Masco
+- Mosco
+
+::: {.callout-note title="Example references"}
+
+1. @florensa2023low -> Low-dose acetylsalicylic acid for cancer prevention
+2. @florensa2023diabetes -> Metformin and association with pancreas cancer
+:::
+
+## Example image
+
+![](figures/week0/example.png){width=60%}
+
+---
+
+## References {.smaller footer=false}

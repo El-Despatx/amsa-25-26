@@ -3,10 +3,47 @@ project:
   output-dir: docs
 
 website:
-  title: "AMSA 25-26"
+  title: "AMSA 2025-2026"
+  navbar:
+    left:
+      - href: week0.qmd
+        text: "Week 0"
+      - href: week1.qmd
+        text: "Week 1"
+
+title: "AMSA"
+
+author:
+  - name: Ferran Aran Domingo
+    email: ferran.aran@udl.cat
+  - name: Francesc Solsona Tehàs
+    email: francesc.solsona@udl.cat
+  - name: Oriol Agost Batalla
+    email: oriol.agost@udl.cat
+  - name: Pablo Fraile Alonso
+    email: pablo.fraile@udl.cat
 
 format:
-  html:
-    theme:
-      - cosmo
-    css: styles.css
+  revealjs:
+    theme: simple
+    slide-number: true
+    incremental: true 
+    transition: fade
+    toc: true
+    toc-depth: 1
+    chalkboard: true
+
+editor: visual
+
+execute:
+  freeze: auto
+  echo: true
+
+mermaid:
+      theme: neutral
+
+logo: "logo.png"
+
+footer: |
+      AMSA 2025-2026  
+      [🏠 Home](index.html)
