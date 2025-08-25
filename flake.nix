@@ -14,9 +14,9 @@
       };
       packages.${system}.default = pkgs.stdenv.mkDerivation {
         pname = "amsa-slides";
-        version = "1.0.0";
-        src = ./.;
-        buildInputs = [ quarto ];
+        version = "2025.2026.v1";
+        src = ./src;
+        buildInputs = [ quarto pkgs.which ];
         buildPhase = ''
           # Deno needs to add stuff to $HOME/.cache
           # so we give it a home to do this

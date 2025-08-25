@@ -4,7 +4,7 @@ Below are instructions on how to setup and contribute to the project.
 
 ## 🚀 Development
 
-Install [Quarto](https://quarto.org/docs/get-started/). 
+Install [Quarto](https://quarto.org/docs/get-started/) or, if you prefer, use [Nix](https://nixos.org/)
 
 Run:
 ```bash
