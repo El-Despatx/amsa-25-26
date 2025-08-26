@@ -1,6 +1,7 @@
 ---
 subtitle: "Prac-3: Configuring some FS and Quotas!"
 <!-- bibliography: references.bib -->
+format: html
 ---
 
 ## TODO: Explain

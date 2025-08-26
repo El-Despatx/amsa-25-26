@@ -1,6 +1,7 @@
 ---
 subtitle: "Week 1: System boot intro + 1st exercise"
 # bibliography: references/week1.bib
+format: revealjs
 ---
 
 ## Goals for today
@@ -72,16 +73,15 @@ We'll touch some things of the kernel and
 
 ## Kernel Messages with `dmesg` {.tiny}
 
-You don't need to worry much about the kernel (yet).
-The only thing we need right now is to **see its log messages**, which you can do with:
+You don't need to worry much about the kernel (yet). The only thing we need right now is to **see its log messages**, which you can do with:
 
-```{.shell  code-line-numbers="false"}
+``` {.shell code-line-numbers="false"}
 $ sudo dmesg
 ```
 
 From the man page:
 
-```{.shell  code-line-numbers="false"}
+``` {.shell code-line-numbers="false"}
 dmesg - print or control the kernel ring buffer
 ```
 
@@ -89,10 +89,9 @@ dmesg - print or control the kernel ring buffer
 
 ## Understanding the messages {.tiny}
 
-:::{.columns}
+::::::: columns
 ::: {.column width="50%"}
-
-```{.python  code-line-numbers="true"}
+``` {.python code-line-numbers="true"}
 from collections import deque
 from typing import List
 
@@ -107,32 +106,26 @@ def dmesg() -> List[str]:
 ```
 :::
 
-::: {.column width="50%"}
-
+:::: {.column width="50%"}
 ::: {.callout-tip title="How It Logs"}
-
 All the drivers, stuff that does the kernel, will be logged with:
-```{.python  code-line-numbers="false"}
+
+``` {.python code-line-numbers="false"}
 printk("Initializing network driver for card intel AC3200...")
 ```
 :::
 
 To read the logs, just call:
-```{.python  code-line-numbers="false"}
+
+``` {.python code-line-numbers="false"}
 dmesg()
 ```
-:::
-
+::::
 
 ::: {.callout-tip title="Real implementation"}
-⚠️ The real kernel implementation is more complex
-(concurrency, performance, real C code, etc.).
-If you're curious or bored, you can read it here:
-https://elixir.bootlin.com/linux/v6.16.3/source/kernel/printk/printk.c 
+⚠️ The real kernel implementation is more complex (concurrency, performance, real C code, etc.). If you're curious or bored, you can read it here: https://elixir.bootlin.com/linux/v6.16.3/source/kernel/printk/printk.c
 :::
-
-
-:::
+:::::::
 
 ------------------------------------------------------------------------
 

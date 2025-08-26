@@ -1,6 +1,7 @@
 ---
 subtitle: "Prac-4: Creating our backend application and deploying it to AWS!"
 <!-- bibliography: references.bib -->
+format: html
 ---
 
 ## TODO: Explain
