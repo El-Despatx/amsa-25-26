@@ -4,6 +4,19 @@ bibliography: references/week-0.bib
 format: revealjs
 ---
 
+# Before getting started 🫷
+
+-   Visit the subject lab's [website](amsa.lol), there you'll find a **link to download** a Virtual Machine under the **Resources** section. It will download a `.ova` file.
+-   We'll get into what that is and its purpose on this course, but since its quite a **large file (\~5GB)**, go on and **start the download** so we can get hands-on later on today's session.
+
+# Goals for today 🎯
+
+-   Introduce ourselves and the subject lab's
+-   An overview of contents and timeline
+-   Setup the environment for the assignments
+
+# Introduction 🚀
+
 ## Hey! We’re Ferran, Pablo & Oriol 👋
 
 -   PhD candidates at **UdL**
@@ -82,7 +95,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ## Timeline (Weeks 0 → 8) {.smaller}
 
 | Week | Contents |
-|--------------------|----------------------------------------------------|
+|------------|----------------------------------------------------|
 | **0** | 📖 Subject **Intro** |
 | **1** | 📖 Explain **PRAC-1** |
 | **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
@@ -108,7 +121,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 | **15**    | 📤 Deliver **PRAC-4.4** *(Final PRAC-4)*🏆        |
 | **16–17** | 📝 **Final Exams**                                |
 
-## Final Score Breakdown
+## Final score breakdown {.smaller}
 
 ::::::: columns
 :::: {.column .fragment width="50%"}
@@ -130,9 +143,105 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ::::
 :::::::
 
-::: {.callout-warning .fragment}
+::: {.callout-important .fragment}
+Activities must be done **individually** and **cannot be retaken**.
 :::
 
-::: {.callout-caution .fragment}
-Cuidado amb chatgpt
+::: {.callout-warning .fragment}
+While we acknowledge that ChatGPT can be a useful tool, **relying on AI to generate the code** for the assignments without understanding the underlying concepts **will lead to failing the subject**, and you will not be able to answer the exam questions.
 :::
+
+# Content overview 🎓
+
+## Main themes {.smaller}
+
+We will explore **system administration** and **application maintenance** through hands-on labs, which will cover two main areas:<br><br>
+
+::::: columns
+::: {.column .fragment width="50%"}
+#### Systems
+
+-   Boot process & systemd\
+-   Process management\
+-   Scheduling & priorities\
+-   Signals & sessions\
+-   Memory (SWAP, tmpfs, quotas)\
+:::
+
+::: {.column .fragment width="50%"}
+#### Virtualization & Cloud
+
+-   Virtual machines vs containers\
+-   Docker & OCI images\
+-   Compose + Postgres\
+-   AWS basics\
+-   Serverless: Lambdas & Gateway\
+-   Databases in the cloud\
+:::
+:::::
+
+------------------------------------------------------------------------
+
+## Weekly flow (0 → 7) {.smaller}
+
+<br>
+
+| Week | Focus                   | Tasks                               |
+|------|-------------------------|-------------------------------------|
+| 0    | Start & setup           | VM + GitHub access                  |
+| 1    | Booting & systemd       | `journalctl` print, service, script |
+| 2    | Process types           | `/proc` exploration                 |
+| 3    | Scheduling & priorities | filtering `/proc` with `awk`        |
+| 4    | Signals                 | mini-htop                           |
+| 5    | SWAP                    | swap manager script + C program     |
+| 6    | TMPFS & benchmarking    | tmpfs vs ext4 benchmark             |
+| 7    | Quotas                  | user quotas on tmpfs + benchmarks   |
+
+------------------------------------------------------------------------
+
+## Weekly flow (9 → 15) {.smaller}
+
+<br>
+
+| Week | Focus                        | Tasks                        |
+|------|------------------------------|------------------------------|
+| 9    | Virtualization vs containers | Install Docker/Podman        |
+| 10   | OCI Images                   | Dockerfile + push image      |
+| 11   | Compose + Postgres           | `docker-compose` + intro K8s |
+| 12   | AWS intro                    | services overview            |
+| 13   | Lambdas + Gateway            | serverless setup             |
+| 14   | PostgreSQL                   | configure DB + tables        |
+| 15   | Wrap-up & evaluation         | final submissions            |
+
+# Working on the activities 🤓
+
+## Github classroom {.smaller}
+
+We will be using [**GitHub Classroom**](classroom.github.com) to deliver and evaluate all activities.
+
+-   Each student will receive a **private GitHub repository** for every activity
+    -   Only you and the instructors will have access to it
+    -   The repo will include an **initial template** where you will work
+-   As you make progress, **push your changes regularly**
+    -   This allows us to follow your pace
+    -   For you, it will feel just like working on a normal GitHub repository
+-   At the deadline, the **final content of your repository** will be evaluated
+    -   We check the repo on the official delivery date
+    -   We encourage you to **upload your progress continuously**
+
+## Virtual Machine for the Labs {.smaller}
+
+We will provide you with a **Virtual Machine (VM)** in the form of a `.ova` file. This file can be imported into **VirtualBox**.
+
+-   The VM runs **Ubuntu 24.04.3 LTS**\
+-   It already includes the required software and configurations prepared by us\
+-   All activities must be tested on this system, since this is the environment where **we will evaluate your work**
+-   You are free to work on your own Linux system of choice. However, you must **perform the final tests on the provided VM** to ensure reproducibility
+
+::: {.callout-tip .fragment title="What is a `.ova` file?"}
+-   `.ova` stands for **Open Virtual Appliance**\
+-   It is a **single packaged file** that contains everything needed for a VM.
+-   By importing it into VirtualBox, you quickly get a **ready-to-use VM** without needing to install or configure Ubuntu manually
+:::
+
+# Lab time! 🧪
