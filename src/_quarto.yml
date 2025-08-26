@@ -6,10 +6,16 @@ website:
   title: "AMSA 2025-2026"
   navbar:
     left:
-      - href: weeks/week-0.qmd
-        text: "Week 0"
-      - href: weeks/week-1.qmd
-        text: "Week 1"
+      - text: "🎓 Slides"
+        menu:
+        - href: weeks/week-0.qmd
+          text: "Week 0"
+        - href: weeks/week-1.qmd
+          text: "Week 1"
+      - text: "📚 Activites"
+        menu:
+        - href: activities/act-1.qmd
+          text: "Activity 1"
 
 title: "AMSA"
 
@@ -32,6 +38,9 @@ format:
     toc: true
     toc-depth: 1
     chalkboard: true
+  html:
+    theme: sketchy
+    css: styles.css
 
 editor: visual
 
@@ -43,5 +52,6 @@ mermaid:
       theme: neutral
 
 logo: "logo.png"
+favicon: "favicon.png"
 
 footer: AMSA 2025-2026  -  [🏠 Home](/index.html)

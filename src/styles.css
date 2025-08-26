@@ -1,0 +1,11 @@
+/* Make links more visible in sketchy theme */
+a {
+  color: #0066cc;              /* more vibrant blue */
+  text-decoration: underline;  /* always underline */
+  font-weight: 600;            /* slightly bolder */
+}
+
+a:hover {
+  color: #004a99;              /* darker blue on hover */
+  text-decoration-thickness: 2px; /* thicker underline on hover */
+}

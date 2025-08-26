@@ -1,0 +1,34 @@
+---
+subtitle: "Activity 1: Booting & systemd"
+format: html
+---
+
+## Activity brief
+
+Develop a systemd service that outputs "Hello, <your name> in ASCII art every time you boot up your virtual machine"
+
+-   Do it with any language/framework you prefer
+
+## What to send?
+
+To complete this activity, you must deliver **a link to your Github repository**, which in one folder will contain:
+
+-   The script itself
+-   The `.service` file
+-   A screenshot of your `journalctl` output, where the script output can be seen.
+
+::: callout-tip
+### Example of the `journalctl` screenshot:
+
+![](images/paste-1.png)
+:::
+
+## Some usefull resources
+
+-   Redhat's documentation on [how to manage services with systemd](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/system_administrators_guide/chap-managing_services_with_systemd)
+
+-   [SUSE](https://www.youtube.com/watch?v=nLdexZlVkAY&list=RDnLdexZlVkAY&start_radio=1)'s documentation on [setting up a systemd service](https://documentation.suse.com/en-us/smart/systems-management/html/systemd-setting-up-service/index.html)
+
+-   Check out [banner](https://man.cx/banner) or [figlet](https://man.cx/figlet), some commands to make ascii from bash
+
+-   Check out [pyfiglet](https://pypi.org/project/pyfiglet/) if you're one of those that prefer python
