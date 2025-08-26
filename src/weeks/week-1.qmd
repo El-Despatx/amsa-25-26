@@ -4,46 +4,82 @@ subtitle: "Week 1: System boot intro + 1st exercise"
 format: revealjs
 ---
 
-## Goals for today
+# Goals for today
 
+-   Any questions from the previous session?
 -   Learn how your Linux system boots, from zero to a working environment
--   Present Lab 1.
+-   Present and explain Prac-1
 
-------------------------------------------------------------------------
-
-## Booting process
+# Booting process
 
 ![](figures/week-1/boot-sequence.excalidraw.png){fig-align="center"}
 
-------------------------------------------------------------------------
 
-### Hardware Part
+# Hardware
 
+## Boot steps {.smaller}
+
+::::: columns
+::: {.column width="40%"}
 -   Magical Power Button: As soon as you press the magical power button on your laptop or desktop computer, it starts working. The motherboard sends a signal to the [power supply](https://en.wikipedia.org/wiki/Power_supply) device.
 
 -   After receiving the signal, the power supply provides the proper amount of electricity to the computer. Once the motherboard receives the [power good signal](https://en.wikipedia.org/wiki/Power_good_signal), it tries to start the CPU.
+:::
 
+::: {.column .incremental width="60%"}
 -   The CPU resets it's registers, and the next instruction on the EIP is (`0xfffffff0)`. It's the memory location at which the CPU expects to find the first instruction to execute after reset. It contains a [jump](https://en.wikipedia.org/wiki/JMP_%28x86_instruction%29) (`jmp`) instruction that usually points to the firmware of your pc/laptop/server entry point.
 
-------------------------------------------------------------------------
+![](figures/week-1/boot-sequence-hardware.excalidraw.png)
+:::
+:::::
 
-### Firmware Part
 
--   But wait.... What's does the firmware of our pc? What's UEFI? What's the BIOS? TODO: Explain and add examples for watching the NVRAM values that the UEFI firmware uses for booting.
+# Firmware
 
-------------------------------------------------------------------------
+## What is the BIOS/UEFI? {.smaller}
 
-### Software Part
+::: incremental
+-   Your pc needs a firmware for testing, initializing (and in some cases, configure) devices. Surely you have ever called it BIOS or UEFI
 
--   Bootloader: Explain what is, Loads the version of the Kernel that you choose inside ram, and follows the "contract" that it has with the linux kernel.
+-   [Such as Adam Williamson says](https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/):
 
--   Kernel: Explain that's only a program, what it does, etc, etc. We'll explain a little bit more about the kernel in the following sessions, but for today, for watching what the kernel does
+    > You've probably read a lot of stuff on the internet about UEFI. Here is something important you should understand: 95% of it was probably garbage.
 
-------------------------------------------------------------------------
+-   Both BIOS and UEFI are types of firmware for computers. BIOS-style firmware is (mostly) only ever found on IBM PC compatible computers. UEFI is meant to be more generic, and can be found on systems which are not in the 'IBM PC compatible' class.
 
-#### What the hell is a kernel? Why we need one?
+-   UEFI is a standard ([you can read it here](https://uefi.org/specifications)), that motherboard manufacturers follow to create firmware compatible with your specific hardware. Before UEFI, there was no standard, and booting, was WILD.
+:::
 
--   A kernel is just a program, really, it's just a program
+
+## How does UEFI launch the bootloader? {.smaller}
+
+::: incremental
+-   Your pc needs a firmware for testing, initializing (and in some cases, configure) devices. Surely you have ever called it BIOS or UEFI
+
+-   [Such as Adam Williamson says](https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/):
+
+    > You've probably read a lot of stuff on the internet about UEFI. Here is something important you should understand: 95% of it was probably garbage.
+
+-   Both BIOS and UEFI are types of firmware for computers. BIOS-style firmware is (mostly) only ever found on IBM PC compatible computers. UEFI is meant to be more generic, and can be found on systems which are not in the 'IBM PC compatible' class.
+
+-   UEFI is a standard ([you can read it here](https://uefi.org/specifications)), that motherboard manufacturers follow to create firmware compatible with your specific hardware. Before UEFI, there was no standard, and booting, was WILD.
+:::
+
+
+# Software
+
+## Bootloader
+Explain what is, Loads the version of the Kernel that you choose inside ram, and follows the "contract" that it has with the linux kernel.
+
+## Kernel
+Explain that's only a program, what it does, etc, etc. We'll explain a little bit more about the kernel in the following sessions, but for today, for watching what the kernel does
+
+
+### What the hell is a kernel? Why we need one?
+
+-   A kernel is just a program.
+
+-   Really, it's just a program
 
 -   A difficult and big one, but after all, a program.
 
@@ -55,7 +91,7 @@ TODO: Use the file command for seeing that the kernel is an ELF file, and that a
 
 ------------------------------------------------------------------------
 
-#### So, what does this program (the kernel) do?
+### So, what does this program (the kernel) do?
 
 We'll touch some things of the kernel and
 
@@ -87,7 +123,7 @@ dmesg - print or control the kernel ring buffer
 
 ------------------------------------------------------------------------
 
-## Understanding the messages {.tiny}
+## Implementing our dmesg {.smaller}
 
 ::::::: columns
 ::: {.column width="50%"}
@@ -127,29 +163,36 @@ dmesg()
 :::
 :::::::
 
-------------------------------------------------------------------------
+## Initramfs {.smaller}
 
--   Initramfs: What happens if you encrypt the pc? How can you decrypt it? Etc.
+Initramfs: What happens if you encrypt the pc? How can you decrypt it? Etc.
 
-    `$ sudo dmesg | head -n 10`
+To read the logs, just call:
 
-    `initrd=\EFI\nixos\m9zbpy56cvgqgrvgkcksr8kx1qgdv6nx-initrd-linux-6.12.40-initrd.efi init=/nix/store/m4lrjsqxrwrj0j5b0l66yjv8hnz23mbr-nixos-system-legolas-25.11.20250731.94def63/i nit loglevel=4 lsm=landlock,yama,bpf`
+``` {.bash code-line-numbers="false"}
+$ sudo dmesg | head -n 10
+initrd=\EFI\nixos\m9zbpy56cvgqgrvgkcksr8kx1qgdv6nx-initrd-linux-6.12.40-initrd.efi init=/nix/store/m4lrjsqxrwrj0j5b0l66yjv8hnz23mbr-nixos-system-legolas-25.11.20250731.94def63/i nit loglevel=4 lsm=landlock,yama,bpf
+```
 
 Of course, you can see the lines of code inside the kernel that loads the initramfs: <https://elixir.bootlin.com/linux/v6.16.3/source/init/initramfs.c#L717>
 
 And learn more about the initrd, on the official linux documentation: <https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/initrd.rst>
 
+## Init process {.smaller}
+
 -   Init process:
 
     `sudo dmesg | grep "init process"`
 
+## Journaling on systemd {.smaller}
+
 -   Systemd: Explain what it does and journalctl (Print log entries from the systemd journal)
+
+## agetty and login{.smaller}
 
 -   TTY and login.
 
-------------------------------------------------------------------------
-
-## Questions:
+## Questions: {.smaller}
 
 -   Si me peta el pc i sol em mostra el grub, que pot ser que falli?
 
@@ -157,11 +200,9 @@ And learn more about the initrd, on the official linux documentation: <https://g
 
 -   Realment fa falta un bootloader a linux? Que ens aporta?
 
-------------------------------------------------------------------------
+# References
 
-## References
-
-### Really Recommended References:
+## Really Recommended References: {.smaller}
 
 -   Understanding UEFI and BIOS: <https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/>
 
@@ -169,7 +210,7 @@ And learn more about the initrd, on the official linux documentation: <https://g
 
 -   Running Arch-Linux without a bootloader, only with the EFI compatible Linux Kernel: <https://www.codejam.info/2021/08/super-fast-boot-linux-efistub.html>
 
-### Recommended References
+## Recommended References {.smaller}
 
 This can be hard to follow, use ChatGPT or ask the Lab Teachers if you don't get some parts:
 
@@ -177,9 +218,8 @@ This can be hard to follow, use ChatGPT or ask the Lab Teachers if you don't get
 
 -   <https://wiki.archlinux.org/title/Arch_boot_process>
 
-## Additional Exercices (if you really want to understand a little bit more what happens under the hood):
-
-Please read first the "Really Recommended References", and then try to do this exercises):
+## Additional Exercices 
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. BE aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
 -   <https://amsa-2425.github.io/Laboratoris/Booting/uefi.html> (be aware that in VirtualBox, for accessing the UEFI interface, you should do: TODO ADD)
 
@@ -187,12 +227,10 @@ Please read first the "Really Recommended References", and then try to do this e
 
 -   TODO: Do this: https://0pointer.net/blog/fitting-everything-together.html
 
-## Lab 1:
+## Prac-1  {.smaller}
 
 -   We'll add a systemd unit that, when our system finishes booting, it prints on the systemd journaling our name in ASCII art style.
 
 -   You can test if it works doing:
-
-    `journalctl -r | grep "your-systemd-unit-name-here"`
 
 -   More info inside the Lab 1 page.
