@@ -11,7 +11,7 @@ bibliography: references/week-0.bib
 -   You can find us at **EPS 3.07**
 
 ::: {.fragment style="text-align:center;"}
-<img src="figures/crabs.png" style="width:50%;"/>
+<img src="figures/week-0/crabs.png" style="width:50%;"/>
 :::
 
 ## Methodology
@@ -26,7 +26,7 @@ This sessions are structured in **two parts**:
 #### Part 1 — Introduction & guidance
 
 -   Explanation of the lab exercise\
--   Short theory recap if needed\
+-   Theory if needed\
 :::
 ::::
 
@@ -64,54 +64,74 @@ Not following the sub-deadlines **never penalizes you**. They are only meant to 
 
 ------------------------------------------------------------------------
 
-### Pace of the labs
+## Timeline
 
 We will follow 4 main practices (**PRAC-1 … PRAC-4**) divided into sub-deliveries.
 
 Only the **final delivery** of each practice is graded.
 
 ::: {.callout-note .fragment}
-## Doubt sessions
+#### Doubt sessions {.unnumbered .unlisted}
 
 We may give you an extra week for final deliveries so we can have doubt sessions. And we may also use sessions before exams for doubts.
 :::
 
 ------------------------------------------------------------------------
 
-## Pace of the labs (Weeks 0 → 8) {.smaller}
+## Timeline (Weeks 0 → 8) {.smaller}
 
-| Week  | Contents                                                           |
-| ----- | ------------------------------------------------------------------ |
-| **0** | 🎯 Subject **Intro**                                               |
-| **1** | 📖 Explain **PRAC-1**                                              |
-| **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1**  *(Final PRAC-1)*🏆                |
-| **3** | 📖 Explain **PRAC-2.2** ➝ 📤 Deliver **PRAC-2.1**                  |
-| **4** | 📖 Explain **PRAC-2.3** ➝ 📤 Deliver **PRAC-2.2**                  |
+| Week | Contents |
+|----------------|--------------------------------------------------------|
+| **0** | 📖 Subject **Intro** |
+| **1** | 📖 Explain **PRAC-1** |
+| **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
+| **3** | 📖 Explain **PRAC-2.2** ➝ 📤 Deliver **PRAC-2.1** |
+| **4** | 📖 Explain **PRAC-2.3** ➝ 📤 Deliver **PRAC-2.2** |
 | **5** | 📖 Explain **PRAC-3.1** ➝ 📤 Deliver **PRAC-2.3** *(Final PRAC-2)*🏆 |
-| **6** | 📖 Explain **PRAC-3.2** ➝ 📤 Deliver **PRAC-3.1**                  |
-| **7** | 📖 Explain **PRAC-3.3** ➝ 📤 Deliver **PRAC-3.2**                  |
-| **8** | 📝 Exams ➝ 📤 Deliver **PRAC-3.3** *(Final PRAC-3)*🏆                |
+| **6** | 📖 Explain **PRAC-3.2** ➝ 📤 Deliver **PRAC-3.1** |
+| **7** | 📖 Explain **PRAC-3.3** ➝ 📤 Deliver **PRAC-3.2** |
+| **8** | 📝 Exams ➝ 📤 Deliver **PRAC-3.3** *(Final PRAC-3)*🏆 |
 
----
+------------------------------------------------------------------------
 
-## Pace of the labs (Weeks 9 → 17) {.smaller}
+## Timeline (Weeks 9 → 17) {.smaller}
 
 | Week      | Contents                                          |
-| --------- | ------------------------------------------------- |
-| **9**     | 🖥️ **Virtualization & Containers** intro         |
+|-----------|---------------------------------------------------|
+| **9**     | 📖 **Virtualization & Containers** intro          |
 | **10**    | 📖 Explain **PRAC-4.1**                           |
 | **11**    | 📖 Explain **PRAC-4.2** ➝ 📤 Deliver **PRAC-4.1** |
-| **12**    | ☁️ **AWS Intro** ➝ 📤 Deliver **PRAC-4.2**        |
+| **12**    | 📖 **AWS Intro** ➝ 📤 Deliver **PRAC-4.2**        |
 | **13**    | 📖 Explain **PRAC-4.3**                           |
 | **14**    | 📖 Explain **PRAC-4.4** ➝ 📤 Deliver **PRAC-4.3** |
-| **15**    | 📤 Deliver **PRAC-4.4** *(Final PRAC-4)*🏆          |
+| **15**    | 📤 Deliver **PRAC-4.4** *(Final PRAC-4)*🏆        |
 | **16–17** | 📝 **Final Exams**                                |
 
----
+## Final Score Breakdown
 
+::::::: columns
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Activities** → 10%
 
-## Subject scoring
+-   PRAC-1 → **1%**
+-   PRAC-2 + PRAC-3 + PRAC-4 → **3% each**
+:::
+::::
 
-<!-- Note: No recuparables
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Exams** → 90%
 
-Note: Percentatges de lo que conten (10% pracs i 45 45 examens, on el 25 de cada un anira sobre la practica) -->
+-   Theory questions → **40%** (20% + 20%)
+-   Lab-related questions → **50%** (25% + 25%)
+:::
+::::
+:::::::
+
+::: {.callout-warning .fragment}
+:::
+
+::: {.callout-caution .fragment}
+Cuidado amb chatgpt
+:::
