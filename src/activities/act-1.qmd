@@ -32,3 +32,5 @@ To complete this activity, you must deliver **a link to your Github repository**
 -   Check out [banner](https://man.cx/banner) or [figlet](https://man.cx/figlet), some commands to make ascii from bash
 
 -   Check out [pyfiglet](https://pypi.org/project/pyfiglet/) if you're one of those that prefer python
+
+- [A more complete approach to systemd](https://www.youtube.com/watch?v=Kzpm-rGAXos) (1h)
