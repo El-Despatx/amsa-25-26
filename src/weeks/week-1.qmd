@@ -70,7 +70,7 @@ We'll touch some things of the kernel and
 
 ------------------------------------------------------------------------
 
-### Kernel Messages with `dmesg` {.tiny}
+## Kernel Messages with `dmesg` {.tiny}
 
 You don't need to worry much about the kernel (yet).
 The only thing we need right now is to **see its log messages**, which you can do with:
@@ -87,9 +87,10 @@ dmesg - print or control the kernel ring buffer
 
 ------------------------------------------------------------------------
 
+## Understanding the messages {.tiny}
+
 :::{.columns}
 ::: {.column width="50%"}
-Think of it like a kernel using Python (bad idea, but fun):
 
 ```{.python  code-line-numbers="true"}
 from collections import deque
@@ -131,7 +132,6 @@ https://elixir.bootlin.com/linux/v6.16.3/source/kernel/printk/printk.c
 :::
 
 
-:::
 :::
 
 ------------------------------------------------------------------------
