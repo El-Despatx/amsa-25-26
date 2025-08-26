@@ -6,9 +6,9 @@ website:
   title: "AMSA 2025-2026"
   navbar:
     left:
-      - href: week0.qmd
+      - href: weeks/week-0.qmd
         text: "Week 0"
-      - href: week1.qmd
+      - href: weeks/week-1.qmd
         text: "Week 1"
 
 title: "AMSA"
@@ -44,4 +44,4 @@ mermaid:
 
 logo: "logo.png"
 
-footer: AMSA 2025-2026  -  [🏠 Home](index.html)
+footer: AMSA 2025-2026  -  [🏠 Home](/index.html)

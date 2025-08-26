@@ -3,15 +3,15 @@ title: "Administració i Manteniment de Sistemes i Aplicacions (AMSA)"
 format: html
 ---
 
-![](logo.png){width=100% style="display:block; margin:auto;"}
-
+![](logo.png){width="100%" style="display:block; margin:auto;"}
 
 ## 🎓 Slides
 
 Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and resources.
 
-- [Week 0: Introduction + Exercises workflow](week0.qmd)
-- [Week 1: System boot intro + 1st exercise](week1.qmd)
+-   [Week 0: Introduction + Exercises workflow](weeks/week-0.qmd)
+-   [Week 1: System boot intro + 1st exercise](weeks/week-1.qmd)
 
 ## 📚 Resources
-- [Guia docent](https://guiadocent.udl.cat/html/2025-26_102013)
+
+-   [Guia docent](https://guiadocent.udl.cat/html/2025-26_102013)

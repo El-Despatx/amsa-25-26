@@ -1,6 +1,6 @@
 ---
 subtitle: "Week 0: Introduction + Exercises workflow"
-bibliography: references/week0.bib
+bibliography: references/week-0.bib
 ---
 
 ## Hey! We’re Ferran, Pablo & Oriol 👋
@@ -11,7 +11,7 @@ bibliography: references/week0.bib
 -   You can find us at **EPS 3.07**
 
 ::: {.fragment style="text-align:center;"}
-<img src="figures/week0/crabs.png" style="width:50%;"/>
+<img src="figures/crabs.png" style="width:50%;"/>
 :::
 
 ## Methodology
