@@ -12,31 +12,139 @@ subtitle: "Week 1: System boot intro + 1st exercise"
 
 ## Booting process
 
+![](figures/week-1/boot-sequence.excalidraw.png){fig-align="center"}
+
+------------------------------------------------------------------------
+
 ### Hardware Part
 
--   Magical Power Button: As soon as you press the magical power button on your laptop or desktop
-    computer, it starts working. The motherboard sends a signal to the [power supply](https://en.wikipedia.org/wiki/Power_supply) device.
+-   Magical Power Button: As soon as you press the magical power button on your laptop or desktop computer, it starts working. The motherboard sends a signal to the [power supply](https://en.wikipedia.org/wiki/Power_supply) device.
 
--   After receiving the signal, the power supply provides the proper amount
-    of electricity to the computer. Once the motherboard receives the [power good signal](https://en.wikipedia.org/wiki/Power_good_signal), it tries to start the CPU.
+-   After receiving the signal, the power supply provides the proper amount of electricity to the computer. Once the motherboard receives the [power good signal](https://en.wikipedia.org/wiki/Power_good_signal), it tries to start the CPU.
 
 -   The CPU resets it's registers, and the next instruction on the EIP is (`0xfffffff0)`. It's the memory location at which the CPU expects to find the first instruction to execute after reset. It contains a [jump](https://en.wikipedia.org/wiki/JMP_%28x86_instruction%29) (`jmp`) instruction that usually points to the firmware of your pc/laptop/server entry point.
+
+------------------------------------------------------------------------
 
 ### Firmware Part
 
 -   But wait.... What's does the firmware of our pc? What's UEFI? What's the BIOS? TODO: Explain and add examples for watching the NVRAM values that the UEFI firmware uses for booting.
 
--   Bootloader: Explain what is, Loads the version of the Kernel that you choose inside ram, and follows the "contract" that it has with the linux kernel.
+------------------------------------------------------------------------
 
 ### Software Part
 
+-   Bootloader: Explain what is, Loads the version of the Kernel that you choose inside ram, and follows the "contract" that it has with the linux kernel.
+
 -   Kernel: Explain that's only a program, what it does, etc, etc. We'll explain a little bit more about the kernel in the following sessions, but for today, for watching what the kernel does
+
+------------------------------------------------------------------------
+
+#### What the hell is a kernel? Why we need one?
+
+-   A kernel is just a program, really, it's just a program
+
+-   A difficult and big one, but after all, a program.
+
+------------------------------------------------------------------------
+
+**You don't trust us? Let's assert that!**
+
+TODO: Use the file command for seeing that the kernel is an ELF file, and that another "normal" program, like for example python, is another ELF file.
+
+------------------------------------------------------------------------
+
+#### So, what does this program (the kernel) do?
+
+We'll touch some things of the kernel and
+
+-   Create abstractions for us (the programmers) to create easy applications.
+
+-   Handle resources and concurrency. We can split this category in:
+
+    -   Processes/Threads (CPU, tasks, etc)
+
+    -   Memory Management
+
+    -   FileSystems
+
+------------------------------------------------------------------------
+
+### Kernel Messages with `dmesg` {.tiny}
+
+You don't need to worry much about the kernel (yet).
+The only thing we need right now is to **see its log messages**, which you can do with:
+
+```{.shell  code-line-numbers="false"}
+$ sudo dmesg
+```
+
+From the man page:
+
+```{.shell  code-line-numbers="false"}
+dmesg - print or control the kernel ring buffer
+```
+
+------------------------------------------------------------------------
+
+:::{.columns}
+::: {.column width="50%"}
+Think of it like a kernel using Python (bad idea, but fun):
+
+```{.python  code-line-numbers="true"}
+from collections import deque
+from typing import List
+
+MAX_KERNEL_MESSAGES = 10 # I only want to log 10 messages from my stupid kernel.
+messages = deque(maxlen=MAX_KERNEL_MESSAGES)
+
+def printk(message: str) -> None:
+    messages.append(message)
+
+def dmesg() -> List[str]:
+    return messages
+```
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-tip title="How It Logs"}
+
+All the drivers, stuff that does the kernel, will be logged with:
+```{.python  code-line-numbers="false"}
+printk("Initializing network driver for card intel AC3200...")
+```
+:::
+
+To read the logs, just call:
+```{.python  code-line-numbers="false"}
+dmesg()
+```
+:::
+
+
+::: {.callout-tip title="Real implementation"}
+⚠️ The real kernel implementation is more complex
+(concurrency, performance, real C code, etc.).
+If you're curious or bored, you can read it here:
+https://elixir.bootlin.com/linux/v6.16.3/source/kernel/printk/printk.c 
+:::
+
+
+:::
+:::
+
+------------------------------------------------------------------------
 
 -   Initramfs: What happens if you encrypt the pc? How can you decrypt it? Etc.
 
     `$ sudo dmesg | head -n 10`
 
     `initrd=\EFI\nixos\m9zbpy56cvgqgrvgkcksr8kx1qgdv6nx-initrd-linux-6.12.40-initrd.efi init=/nix/store/m4lrjsqxrwrj0j5b0l66yjv8hnz23mbr-nixos-system-legolas-25.11.20250731.94def63/i nit loglevel=4 lsm=landlock,yama,bpf`
+
+Of course, you can see the lines of code inside the kernel that loads the initramfs: <https://elixir.bootlin.com/linux/v6.16.3/source/init/initramfs.c#L717>
+
+And learn more about the initrd, on the official linux documentation: <https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/initrd.rst>
 
 -   Init process:
 
@@ -46,6 +154,8 @@ subtitle: "Week 1: System boot intro + 1st exercise"
 
 -   TTY and login.
 
+------------------------------------------------------------------------
+
 ## Questions:
 
 -   Si me peta el pc i sol em mostra el grub, que pot ser que falli?
@@ -53,6 +163,8 @@ subtitle: "Week 1: System boot intro + 1st exercise"
 -   Si arranca el sistema, mostra lletretes de que està iniciant el kernel, i
 
 -   Realment fa falta un bootloader a linux? Que ens aporta?
+
+------------------------------------------------------------------------
 
 ## References
 
@@ -64,7 +176,7 @@ subtitle: "Week 1: System boot intro + 1st exercise"
 
 -   Running Arch-Linux without a bootloader, only with the EFI compatible Linux Kernel: <https://www.codejam.info/2021/08/super-fast-boot-linux-efistub.html>
 
-### Recommended References 
+### Recommended References
 
 This can be hard to follow, use ChatGPT or ask the Lab Teachers if you don't get some parts:
 
@@ -72,7 +184,7 @@ This can be hard to follow, use ChatGPT or ask the Lab Teachers if you don't get
 
 -   <https://wiki.archlinux.org/title/Arch_boot_process>
 
-## Additional Exercices (if you really want to understand a little bit more what happens under the hood): 
+## Additional Exercices (if you really want to understand a little bit more what happens under the hood):
 
 Please read first the "Really Recommended References", and then try to do this exercises):
 
