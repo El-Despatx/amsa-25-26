@@ -21,3 +21,4 @@ In the following links you'll find all the activities and its corresponding reso
 ## 📚 Resources
 
 -   [Guia docent](https://guiadocent.udl.cat/html/2025-26_102013)
+-   [Virtual Machine](https://ax1drie1vzsx.objectstorage.eu-madrid-1.oci.customer-oci.com/p/DHkwfSALblitk3CMJnAqw0a1GsvZN1tOtDSxvDSCDxK9bt4oFOeFBWqgzqfw2nTJ/n/ax1drie1vzsx/b/amsa/o/ubuntu-24.04.2-live-server-amd64.iso) (username: `amsa` & password: `amsa`)
