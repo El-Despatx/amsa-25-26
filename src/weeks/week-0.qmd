@@ -95,7 +95,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ## Timeline (Weeks 0 → 8) {.smaller}
 
 | Week | Contents |
-|------------|----------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | **0** | 📖 Subject **Intro** |
 | **1** | 📖 Explain **PRAC-1** |
 | **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
@@ -245,3 +245,63 @@ We will provide you with a **Virtual Machine (VM)** in the form of a `.ova` file
 :::
 
 # Lab time! 🧪
+
+## Downaload VirtualBox
+
+Visit the VirtualBox download [website](virtualbox.org/wiki/Downloads), download the right variant depending on your OS and start the installation.
+
+![](figures/week-0/download-vbox.png){fig-align="center"}
+
+## Enable `.ova` defaults
+
+We recommend keeping this option enabled since it will be easier to import the virtual machine later.
+
+![](figures/week-0/install-vbox.png){fig-align="center"}
+
+## Import the `.ova` {.smaller}
+
+**Download the Virtual Machine** from the subject's [website](amsa.lol) **if you haven't already done so**. Once the download is finished, **double click on the file** and a window will appear to import it on VirtualBox. Just click on `Finish` and **wait for the VM to be imported**.
+
+![](figures/week-0/import-vbox.png){fig-align="center"}
+
+::: callout-tip
+If double clicking on the file did not pop up a window, import it manually from VirtualBox by clicking `Import` \> Choose the file \> `Next`
+:::
+
+## Launching the machine
+
+Now you should see **a new machine on VirtualBox**, double-click on it and after it boots up you'll have an Ubuntu machine up and running where you'll be able **to work on the subject's activities**.
+
+::: callout-important
+## Credentials for the machine
+
+The credentials to login are `username: amsa & password: amsa`
+:::
+
+## Connecting to the machine through ssh {.smaller}
+
+:::::: columns
+:::: {.column width="50%"}
+Although the machine comes with a graphical desktop, some of you may prefer to connect to it through SSH and work from your host machine. SSH comes already configured on the machine so it will be as easy as running the command below (remember password is `amsa`):
+
+``` bash
+ssh amsa@localhost -p 2222
+```
+
+::: callout-tip
+You may get prompted regarding the authenticity of the host, just type `yes` and hit enter as shown below.
+
+![](figures/week-0/prompt-ssh-vbox.png){fig-align="center" width="834"}
+:::
+::::
+
+::: {.column width="50%"}
+![](figures/week-0/ssh-vbox.png){fig-align="center" width="100%"}
+:::
+::::::
+
+## Regarding Github Classroom
+
+If for some reason you don't have an SSH already configured to work with Github, good news, it's time to grow up.
+
+Github already provides **great documentation** on how to do this, here is the [link](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
