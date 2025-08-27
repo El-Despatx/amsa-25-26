@@ -96,9 +96,10 @@ It has a very simple objective, which is:
 
 [^1]: The programs that show a menu are called "boot managers".
 
+<!-- -->
+
 -   Load the Kernel and Initrd (if any) to memory.
 -   The kernel has a [boot convention](https://github.com/torvalds/linux/blob/v4.16/Documentation/x86/boot.txt) that the bootloader prepares (memory layout and cpu registers).
-
 
 ## Kernel. What the hell it is? Why we need one?
 
@@ -146,7 +147,6 @@ Okey, the kernel has just started but...
 
 ![](figures/week-1/boot-sequence-kernel.excalidraw.png)
 
-
 ## Does our system use an initramfs? {.smaller}
 
 We can see that our system uses a initramfs watching the kernel boot flags with the following command (on a freshly booted system):
@@ -157,44 +157,43 @@ initrd=\EFI\nixos\m9zbpy56cvgqgrvgkcksr8kx1qgdv6nx-initrd-linux-6.12.40-initrd.e
 ```
 
 ::: {.callout-note title="Recommended read"}
-We strongly recommend to read some parts of the [linux kernel documentation about the initrd ](https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/initrd.rst)
+We strongly recommend to read some parts of the [linux kernel documentation about the initrd](https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/initrd.rst)
 :::
 
 ::: {.callout-note title="Are you bored and like the C programming language?"}
-You can read the [lines of code inside the kernel that loads the initramfs ](https://elixir.bootlin.com/linux/v6.16.3/source/init/initramfs.c#L717)
+You can read the [lines of code inside the kernel that loads the initramfs](https://elixir.bootlin.com/linux/v6.16.3/source/init/initramfs.c#L717)
 :::
 
 ## Init process {.smaller}
 
-- Init is the first process started during system boot.
+-   Init is the first process started during system boot.
 
-- It is a daemon process that continues running until the system is shut down. Init is the direct or indirect ancestor of all other processes, and automatically adopts all orphaned processes.
+-   It is a daemon process that continues running until the system is shut down. Init is the direct or indirect ancestor of all other processes, and automatically adopts all orphaned processes.
 
-- It is started by the kernel using a hard-coded filename (you can change the init process, like for example `init=/bin/bash`).
-
+-   It is started by the kernel using a hard-coded filename (you can change the init process, like for example `init=/bin/bash`).
 
 ## Systemd {.smaller}
 
-- In the 99% of linux distros, the init system is [systemd](https://systemd.io/).
+-   In the 99% of linux distros, the init system is [systemd](https://systemd.io/).
 
-- The commands used to interact with systemd usually start with `systemctl`.
+-   The commands used to interact with systemd usually start with `systemctl`.
 
-- systemd saves the services, configurations, etc. under /etc/systemd/*
+-   systemd saves the services, configurations, etc. under /etc/systemd/\*
 
-- Try on your system:
+-   Try on your system:
 
     ``` {.bash code-line-numbers="false"}
     $ sudo systemctl status
     ```
 
-## Start the ui/tty agetty and login {.smaller }
+## Start the ui/tty agetty and login {.smaller}
 
-::: {.nonincremental}
--  Now, after the init process has started all the services, the path of execution can change, depending on the programs you have, your linux distribution, etc.
--  We can distinct a linux server or a linux desktop:
+::: nonincremental
+-   Now, after the init process has started all the services, the path of execution can change, depending on the programs you have, your linux distribution, etc.
+-   We can distinct a linux server or a linux desktop:
 :::
 
-::::::: columns
+::::: columns
 ::: {.column width="50%"}
 ![](figures/week-1/tty_login.webp)
 :::
@@ -202,19 +201,23 @@ You can read the [lines of code inside the kernel that loads the initramfs ](htt
 ::: {.column width="50%"}
 ![](figures/week-1/gdm_login.webp)
 :::
-
 :::::
 
 ## agetty and login
 
-- In the majority server or minimal distros, systemd starts the agetty program, which then, from the tty you're on, launches /bin/login
+-   In the majority server or minimal distros, systemd starts the [agetty ](https://wiki.archlinux.org/title/Getty)(or similar) program, which then, from the tty you're on, launches /bin/login
 
-- When you login with your user and password, the login program checks if the user exists, the :wq
+-   When you login with a correct user and password, the login program launches the default shell for this user.
 
-https://wiki.archlinux.org/title/Getty
+    PAM authentication on login binary: <https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L957>
 
-(the ArchLinux default, for example)
+    Understanding old linux authentication and pam: <https://xeiaso.net/talks/surreal-horror-pam-2021-11-09/>
 
+    <https://news.ycombinator.com/item?id=29167560>
+
+    <https://wiki.gentoo.org/wiki/PAM>
+
+    <https://aplawrence.com/Basics/understandingpam.html>
 
 ## Recap
 
@@ -286,7 +289,7 @@ The real kernel implementation is more complex (concurrency, performance, real C
 
 ## Questions: {.smaller}
 
--   What parts of the boot process diagram could be omitted? 
+-   What parts of the boot process diagram could be omitted?
 
 -   If our system shows the following and then reboots, what could be happenning?
 
