@@ -93,10 +93,12 @@ Boot0000 and Boot0004 in this example are actually BIOS compatibility mode entri
 It has a very simple objective, which is:
 
 -   Show a boot menu with multiple binaries that you can boot.[^1]
+
+[^1]: The programs that show a menu are called "boot managers".
+
 -   Load the Kernel and Initrd (if any) to memory.
 -   The kernel has a [boot convention](https://github.com/torvalds/linux/blob/v4.16/Documentation/x86/boot.txt) that the bootloader prepares (memory layout and cpu registers).
 
-[^1]: Remember that a parent process can redirect the stdout file descriptor before execv the new binary.
 
 ## Kernel. What the hell it is? Why we need one?
 
@@ -142,6 +144,9 @@ Okey, the kernel has just started but...
     So we can inject the necessary junk that needs user access or external resources or modules that are not inside the default kernel, while we're loading the system.
     :::
 
+![](figures/week-1/boot-sequence-kernel.excalidraw.png)
+
+
 ## Does our system use an initramfs? {.smaller}
 
 We can see that our system uses a initramfs watching the kernel boot flags with the following command (on a freshly booted system):
@@ -178,13 +183,38 @@ You can read the [lines of code inside the kernel that loads the initramfs ](htt
 
 - Try on your system:
 
-``` {.bash code-line-numbers="false"}
-$ sudo systemctl status
-```
+    ``` {.bash code-line-numbers="false"}
+    $ sudo systemctl status
+    ```
 
-## agetty and login {.smaller}
+## Start the ui/tty agetty and login {.smaller }
 
--  After systemd has 
+::: {.nonincremental}
+-  Now, after the init process has started all the services, the path of execution can change, depending on the programs you have, your linux distribution, etc.
+-  We can distinct a linux server or a linux desktop:
+:::
+
+::::::: columns
+::: {.column width="50%"}
+![](figures/week-1/tty_login.webp)
+:::
+
+::: {.column width="50%"}
+![](figures/week-1/gdm_login.webp)
+:::
+
+:::::
+
+## agetty and login
+
+- In the majority server or minimal distros, systemd starts the agetty program, which then, from the tty you're on, launches /bin/login
+
+- When you login with your user and password, the login program checks if the user exists, the :wq
+
+https://wiki.archlinux.org/title/Getty
+
+(the ArchLinux default, for example)
+
 
 ## Recap
 
