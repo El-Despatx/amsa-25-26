@@ -1,4 +1,10 @@
+---
+subtitle: "Extra Activity: Executing a .efi"
+format: html
+---
+
 # Booting tetris.efi 🎮
+This extra activity demonstrates how you can run the Tetris game without relying on an operating system. Simply write an EFI-compliant program, build it, and execute it directly!
 
 ## Reboot to the UEFI VBox firmware:
 
