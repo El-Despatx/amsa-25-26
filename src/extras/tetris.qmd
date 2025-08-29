@@ -1,0 +1,25 @@
+# Booting tetris.efi 🎮
+
+## Reboot to the UEFI VBox firmware:
+
+Open a terminal inside the VM, and execute the following command:
+
+``` {.shell code-line-numbers="true"}
+$ sudo systemctl reboot --firmware-setup
+```
+
+This uses systemd (init system) to reboot to the firmware of your device, in this case, the firmware is "virtualized" by VirtualBox.
+
+It should appear the following screen:
+
+![](/extras/figures/vbox-firmware.png)
+
+
+## Execute the EFI Tetris 
+
+  - We'll go: `Boot Maintenence Manager => Boot from file => Click on the first (and only option)`
+
+  - Load the file that is saved on: `/EFI/BOOT/tetris.efi`
+
+  - Have fun! 🥳, and play some tetris games!
+

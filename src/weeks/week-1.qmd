@@ -130,16 +130,15 @@ TODO: Use the file command for seeing that the kernel is an ELF file, and that a
     -   FileSystems
 
     ::: {.callout-note title="In this course..."}
-    We'll talk and explore some parts of the linux kernel (not the internal ones, but the abstractions it provides to us).
+    In this course, we'll explore some parts of the Linux kernel (not its internal implementation, but the abstractions it provides for us to use).
     :::
 
 ## Initramfs {.smaller}
 
 Okey, the kernel has just started but...
 
--   What happens if I have my drive encrypted?
-
--   What happens if my drive depends on the network?
+-   What happens if my drive is encrypted?
+-   What if my drive depends on a network connection?
 
     ::: {.callout-note title="That's why initrd/initial ramdisk exists!"}
     So we can inject the necessary junk that needs user access or external resources or modules that are not inside the default kernel, while we're loading the system.
@@ -203,25 +202,36 @@ You can read the [lines of code inside the kernel that loads the initramfs](http
 :::
 :::::
 
-## agetty and login
+## agetty and login {.smaller}
 
--   In the majority server or minimal distros, systemd starts the [agetty ](https://wiki.archlinux.org/title/Getty)(or similar) program, which then, from the tty you're on, launches /bin/login
+  - In the majority server or minimal distros, systemd starts the [agetty](https://wiki.archlinux.org/title/Getty)(or similar) program, which then, from the tty you're on, launches /bin/login.
 
--   When you login with a correct user and password, the login program launches the default shell for this user.
+  - /bin/login then [execv the default shell for your user](https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L1623).
 
-    PAM authentication on login binary: <https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L957>
+    ``` 
+        └── systemd
+            └── agetty
+                └── login
+                    └── bash/zsh/....
+    ```
 
-    Understanding old linux authentication and pam: <https://xeiaso.net/talks/surreal-horror-pam-2021-11-09/>
-
-    <https://news.ycombinator.com/item?id=29167560>
-
-    <https://wiki.gentoo.org/wiki/PAM>
-
-    <https://aplawrence.com/Basics/understandingpam.html>
+    ::: {.callout-note title="The login process"}
+      You might assume that the login process is as simple as comparing a password hash to the contents of `/etc/shadow`. However, the reality of modern Linux authentication is more complex. As you can see in the [login source code](https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L957), the process involves something called PAM (Pluggable Authentication Modules).
+      Understanding PAM in depth is beyond the scope of this course, but if you're curious, here are some helpful resources to explore:
+	- [xe blogpost about PAM and tailscale](https://xeiaso.net/talks/surreal-horror-pam-2021-11-09/) and [his hackernews post](https://news.ycombinator.com/item?id=29167560) (which has comments that come from the creators of PAM).
+	- [gentoo wiki about pam](https://wiki.gentoo.org/wiki/PAM) and [Tony Lawrence blogpost](https://aplawrence.com/Basics/understandingpam.html).
+    :::
 
 ## Recap
 
 ![](figures/week-1/boot-sequence-software.excalidraw.png)
+
+
+# Tools for debugging
+Some tools that provide an accessible way to understand or interact with the boot process.
+
+## Firmware
+We've already looked at `efibootmgr`, but keep in mind that there are tools like `fwupd` that allow you to update your firmware directly from your PC.
 
 ## Kernel Messages with `dmesg` {.tiny}
 
@@ -237,7 +247,7 @@ From the man page:
 dmesg - print or control the kernel ring buffer
 ```
 
-## Implementing our dmesg {.smaller}
+## Implementing our "fake" dmesg {.smaller}
 
 ::::::: columns
 ::: {.column width="50%"}
@@ -279,7 +289,7 @@ The real kernel implementation is more complex (concurrency, performance, real C
 
 ## Systemd Journaling
 
--   Very similar to the kernel dmesg, but for all the apps that systemd spawns [^2]
+-   Very similar to the kernel `dmesg`, but for all the apps that systemd (init process) spawns [^2]
 
 -   You can see the log from the system daemons [^3] with the `journalctl` command.
 
@@ -287,15 +297,26 @@ The real kernel implementation is more complex (concurrency, performance, real C
 
 [^3]: Historically, what systemd calls "service" was named daemon: any program that runs as a "background" process (without a terminal or user interface), commonly waiting for events to occur and offering services
 
-## Questions: {.smaller}
+# Quizz
+
+## General: {.smaller}
 
 -   What parts of the boot process diagram could be omitted?
 
 -   If our system shows the following and then reboots, what could be happenning?
 
-    TODO: Add bootloader image here
+    ![](figures/week-1/ubuntu_grub_menu.webp)
+
+
+
+## Software: {.smaller}
+
+-   Are the linux kernel logs saved "by default" on the filesystem?
+
+-   How could I change the init process?
 
 -   If I put my user and password (correctly) and then the screen flashes and returns me to the login screen again, what could be happenning?
+
 
 # References
 
@@ -313,28 +334,28 @@ The real kernel implementation is more complex (concurrency, performance, real C
 
 -   ArchLinux documentation about systemd: <https://wiki.archlinux.org/title/Systemd>
 
-## Recommended References {.smaller}
+## Other References {.smaller}
 
-This can be hard to follow, use ChatGPT or ask the Lab Teachers if you don't get some parts:
+This section can be difficult to follow. If you're an advanced Linux user and you're interested in exploring the internals, feel free to dive in. Otherwise, it's perfectly fine to skip it for now and come back later (once you feel more comfortable with your operating system and how it works).
 
--   <https://0xax.gitbooks.io/linux-insides/content/Booting/linux-bootstrap-1.html>
+-   Build linux from scratch: <https://www.linuxfromscratch.org/>
 
--   <https://wiki.archlinux.org/title/Arch_boot_process>
+-   ArchLinux booting process: <https://wiki.archlinux.org/title/Arch_boot_process>
 
-## Additional Exercices
+-   How the kernel boot process works (very hard to read/understand): <https://0xax.gitbooks.io/linux-insides/content/Booting/linux-bootstrap-1.html>
 
-If you really want to understand a little bit more what happens under the hood, you can do the following exercices. BE aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
--   <https://amsa-2425.github.io/Laboratoris/Booting/uefi.html> (be aware that in VirtualBox, for accessing the UEFI interface, you should do: TODO ADD)
+## Additional Exercices {.smaller}
+
+If you really want to understand a little bit more what happens under the hood on the firmware side, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+-   Playing a EFI made tetris: The teachers added a [tetris that run withouts an operating system, and is programmed directly on efi complaiant code](https://github.com/a1ive/uefi-tetris?tab=readme-ov-file). Instructions [are found here](/extras/tetris.qmd). 
+
+-   Using an EFI Shell: <https://amsa-2425.github.io/Laboratoris/Booting/uefi/observant.html>. The steps are the same ones as the tetris, but the .efi file is named `shell`.
 
 -   Play a little bit with your UEFI Boot Manager Configuration (section The UEFI boot manager) : <https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/>
 
--   TODO: Do this: https://0pointer.net/blog/fitting-everything-together.html
 
-## Prac-1 {.smaller}
+## Activity 1 {.smaller}
 
--   We'll add a systemd unit that, when our system finishes booting, it prints on the systemd journaling our name in ASCII art style.
-
--   You can test if it works doing:
-
--   More info inside the Lab 1 page.
+Ready to have some fun? Check out the [first AMSA activity here!](/activities/act-1.qmd)
