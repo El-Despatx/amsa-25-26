@@ -138,6 +138,7 @@ TODO: Use the file command for seeing that the kernel is an ELF file, and that a
 Okey, the kernel has just started but...
 
 -   What happens if my drive is encrypted?
+
 -   What if my drive depends on a network connection?
 
     ::: {.callout-note title="That's why initrd/initial ramdisk exists!"}
@@ -204,11 +205,11 @@ You can read the [lines of code inside the kernel that loads the initramfs](http
 
 ## agetty and login {.smaller}
 
-  - In the majority server or minimal distros, systemd starts the [agetty](https://wiki.archlinux.org/title/Getty)(or similar) program, which then, from the tty you're on, launches /bin/login.
+-   In the majority server or minimal distros, systemd starts the [agetty](https://wiki.archlinux.org/title/Getty)(or similar) program, which then, from the tty you're on, launches /bin/login.
 
-  - /bin/login then [execv the default shell for your user](https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L1623).
+-   /bin/login then [execv the default shell for your user](https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L1623).
 
-    ``` 
+    ```         
         └── systemd
             └── agetty
                 └── login
@@ -216,21 +217,22 @@ You can read the [lines of code inside the kernel that loads the initramfs](http
     ```
 
     ::: {.callout-note title="The login process"}
-      You might assume that the login process is as simple as comparing a password hash to the contents of `/etc/shadow`. However, the reality of modern Linux authentication is more complex. As you can see in the [login source code](https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L957), the process involves something called PAM (Pluggable Authentication Modules).
-      Understanding PAM in depth is beyond the scope of this course, but if you're curious, here are some helpful resources to explore:
-	- [xe blogpost about PAM and tailscale](https://xeiaso.net/talks/surreal-horror-pam-2021-11-09/) and [his hackernews post](https://news.ycombinator.com/item?id=29167560) (which has comments that come from the creators of PAM).
-	- [gentoo wiki about pam](https://wiki.gentoo.org/wiki/PAM) and [Tony Lawrence blogpost](https://aplawrence.com/Basics/understandingpam.html).
+    You might assume that the login process is as simple as comparing a password hash to the contents of `/etc/shadow`. However, the reality of modern Linux authentication is more complex. As you can see in the [login source code](https://github.com/util-linux/util-linux/blob/master/login-utils/login.c#L957), the process involves something called PAM (Pluggable Authentication Modules). Understanding PAM in depth is beyond the scope of this course, but if you're curious, here are some helpful resources to explore:
+
+    -   [xe blogpost about PAM and tailscale](https://xeiaso.net/talks/surreal-horror-pam-2021-11-09/) and [his hackernews post](https://news.ycombinator.com/item?id=29167560) (which has comments that come from the creators of PAM).
+    -   [gentoo wiki about pam](https://wiki.gentoo.org/wiki/PAM) and [Tony Lawrence blogpost](https://aplawrence.com/Basics/understandingpam.html).
     :::
 
 ## Recap
 
 ![](figures/week-1/boot-sequence-software.excalidraw.png)
 
-
 # Tools for debugging
+
 Some tools that provide an accessible way to understand or interact with the boot process.
 
 ## Firmware
+
 We've already looked at `efibootmgr`, but keep in mind that there are tools like `fwupd` that allow you to update your firmware directly from your PC.
 
 ## Kernel Messages with `dmesg` {.tiny}
@@ -307,8 +309,6 @@ The real kernel implementation is more complex (concurrency, performance, real C
 
     ![](figures/week-1/ubuntu_grub_menu.webp)
 
-
-
 ## Software: {.smaller}
 
 -   Are the linux kernel logs saved "by default" on the filesystem?
@@ -316,7 +316,6 @@ The real kernel implementation is more complex (concurrency, performance, real C
 -   How could I change the init process?
 
 -   If I put my user and password (correctly) and then the screen flashes and returns me to the login screen again, what could be happenning?
-
 
 # References
 
@@ -344,17 +343,15 @@ This section can be difficult to follow. If you're an advanced Linux user and yo
 
 -   How the kernel boot process works (very hard to read/understand): <https://0xax.gitbooks.io/linux-insides/content/Booting/linux-bootstrap-1.html>
 
-
 ## Additional Exercices {.smaller}
 
 If you really want to understand a little bit more what happens under the hood on the firmware side, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
--   Playing a EFI made tetris: The teachers added a [tetris that run withouts an operating system, and is programmed directly on efi complaiant code](https://github.com/a1ive/uefi-tetris?tab=readme-ov-file). Instructions [are found here](/extras/tetris.qmd). 
+-   Playing a EFI made tetris: The teachers added a [tetris that run withouts an operating system, and is programmed directly on efi complaiant code](https://github.com/a1ive/uefi-tetris?tab=readme-ov-file). Instructions [are found here](/extras/tetris.qmd).
 
 -   Using an EFI Shell: <https://amsa-2425.github.io/Laboratoris/Booting/uefi/observant.html>. The steps are the same ones as the tetris, but the .efi file is named `shell`.
 
 -   Play a little bit with your UEFI Boot Manager Configuration (section The UEFI boot manager) : <https://www.happyassassin.net/posts/2014/01/25/uefi-boot-how-does-that-actually-work-then/>
-
 
 ## Activity 1 {.smaller}
 

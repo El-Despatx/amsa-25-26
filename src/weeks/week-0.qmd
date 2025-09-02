@@ -95,7 +95,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ## Timeline (Weeks 0 → 8) {.smaller}
 
 | Week | Contents |
-|--------------------|----------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | **0** | 📖 Subject **Intro** |
 | **1** | 📖 Explain **PRAC-1** |
 | **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
@@ -137,14 +137,16 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ::: callout-note
 #### **Exams** → 90%
 
--   Theory questions → **40%** (20% + 20%)
--   Lab-related questions → **50%** (25% + 25%)
+-   Theory questions → **75%**
+-   Lab-related questions → **25%**
 :::
 ::::
 :::::::
 
 ::: {.callout-important .fragment}
-Activities must be done **individually** and **cannot be retaken**.
+Activites can be done in **groups of two** and **cannot be retaken**.
+
+We **strongly recommend** doing them **individually**.
 :::
 
 ::: {.callout-warning .fragment}
