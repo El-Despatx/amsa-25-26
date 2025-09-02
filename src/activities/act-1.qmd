@@ -9,15 +9,17 @@ Develop a systemd service that outputs "Hello, <your name> in ASCII art every ti
 
 For this you must:
 
-1. Create a script that prints the message
-2. Create a `systemd` service linked to this script 
-3. Move the service and start it properly
+1.  Create a script that prints the message
+2.  Create a `systemd` service linked to this script
+3.  Move the service and start it properly
 
 Do it with any language you prefer, although bash is probably the simpliest one.
 
 ## What to send?
 
-To complete this activity, you must deliver **a link to your Github repository**, which in one folder will contain:
+_Accept the assignment in github classroom, following the [link]()_
+
+To complete this activity, you must deliver **a link to your Github repository**, which will contain:
 
 -   The script itself
 -   The `.service` file
@@ -29,7 +31,7 @@ To complete this activity, you must deliver **a link to your Github repository**
 ![](images/paste-1.png)
 :::
 
-## Some usefull resources
+## Some useful resources
 
 -   Redhat's documentation on [how to manage services with systemd](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/system_administrators_guide/chap-managing_services_with_systemd)
 
@@ -39,4 +41,4 @@ To complete this activity, you must deliver **a link to your Github repository**
 
 -   Check out [pyfiglet](https://pypi.org/project/pyfiglet/) if you're one of those that prefer python
 
-- [A more complete approach to systemd](https://www.youtube.com/watch?v=Kzpm-rGAXos) (1h)
+-   [A more complete approach to systemd](https://www.youtube.com/watch?v=Kzpm-rGAXos) (1h)

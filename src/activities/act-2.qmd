@@ -1,7 +1,18 @@
 ---
 subtitle: "Prac-2: Creating our own htop!"
-<!-- bibliography: references.bib -->
 format: html
 ---
 
-## TODO: Explain
+## Activity 2.1
+### Activity brief
+### What to send?
+
+## Activity 2.2
+### Activity brief
+### What to send?
+
+## Activity 2.3
+### Activity brief
+### What to send?
+
+## Some useful resources
