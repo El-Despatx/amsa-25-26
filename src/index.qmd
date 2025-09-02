@@ -18,7 +18,15 @@ In the following links you'll find all the activities and its corresponding reso
 
 -   [Activity 1: Booting & systemd](activities/act-1.qmd)
 
+## 🤓 Extras
+
+The following are completely optional activities and won't be scored. Not completing this activities is not going to penalize you in any way. 
+
+Having said that, we encourage you to give it a try and show us the results, we'll be more than happy to have a look and discuss any doubts!
+
+-   [Playing an EFI made tetris](extras/tetris.qmd)
+
 ## 📚 Resources
 
 -   [Guia docent](https://guiadocent.udl.cat/html/2025-26_102013)
--   [Virtual Machine](https://ax1drie1vzsx.objectstorage.eu-madrid-1.oci.customer-oci.com/p/DHkwfSALblitk3CMJnAqw0a1GsvZN1tOtDSxvDSCDxK9bt4oFOeFBWqgzqfw2nTJ/n/ax1drie1vzsx/b/amsa/o/ubuntu-24.04.2-live-server-amd64.iso) (username: `amsa` & password: `amsa`)
+-   [Download Virtual Machine](https://objectstorage.eu-madrid-1.oraclecloud.com/p/iiU7_r7J9v0fN_mxwajUYkm-B3EVgb2Mqj7pCQraRPU-p0Rvyyiw9MD8h9xADNxx/n/ax1drie1vzsx/b/amsa/o/AMSA2526.ova) (username: `amsa` & password: `amsa`)

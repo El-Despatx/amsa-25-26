@@ -1,0 +1,78 @@
+---
+subtitle: "Week 2: Types of processes"
+# bibliography: references/week1.bib
+format: revealjs
+---
+
+## Processes in Linux
+
+- A **process** is an instance of a program in execution.  
+- The kernel manages processes to share CPU, memory, and other resources.  
+- Processes can run in **user space** or **kernel space**, depending on their role.
+
+---
+
+## User Threads (uthreads)
+
+::: callout-note
+- Managed by the **user-level libraries** (not by the kernel).  
+- Faster to create and switch, but:  
+  - If one thread blocks (e.g., waiting for I/O), the entire process is blocked.  
+- Example: threads in a Python or Java program.  
+:::
+
+---
+
+## Kernel Threads (kthreads)
+
+::: callout-note
+- Managed directly by the **Linux kernel**.  
+- Can run concurrently on multiple CPUs.  
+- Used internally by the system for tasks like memory management, I/O, etc.  
+- Example: `kthreadd`, `kworker/*` processes.  
+:::
+
+---
+
+## Processes
+
+::: callout-note
+- A **process** may consist of one or more threads.  
+- Each process has its own:  
+  - Memory space  
+  - File descriptors  
+  - Scheduling information  
+- Processes are the fundamental unit of resource management in Linux.  
+:::
+
+---
+
+## `/proc` and Process Information
+
+- Linux exposes process details through the **`/proc` filesystem**.  
+- Each running process has a directory `/proc/<PID>/`.  
+- Useful files:  
+  - `/proc/<PID>/status` → type, state, resources  
+  - `/proc/<PID>/cmdline` → command used to start it  
+
+---
+
+## Example
+
+```bash
+# List processes with their PID
+ps -e
+
+# Look at information for process 1
+cat /proc/1/status
+````
+
+* Using this, we can distinguish **user processes** vs **kernel threads**.
+* Kernel threads appear with **square brackets**, e.g.:
+
+  ```
+  [kthreadd]
+  [kworker/0:1]
+  ```
+
+```

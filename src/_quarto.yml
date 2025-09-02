@@ -16,6 +16,10 @@ website:
         menu:
         - href: activities/act-1.qmd
           text: "Activity 1"
+      - text: "🤓 Extras"
+        menu:
+        - href: extras/tetris.qmd
+          text: "EFI Tetris"
 
 title: "AMSA"
 
