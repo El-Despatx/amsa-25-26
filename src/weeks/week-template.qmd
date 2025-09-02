@@ -1,0 +1,126 @@
+---
+subtitle: "Week NaN: Template"
+# bibliography: references/week1.bib
+format: revealjs
+---
+
+# Goals for today
+
+-   Any questions from the previous session?
+-   Learn how bla bla bla.
+-   Present and explain Prac-X
+
+# Cool tools
+
+-   Things that we may want to say on the big page for the section can go here
+-   More things
+
+## Callouts {.smaller}
+
+Here we are in a regular slide. Some callouts (the cool boxes) we can use are the following:
+
+::: {.callout-tip .fragment}
+-   Adding `.fragment` to the callout params makes it appear in order same as the bullet points in the slide
+:::
+
+::: {.callout-note title="My custom title"}
+-   Adding `title="My custom title"` to the callout params enables to customize the card title.
+:::
+
+::: callout-warning
+Warning is another type of callout.
+:::
+
+::: callout-caution
+Caution is another type of callout.
+:::
+
+::: callout-important
+Important is another type of callout.
+:::
+
+
+## Columns
+
+Some other nice things are columns:
+
+::::::: columns
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Column 1**
+
+-   This uses the first 50% to the left
+-   It has also the param fragment so it appears in order
+:::
+::::
+
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Column 2**
+
+-   This takes the 50% to the right
+-   Wisky
+:::
+::::
+:::::::
+
+## Tables
+
+| Column 1      | Column 2                                          |
+|-----------|---------------------------------------------------|
+| **Week 0**     | 📖 **Virtualization & Containers** intro          |
+| **Week 1**    | 📖 Explain **PRAC-4.1**                           |
+
+## Smaller slides {.smaller}
+
+- Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
+
+## Figures
+
+As with all elements, adding `.fragment` property will make it appear in order. Also, use `style="text-align:center;"` to center the image or easily do it from the visual editor from vscode.
+
+::: {.fragment style="text-align:center;"}
+<img src="figures/week-0/crabs.png" style="width:50%;"/>
+:::
+
+# Quizz
+
+## General: {.smaller}
+
+-   Test?
+
+-   Test2?
+
+## Specific part of the theory: {.smaller}
+
+-   q1?
+
+-   q2?
+
+# References
+
+## Really Recommended References: {.smaller}
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Other References {.smaller}
+
+This section can be difficult to follow. If you're an advanced Linux user and you're interested in exploring the internals, feel free to dive in. Otherwise, it's perfectly fine to skip it for now and come back later (once you feel more comfortable with your operating system and how it works).
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Additional Exercices {.smaller}
+
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Activity 1 {.smaller}
+
+Ready to have some fun? Check out the [second AMSA activity here!](/activities/act-2.qmd)
