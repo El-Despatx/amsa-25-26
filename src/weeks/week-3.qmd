@@ -1,0 +1,39 @@
+---
+subtitle: "Week 3: Scheduling and nice"
+# bibliography: references/week1.bib
+format: revealjs
+---
+
+# What is a scheduler:
+Linux doesn't differenciate between processes and threads, in fact, it has a struct (task_struct) that is a Kernel descriptor for both threads and processes (tasks). 
+threads are just tasks sharing resources.
+
+We need a scheduler because we want to run things concurrently, and without lag.
+
+Rabbithole videos:
+Linux Scheduling performance: https://www.youtube.com/watch?v=8g9fG7cApbc
+Create your own linux scheduler with bpf: https://fosdem.org/2025/schedule/event/fosdem-2025-4620-rust-ifying-the-linux-kernel-scheduler-in-user-space-/
+
+
+# Understanding Nice Value inside the kernel task_struct:
+
+Linux Kernel nice code:
+
+https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L861
+
+https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L1903
+
+https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched/prio.h#L28
+
+Then, this value is used on some scheduling algorithms:
+
+https://elixir.bootlin.com/linux/v6.16.4/source/kernel/sched/core.c#L10183
+
+# Understanding the nice program:
+We can change the nice parameter with the "nice" program, which first create a process, assigns a priority with the setpriority syscall, and then execv the new program:
+
+https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44
+
+And a demonstration:
+https://www.youtube.com/watch?v=vd_oGmeoFKs
+
