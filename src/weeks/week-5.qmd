@@ -16,6 +16,10 @@ format: revealjs
 
 - https://wiki.archlinux.org/title/Swap
 
+- https://elixir.bootlin.com/linux/v6.16.4/source/mm/swapfile.c#L3260
+
+- https://docs.kernel.org/power/swsusp-and-swap-files.html
+
 # Quizz
 
 # References
