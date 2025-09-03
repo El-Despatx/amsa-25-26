@@ -1,0 +1,39 @@
+---
+subtitle: "Week 5: Memory and Swap"
+# bibliography: references/week1.bib
+format: revealjs
+---
+
+# Goals for today
+
+-   Any questions from the previous session?
+-   Understand Swap
+-   Present and explain Prac-3.1
+
+## Callouts {.smaller}
+
+- https://chrisdown.name/2018/01/02/in-defence-of-swap.html
+
+- https://wiki.archlinux.org/title/Swap
+
+# Quizz
+
+# References
+
+## Really Recommended References: {.smaller}
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Additional Exercices {.smaller}
+
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Activity 3 {.smaller}
+
+Ready to have some fun? Check out the [third AMSA activity here!](/activities/act-3.qmd)
