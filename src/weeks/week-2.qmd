@@ -1,78 +1,60 @@
 ---
-subtitle: "Week 2: Types of processes"
+subtitle: "Week 2: Linux Syscalls 101 and processes"
 # bibliography: references/week1.bib
 format: revealjs
 ---
 
-## Processes in Linux
+# Goals for today
 
-- A **process** is an instance of a program in execution.  
-- The kernel manages processes to share CPU, memory, and other resources.  
-- Processes can run in **user space** or **kernel space**, depending on their role.
+-   Any questions from the previous session?
+-   Learn how the kernel reacts to external input.
+-   Understand how we interact with the kernel and ProcFS.
+-   Present and explain Prac-2.1
 
----
+# Recap
 
-## User Threads (uthreads)
+# Interactions with the kernel
+Explain what an interrupt is (briefly)
+- https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html
 
-::: callout-note
-- Managed by the **user-level libraries** (not by the kernel).  
-- Faster to create and switch, but:  
-  - If one thread blocks (e.g., waiting for I/O), the entire process is blocked.  
-- Example: threads in a Python or Java program.  
-:::
 
----
+# How we (as users) interact with the kernel
+Syscalls (interrupts)
+- https://filippo.io/linux-syscall-table/
+- https://linux-kernel-labs.github.io/refs/heads/master/lectures/syscalls.html
 
-## Kernel Threads (kthreads)
+# Processes, threads, and kthreads
 
-::: callout-note
-- Managed directly by the **Linux kernel**.  
-- Can run concurrently on multiple CPUs.  
-- Used internally by the system for tasks like memory management, I/O, etc.  
-- Example: `kthreadd`, `kworker/*` processes.  
-:::
+- https://linux-kernel-labs.github.io/refs/heads/master/lectures/processes.html#lecture-objectives
+- https://dengking.github.io/Linux-OS/Kernel/Book-Understanding-the-Linux-Kernel/Chapter-3-Processes/3.4.2-Kernel-Threads/
+- https://www.man7.org/linux/man-pages/man2/clone.2.html
 
----
+# ProcFS
+- https://docs.kernel.org/filesystems/proc.html
+- https://github.com/htop-dev/htop/issues/99
+- https://peteris.rocks/blog/htop/
 
-## Processes
+# Quizz
 
-::: callout-note
-- A **process** may consist of one or more threads.  
-- Each process has its own:  
-  - Memory space  
-  - File descriptors  
-  - Scheduling information  
-- Processes are the fundamental unit of resource management in Linux.  
-:::
+# References
 
----
+## Really Recommended References: {.smaller}
 
-## `/proc` and Process Information
+-   Example: <https://example.com>
 
-- Linux exposes process details through the **`/proc` filesystem**.  
-- Each running process has a directory `/proc/<PID>/`.  
-- Useful files:  
-  - `/proc/<PID>/status` → type, state, resources  
-  - `/proc/<PID>/cmdline` → command used to start it  
+-   Example2: <https://example2.com>
 
----
 
-## Example
+## Other recommended references:
 
-```bash
-# List processes with their PID
-ps -e
+-   https://0xax.gitbooks.io/linux-insides/content/SysCall/linux-syscall-1.html
 
-# Look at information for process 1
-cat /proc/1/status
-````
+## Additional Exercices {.smaller}
 
-* Using this, we can distinguish **user processes** vs **kernel threads**.
-* Kernel threads appear with **square brackets**, e.g.:
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
-  ```
-  [kthreadd]
-  [kworker/0:1]
-  ```
+-   Create your own syscall: https://amsa-2425.github.io/Laboratoris/Kernel/add-syscalls.html?highlight=syscall#afegint-una-crida-a-sistema and https://www.youtube.com/watch?v=Kn6D7sH7Fts .
 
-```
+## Activity 2.1 {.smaller}
+
+Ready to have some fun? Check out the [second AMSA activity here!](/activities/act-2.qmd)
