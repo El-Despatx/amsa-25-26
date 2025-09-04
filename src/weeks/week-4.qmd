@@ -1,0 +1,212 @@
+---
+subtitle: "Week NaN: Template"
+# bibliography: references/week1.bib
+format: revealjs
+---
+
+# Goals for today
+
+-   Any questions from the previous session?
+-   Learn how do processes communicate between themselves asynchronously
+-   Learn about the `nohup` command
+-   Present and explain Prac-2.3
+
+# Communicating processes
+
+## The asynchronous way
+
+-   We've already seen how to communicate a process with the kernel when using **system calls**.
+-   As you know, processes use **interrupts** to notify the kernel that he has to do some work.
+-   But how would we notify **another** userspace **process** about something?
+
+::: {.callout-note .fragment}
+Can't we do that with **pipes**?
+:::
+
+## What is a signal? {.smaller}
+
+-   Signals are a mechanism for **inter-process communication** in Unix-like systems.
+-   They are **asynchronous notifications** sent to a process to notify it of an event.
+-   Examples:
+    - `SIGKILL` → immediately terminates a process.
+    - `SIGTERM` → gracefully terminates a process.
+    - `SIGHUP` → hangup signal, often sent when a terminal closes.
+-   A process can **handle, ignore, or take default action** on most signals.
+
+# Signals
+
+## `SIGKILL` in action {.smaller}
+
+We'll be using a little python program to illustrate how signals work. For now the program will just **print a digit every second**:
+
+::: {.fragment}
+``` {.python code-line-numbers="true"}
+import time
+import sys
+
+def main():
+    counter = 0
+    while True:
+        print(f"Tick {counter}")
+        sys.stdout.flush()
+        counter += 1
+        time.sleep(1)
+
+if __name__ == "__main__":
+    main()
+```
+:::
+
+::: {.fragment}
+Create a file named `amsa.py` and paste the code. Naming the file this way will come handy later when searching for the process PID.
+:::
+
+## `SIGKILL` in action {.smaller}
+
+- Run the program on one terminal and open a second terminal. We'll be **sending signals** from the second one.
+
+- Since we know that sending `SIGKILL` to a process will terminate it, we expect the program to stop printing digits and finish.
+
+- To send signals, we'll be using the command `kill`, which requires:
+    -   Te signal we want to send
+    -   Te pid of the target process
+
+
+::: {.callout-tip .fragment}
+Use `ps aux | grep amsa` to easily find the PID
+``` {.shell code-line-numbers="false"}
+amsa@amsa:~$ ps aux | grep amsa
+fnao       42419  0.1  0.0  18952  9964 pts/1    S+   11:29   0:00 python3 amsa.py
+fnao       42525  0.0  0.0   7300  2288 pts/4    S+   11:29   0:00 grep --color=auto amsa
+```
+:::
+
+## Common signals
+
+## Common Unix Signals {.smaller}
+
+| Signal  | Default Action | Comment                                  |
+|---------|----------------|------------------------------------------|
+| `SIGHUP`  | Terminate      | Hangup: sent when terminal closes        |
+| `SIGINT`  | Terminate      | Interrupt from keyboard (`Ctrl-C`)       |
+| `SIGQUIT` | Dump           | Quit from keyboard (`Ctrl-\`)            |
+| `SIGKILL` | Terminate      | Forced termination, cannot be ignored    |
+| `SIGTERM` | Terminate      | Graceful termination request             |
+| `SIGSTOP` | Stop           | Stop process execution (cannot ignore)   |
+| `SIGTSTP` | Stop           | Stop from terminal (`Ctrl-Z`)            |
+| `SIGCONT` | Continue       | Resume a stopped process                 |
+| `SIGCHLD` | Ignore         | Sent when a child process exits or stops |
+| `SIGSEGV` | Dump           | Invalid memory access (segmentation fault) |
+| `SIGUSR1` | Terminate      | User-defined signal (custom use)         |
+| `SIGUSR2` | Terminate      | User-defined signal (custom use)         |
+
+## Wisky
+
+Here we are in a regular slide. Some callouts (the cool boxes) we can use are the following:
+
+::: {.callout-tip .fragment}
+-   Adding `.fragment` to the callout params makes it appear in order same as the bullet points in the slide
+:::
+
+::: {.callout-note title="My custom title"}
+-   Adding `title="My custom title"` to the callout params enables to customize the card title.
+:::
+
+::: callout-warning
+Warning is another type of callout.
+:::
+
+::: callout-caution
+Caution is another type of callout.
+:::
+
+::: callout-important
+Important is another type of callout.
+:::
+
+## Columns
+
+Some other nice things are columns:
+
+::::::: columns
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Column 1**
+
+-   This uses the first 50% to the left
+-   It has also the param fragment so it appears in order
+:::
+::::
+
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Column 2**
+
+-   This takes the 50% to the right
+-   Wisky
+:::
+::::
+:::::::
+
+## Tables
+
+| Column 1   | Column 2                                 |
+|------------|------------------------------------------|
+| **Week 0** | 📖 **Virtualization & Containers** intro |
+| **Week 1** | 📖 Explain **PRAC-4.1**                  |
+
+## Smaller slides {.smaller}
+
+-   Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
+
+## Figures
+
+As with all elements, adding `.fragment` property will make it appear in order. Also, use `style="text-align:center;"` to center the image or easily do it from the visual editor from vscode.
+
+::: {.fragment style="text-align:center;"}
+<img src="figures/week-0/crabs.png" style="width:50%;"/>
+:::
+
+# Quizz
+
+## General: {.smaller}
+
+-   Test?
+
+-   Test2?
+
+## Specific part of the theory: {.smaller}
+
+-   q1?
+
+-   q2?
+
+# References
+
+## Really Recommended References: {.smaller}
+
+-   Linux Signals. I Spent 2 Years to Understand This Part: <https://www.youtube.com/watch?v=d0gS5TXarXc>
+
+-   LINUX Signals: <https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm>
+
+## Other References {.smaller}
+
+This section can be difficult to follow. If you're an advanced Linux user and you're interested in exploring the internals, feel free to dive in. Otherwise, it's perfectly fine to skip it for now and come back later (once you feel more comfortable with your operating system and how it works).
+
+-   Source code for `nohup` command: <https://github.com/coreutils/coreutils/blob/master/src/nohup.c>
+
+-   Why is the UNIX system call kill named 'kill'?: <https://unix.stackexchange.com/questions/185027/why-is-the-unix-system-call-kill-named-kill>
+
+-   `signal()` man page: <https://man7.org/linux/man-pages/man2/signal.2.html>
+
+## Additional Exercices {.smaller}
+
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Activity 1 {.smaller}
+
+Ready to have some fun? Check out the [second AMSA activity here!](/activities/act-2.qmd)
