@@ -109,17 +109,9 @@ It has a very simple objective, which is:
 
 -   A difficult and big one, but after all, a program.
 
-------------------------------------------------------------------------
-
-**You don't trust us? Let's assert that!**
-
-TODO: Use the file command for seeing that the kernel is an ELF file, and that another "normal" program, like for example python, is another ELF file.
-
-------------------------------------------------------------------------
-
 ## So, what does the kernel do? {.smaller}
 
--   Create abstractions for us (the programmers) to create easy applications.
+-   Create abstractions (I/O, filesystems and memory, etc.) for us to create applications easily.
 
 -   Handle resources and concurrency. We can split this category in:
 
