@@ -11,6 +11,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 
 -   [Week 0: Introduction + Exercises workflow](weeks/week-0.qmd)
 -   [Week 1: System boot intro + 1st exercise](weeks/week-1.qmd)
+-   [Week 4: Communicating processes + PRAC 2.3](weeks/week-4.qmd)
 
 ## 📝 Activities
 

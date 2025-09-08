@@ -1,5 +1,5 @@
 ---
-subtitle: "Week NaN: Template"
+subtitle: "Week 4: Communicating processes"
 # bibliography: references/week1.bib
 format: revealjs
 ---
@@ -7,7 +7,7 @@ format: revealjs
 # Goals for today
 
 -   Any questions from the previous session?
--   Learn how do processes communicate between themselves asynchronously
+-   Learn how processes communicate between themselves asynchronously
 -   Learn about the `nohup` command
 -   Present and explain Prac-2.3
 
@@ -15,8 +15,7 @@ format: revealjs
 
 ## The asynchronous way
 
--   We've already seen how to communicate a process with the kernel when using **system calls**.
--   As you know, processes use **interrupts** to notify the kernel that he has to do some work.
+-   We've already seen how to communicate a process with the kernel when using **system calls** (which are *interrupts* under the hood).
 -   But how would we notify **another** userspace **process** about something?
 
 ::: {.callout-note .fragment}
@@ -28,19 +27,19 @@ Can't we do that with **pipes**?
 -   Signals are a mechanism for **inter-process communication** in Unix-like systems.
 -   They are **asynchronous notifications** sent to a process to notify it of an event.
 -   Examples:
-    - `SIGKILL` → immediately terminates a process.
-    - `SIGTERM` → gracefully terminates a process.
-    - `SIGHUP` → hangup signal, often sent when a terminal closes.
+    -   `SIGKILL` → immediately terminates a process.
+    -   `SIGTERM` → gracefully terminates a process.
+    -   `SIGHUP` → hangup signal, often sent when a terminal closes.
 -   A process can **handle, ignore, or take default action** on most signals.
 
 # Signals
 
-## `SIGKILL` in action {.smaller}
+## Helper python program {.smaller}
 
 We'll be using a little python program to illustrate how signals work. For now the program will just **print a digit every second**:
 
-::: {.fragment}
-``` {.python code-line-numbers="true"}
+::: fragment
+``` {.python code-line-numbers="6-7|10|1-13"}
 import time
 import sys
 
@@ -57,156 +56,278 @@ if __name__ == "__main__":
 ```
 :::
 
-::: {.fragment}
+::: fragment
 Create a file named `amsa.py` and paste the code. Naming the file this way will come handy later when searching for the process PID.
 :::
 
+## Sending signals {.smaller}
+
+-   To send signals, we'll be using the command `kill`, which requires:
+    -   The signal we want to send
+    -   The pid of the target process
+-   So if we run `kill -KILL <PID>`, we are going to terminate the targeted process with `SIGKILL` signal.
+
 ## `SIGKILL` in action {.smaller}
 
-- Run the program on one terminal and open a second terminal. We'll be **sending signals** from the second one.
+-   Run the python program and open a second terminal. We'll be **sending signals** from the second one.
 
-- Since we know that sending `SIGKILL` to a process will terminate it, we expect the program to stop printing digits and finish.
+-   Since we know that sending `SIGKILL` to a process will terminate it, we expect the program to stop printing digits and finish.
 
-- To send signals, we'll be using the command `kill`, which requires:
-    -   Te signal we want to send
-    -   Te pid of the target process
-
+-   Find out the PID of the process and run `kill -KILL <PID>`, watch what happens with the python program.
 
 ::: {.callout-tip .fragment}
 Use `ps aux | grep amsa` to easily find the PID
+
 ``` {.shell code-line-numbers="false"}
 amsa@amsa:~$ ps aux | grep amsa
 fnao       42419  0.1  0.0  18952  9964 pts/1    S+   11:29   0:00 python3 amsa.py
 fnao       42525  0.0  0.0   7300  2288 pts/4    S+   11:29   0:00 grep --color=auto amsa
 ```
+
+The PID of the process here is **42419**.
 :::
 
-## Common signals
+## Common unix signals {.smaller}
 
-## Common Unix Signals {.smaller}
-
-| Signal  | Default Action | Comment                                  |
-|---------|----------------|------------------------------------------|
-| `SIGHUP`  | Terminate      | Hangup: sent when terminal closes        |
-| `SIGINT`  | Terminate      | Interrupt from keyboard (`Ctrl-C`)       |
-| `SIGQUIT` | Dump           | Quit from keyboard (`Ctrl-\`)            |
-| `SIGKILL` | Terminate      | Forced termination, cannot be ignored    |
-| `SIGTERM` | Terminate      | Graceful termination request             |
-| `SIGSTOP` | Stop           | Stop process execution (cannot ignore)   |
-| `SIGTSTP` | Stop           | Stop from terminal (`Ctrl-Z`)            |
-| `SIGCONT` | Continue       | Resume a stopped process                 |
-| `SIGCHLD` | Ignore         | Sent when a child process exits or stops |
+| Signal    | Default Action | Comment                                    |
+|-----------|----------------|--------------------------------------------|
+| `SIGHUP`  | Terminate      | Hangup: sent when terminal closes          |
+| `SIGINT`  | Terminate      | Interrupt from keyboard (`Ctrl-C`)         |
+| `SIGQUIT` | Dump           | Quit from keyboard (`Ctrl-\`)              |
+| `SIGKILL` | Terminate      | Forced termination, cannot be ignored      |
+| `SIGTERM` | Terminate      | Graceful termination request               |
+| `SIGSTOP` | Stop           | Stop process execution (cannot ignore)     |
+| `SIGTSTP` | Stop           | Stop from terminal (`Ctrl-Z`)              |
+| `SIGCONT` | Continue       | Resume a stopped process                   |
+| `SIGCHLD` | Ignore         | Sent when a child process exits or stops   |
 | `SIGSEGV` | Dump           | Invalid memory access (segmentation fault) |
-| `SIGUSR1` | Terminate      | User-defined signal (custom use)         |
-| `SIGUSR2` | Terminate      | User-defined signal (custom use)         |
+| `SIGUSR1` | Terminate      | User-defined signal (custom use)           |
 
-## Wisky
+## Why is it called `kill`? {.smaller}
 
-Here we are in a regular slide. Some callouts (the cool boxes) we can use are the following:
+-   The **`kill` command** is confusing:
+    -   It can send *any* signal, not just `SIGKILL`.
+-   **History**
+    -   In Unix 3rd Edition, `kill` could only *forcibly kill* a process.\
+    -   Unix 4th Edition added a **signal number argument** to send other signals.
+-   **Today**
+    -   Many signals exist that don’t terminate a process (`SIGSTOP`, `SIGCONT`, `SIGCHLD`...).\
+    -   The name remained for **historical reasons** — POSIX kept it to avoid more confusion.
 
-::: {.callout-tip .fragment}
--   Adding `.fragment` to the callout params makes it appear in order same as the bullet points in the slide
+# Messing with signals
+
+## The `signal()` syscall
+
+-   Have you noticed many signals share the same default actions? (`SIGTERM` and `SIGKILL` for example).
+
+-   `signal()` system call lets processes define how are they going to behave when they receive a signal. Here is what the [man page](https://man7.org/linux/man-pages/man2/signal.2.html) says:
+
+    > ![](figures/week-4/signal-man.png)
+
+## Handlers
+
+-   The action a process performs upon receiving a signal is called the **handler**.
+
+-   It can be the default action, ignoring the signal, or a *programmer-defined function*.
+
+-   We can run any code we want as a response to an action.
+
+::: {.callout-note .fragment}
+Although we could change the action in response to any signal, `SIGUSR1` and `SIGUSR2` are already intended to mess with.
 :::
 
-::: {.callout-note title="My custom title"}
--   Adding `title="My custom title"` to the callout params enables to customize the card title.
+## Customizing `SIGUSR1` on python {.smaller}
+
+Modify the python program so it now registers a custom handler for `SIGUSR1` as shown below:
+
+``` {.python code-line-numbers="1|4-6|9|1-19"}
+import signal
+import time
+import sys
+
+def handle_sigusr1(signum, frame):
+    print("Hello world")
+
+def main():
+    signal.signal(signal.SIGUSR1, handle_sigusr1)
+
+    counter = 0
+    while True:
+        print(f"Tick {counter}")
+        sys.stdout.flush()
+        counter += 1
+        time.sleep(1)
+
+if __name__ == "__main__":
+    main()
+```
+
+## Testing the custom handler
+
+-   Run the python program and open a separate terminal.
+
+-   Get the PID of the program with `ps aux | grep amsa`.
+
+-   Which command are we going to use now for sending `SIGUSR1` to our python program?
+
+::: {.callout-note .fragment}
+Remember the syscall is always `kill()` no matter which signal are we sending. In this case: `kill -USR1 <PID>`
 :::
 
-::: callout-warning
-Warning is another type of callout.
-:::
+## Hello world with signals!
 
-::: callout-caution
-Caution is another type of callout.
-:::
+<br>
 
-::: callout-important
-Important is another type of callout.
-:::
+``` {.shell code-line-numbers="1-4|4"}
+fnao@fnao-phd-energy:~$ ps aux | grep amsa.py
+fnao       42471  0.3  0.0  18952  9972 pts/2    S+   10:50   0:00 python3 amsa.py
+fnao       42491  0.0  0.0   7304  2292 pts/3    S+   10:50   0:00 grep --color=auto amsa.py
+fnao@fnao-phd-energy:~$ kill -USR1 42471
+```
 
-## Columns
+<br>
 
-Some other nice things are columns:
+``` {.shell code-line-numbers="1-9|7"}
+fnao@fnao-phd-energy:~/amsa$ python3 amsa.py
+Tick 0
+Tick 1
+Tick 2
+Tick 3
+Tick 4
+Hello world
+Tick 5
+Tick 6
+```
+
+# `SIGHUP`
+
+## The hung up signal {.smaller}
 
 ::::::: columns
 :::: {.column .fragment width="50%"}
-::: callout-note
-#### **Column 1**
+-   Its default action is **to terminate** the process, same as `SIGKILL`, `SIGTERM`, `SIGINT` and many others.
 
--   This uses the first 50% to the left
--   It has also the param fragment so it appears in order
-:::
+-   It's sent **when we close the terminal** where we launched a program, thus the name.
 ::::
 
 :::: {.column .fragment width="50%"}
-::: callout-note
-#### **Column 2**
-
--   This takes the 50% to the right
--   Wisky
+::: {.fragment style="text-align:center;"}
+<img src="figures/week-4/sighup.jpg" style="width:100%;"/>
 :::
 ::::
 :::::::
 
-## Tables
 
-| Column 1   | Column 2                                 |
-|------------|------------------------------------------|
-| **Week 0** | 📖 **Virtualization & Containers** intro |
-| **Week 1** | 📖 Explain **PRAC-4.1**                  |
-
-## Smaller slides {.smaller}
-
--   Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
-
-## Figures
-
-As with all elements, adding `.fragment` property will make it appear in order. Also, use `style="text-align:center;"` to center the image or easily do it from the visual editor from vscode.
-
-::: {.fragment style="text-align:center;"}
-<img src="figures/week-0/crabs.png" style="width:50%;"/>
+::: {.callout-tip title="Send the `SIGHUP` signal" .fragment}
+Try sending the `SIGHUP` signal to the python program with `kill -HUP <PID>`. It should terminate as when sending `SIGKILL` and print 'Hangup' a the end.
 :::
 
-# Quizz
 
-## General: {.smaller}
+## Redirecting the program output
 
--   Test?
+- In order to experiment with the `SIGHUP` signal, we'll want to redirect the output of the python program to a file so we can see what happens when the terminal is closed.
 
--   Test2?
+- To do so, run your program like this: `python amsa.py > out.txt`.
 
-## Specific part of the theory: {.smaller}
+- Now, after running the program, from another terminal run `cat out.txt` and you'll see the output is being written there.
 
--   q1?
+## Ignoring signals {.smaller}
 
--   q2?
+- Apart from the default action and a custom handler, we can also choose to ignore a signal, which is going to override the default action.
+
+- Modify the script and add a call to `signal()` that ignores `SIGHUP` as shown below:
+
+``` {.python code-line-numbers="10"}
+import signal
+import time
+import sys
+
+def handle_sigusr1(signum, frame):
+    print("Hello world")
+
+def main():
+    signal.signal(signal.SIGUSR1, handle_sigusr1)
+    signal.signal(signal.SIGHUP, signal.SIG_IGN)
+
+    counter = 0
+    while True:
+        print(f"Tick {counter}")
+        sys.stdout.flush()
+        counter += 1
+        time.sleep(1)
+
+if __name__ == "__main__":
+    main()
+```
+
+## Testing `SIG_IGN` on `SIGHUP`
+
+1. Run your python script redirecting its output `python amsa.py > out.txt`.
+2. Send the `SIGHUP` signal `kill -HUP <PID>`.
+3. Check the contents of `out.txt` file.
+4. Send the `SIGKILL` signal `kill -KILL <PID>` to terminate the program.
+5. Repeat step 1.
+6. Now close the terminal where you have launched the python program.
+7. Repeat step 3.
+
+## Why this is useful
+
+-   Having a program **that doesn't stop after closing the terminal** where we launched it can be very useful.
+-   Imagine we need to run a python script on a remote machine **that will take days to execute**.
+-   We can **connect through SSH** to the machine, run the program, **close the terminal** and we know it will keep running.
+
+## Meet `nohup`
+
+-   But what if I want to achieve this **with a program I haven't built**? It will not ignore `SIGHUP`, how can I close the terminal where I launched while not killing the program?
+
+-   This is when the `nohup` command comes handy, it as simple as it sounds. It lets the user run any program while making it ignore the `SIGHUP` signal.
+
+-   It also automatically redirect the output of the program to `nohup.out`.
+
+## Playing with `nohup`
+
+-   Modify the python program so it no longer ignores `SIGHUP` (remove the last line we added)
+
+-   Run the program like this: `nohup python amsa.py`
+
+-   Try sending the `SIGHUP` signal or closing the terminal as we did before, we expect the result to be the same.
+
+-   Great! Now we can run **any command we want**, close the terminal and have it **still running**!
 
 # References
 
 ## Really Recommended References: {.smaller}
 
--   Linux Signals. I Spent 2 Years to Understand This Part: <https://www.youtube.com/watch?v=d0gS5TXarXc>
-
 -   LINUX Signals: <https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm>
-
-## Other References {.smaller}
-
-This section can be difficult to follow. If you're an advanced Linux user and you're interested in exploring the internals, feel free to dive in. Otherwise, it's perfectly fine to skip it for now and come back later (once you feel more comfortable with your operating system and how it works).
-
--   Source code for `nohup` command: <https://github.com/coreutils/coreutils/blob/master/src/nohup.c>
-
--   Why is the UNIX system call kill named 'kill'?: <https://unix.stackexchange.com/questions/185027/why-is-the-unix-system-call-kill-named-kill>
 
 -   `signal()` man page: <https://man7.org/linux/man-pages/man2/signal.2.html>
 
+-   `kill()` man page: <https://man7.org/linux/man-pages/man1/kill.1.html>
+
+-   `nohup` man page: <https://www.man7.org/linux/man-pages/man1/nohup.1.html>
+
+-   Source code for `nohup` command: <https://github.com/coreutils/coreutils/blob/master/src/nohup.c>
+
+## Other References {.smaller}
+
+-   Linux Signals. I Spent 2 Years to Understand This Part: <https://www.youtube.com/watch?v=d0gS5TXarXc>
+
+-   The history of the terminal and signals: <https://www.linusakesson.net/programming/tty/index.php>
+
+-   Why is the UNIX system call kill named 'kill'?: <https://unix.stackexchange.com/questions/185027/why-is-the-unix-system-call-kill-named-kill>
+
+-   History of `SIGHUP`: <https://en.wikipedia.org/wiki/SIGHUP>
+
 ## Additional Exercices {.smaller}
 
-If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercises.
 
--   Example: <https://example.com>
+-   Modify handler of SIGTSTP so Ctrl-Z does nothing.
 
--   Example2: <https://example2.com>
+-   Modify handler of SIGKILL so "Avada Kedavra" is printed when received.
 
-## Activity 1 {.smaller}
+-   Implement nohup in python.
 
-Ready to have some fun? Check out the [second AMSA activity here!](/activities/act-2.qmd)
+## Activity 2.3 {.smaller}
+
+Ready to have some fun? Check out the third part of the [second AMSA activity here!](/activities/act-2.qmd)

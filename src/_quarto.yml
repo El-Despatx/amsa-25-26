@@ -4,6 +4,7 @@ project:
 
 website:
   title: "AMSA 2025-2026"
+  favicon: "favicon.ico"
   navbar:
     left:
       - text: "🎓 Slides"
@@ -14,6 +15,8 @@ website:
           text: "Week 1"
         - href: weeks/week-2.qmd
           text: "Week 2"
+        - href: weeks/week-4.qmd
+          text: "Week 4"
       - text: "📚 Activites"
         menu:
         - href: activities/act-1.qmd
@@ -58,6 +61,5 @@ mermaid:
       theme: neutral
 
 logo: "logo.png"
-favicon: "favicon.png"
 
 footer: AMSA 2025-2026  -  [🏠 Home](/index.html)
