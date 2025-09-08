@@ -12,6 +12,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 -   [Week 0: Introduction + Exercises workflow](weeks/week-0.qmd)
 -   [Week 1: System boot intro + PRAC 1](weeks/week-1.qmd)
 -   [Week 2: Linux syscalls, processes and ProcFS + PRAC 2.1](weeks/week-2.qmd)
+-   [Week 3: Scheduling and nice + PRAC 2.2](weeks/week-3.qmd)
 -   [Week 4: Communicating processes + PRAC 2.3](weeks/week-4.qmd)
 
 ## 📝 Activities
