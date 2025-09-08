@@ -17,7 +17,7 @@ Do it with any language you prefer, although bash is probably the simpliest one.
 
 ## What to send?
 
-_Accept the assignment in github classroom, following the [link]()_
+_Accept the assignment in github classroom, following the [link](https://classroom.github.com/a/JMYxxJG9)_
 
 To complete this activity, you must deliver **a link to your Github repository**, which will contain:
 

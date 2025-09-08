@@ -95,7 +95,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ## Timeline (Weeks 0 → 8) {.smaller}
 
 | Week | Contents |
-|----------------------|--------------------------------------------------|
+|-----------------------|-------------------------------------------------|
 | **0** | 📖 Subject **Intro** |
 | **1** | 📖 Explain **PRAC-1** |
 | **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
