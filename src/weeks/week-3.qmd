@@ -14,10 +14,12 @@ format: revealjs
 # Scheduler
 ![](images/paste-1.png){fig-align="center"}
 
-## How does it identify these tasks?{.smaller}
-Linux doesn't differenciate between processes and threads, in fact, it has a struct ([task_struct](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L812)) that is a Kernel descriptor for both threads and processes (tasks). Threads are just tasks sharing resources.
+## How does it identify these tasks?
+- Linux doesn't differenciate between processes and threads, in fact, it has a struct ([task_struct](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L812)) that is a Kernel descriptor for both threads and processes (tasks). 
 
-We need a scheduler because we want to run things concurrently, and run more tasks than cores.
+- Threads are just tasks sharing resources.
+
+- We need a scheduler because we want to run things concurrently, and run more tasks than cores.
 
 ## What are priorities? What do they have to do with scheduling?{.smaller}
 How do we decide which tasks get CPU time (go into the bar)?
@@ -30,7 +32,7 @@ With `priority`, a number tied to each task
 - Only for __certain scheduling algorithms__
 - Can be __changed__
 
-## How can we change the priority? The `nice` command{.smaller}
+## How can we change the priority? The `nice` command
 When a program is nice, it leaves more time for the other programs, leaving more room to other ones.
 By using `nice`, this is exactly what we do, make it "nicer" and alter it's priority.
 In fact, the priority Linux Kernel [nice code](https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44) is really simple:
@@ -71,7 +73,9 @@ See more on [the code](https://elixir.bootlin.com/linux/v6.16.4/source/include/l
 -   Linux niceness explained: <https://www.youtube.com/watch?v=vd_oGmeoFKs>
 ## Additional Exercices {.smaller}
 
+::: {.fragment}
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "References" first, and then try to do this exercises.
+:::
 
 -   Implement your own "nice" with Python. Assume all parameters will be correct.
 
