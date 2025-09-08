@@ -13,7 +13,7 @@ format: revealjs
 
 # Recap
 
-Lorem ipsum
+![](figures/week-1/boot-sequence.excalidraw.png){fig-align="center" width=80%}
 
 # Interrupts
 
@@ -40,7 +40,7 @@ Lorem ipsum
 
 :::: {.column .fragment width="50%"}
 ![](figures/week-2/keyboard_interrupt.excalidraw.png){fig-align="center" width=80%}
-![](figures/week-2/idt_cpu.excalidraw.png){fig-align="center" width=80%}
+![](figures/week-2/idt_cpu.excalidraw.png){fig-align="center" width=70%}
 ::::
 
 :::::::
