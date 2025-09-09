@@ -35,7 +35,7 @@ With `priority`, a number tied to each task
 ## How can we change the priority? The `nice` command
 When a program is nice, it leaves more time for the other programs, leaving more room to other ones.
 By using `nice`, this is exactly what we do, make it "nicer" and alter it's priority.
-In fact, the priority Linux Kernel [nice code](https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44) is really simple:
+In fact, the [nice program code](https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44) is really simple:
 ``` {.c}
 //...
   ok = (setpriority (PRIO_PROCESS, 0, current_niceness + adjustment) == 0); // Syscall to setpriority
@@ -62,7 +62,7 @@ static inline long rlimit_to_nice(long prio)
 }
 ```
 
-See more on [the code](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched/prio.h#L28)
+See more on [the linux kernel sched code](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched/prio.h#L28)
 
 # References {.smaller}
 
@@ -71,13 +71,18 @@ See more on [the code](https://elixir.bootlin.com/linux/v6.16.4/source/include/l
 -   Create your own linux scheduler with bpf: <https://fosdem.org/2025/schedule/event/fosdem-2025-4620-rust-ifying-the-linux-kernel-scheduler-in-user-space-/>
 
 -   Linux niceness explained: <https://www.youtube.com/watch?v=vd_oGmeoFKs>
+
 ## Additional Exercices {.smaller}
 
 ::: {.fragment}
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "References" first, and then try to do this exercises.
 :::
 
--   Implement your own "nice" with Python. Assume all parameters will be correct.
+-   Implement your own "nice" with Python. Assume all parameters will be correct, it should execute via:
+
+```{.bash}
+$ python3 my_nice.py <name_of_the_program_you_want_to_be_nice> <nice_value>
+```
 
 ## Activity 2.2 {.smaller}
 
