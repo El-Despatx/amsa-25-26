@@ -242,12 +242,12 @@ Are you already familiar with those?
 
 ## Properties {.smaller}
 
--   Doing an `ls -la /proc` **only shows processes**.
+-   Doing an `ls -la /proc` **only shows processes and kthreads**.
 -   But **each process can have threads spawned**, this are listed on: `/proc/{pid}/tasks/{tgid}`
 -   If a process is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/tasks` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread.
 -   Once you have a `tgid`, you can do `ls -la /proc/${tgid}` or `cd` into it.
 -   A kernel thread, doesn't have an executable, so `cat /proc/${tgid}/exe` should give `no such file or directory`.
--   You can see more info about the thread, inside `cat /proc/${tgid}/stat` [^3]
+-   You can see more info about the current process or thread, inside `cat /proc/${tgid}/stat` [^3] or `cat /proc/${tgid}/status`
 
 [^3]: In fact, htop uses stat for knowing if the task is a kernel thread see [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L302) and [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L1675)
 
