@@ -13,65 +13,62 @@ format: revealjs
 
 # Recap
 
-![](figures/week-1/boot-sequence.excalidraw.png){fig-align="center" width=80%}
+![](figures/week-1/boot-sequence.excalidraw.png){fig-align="center" width="80%"}
 
 # Interrupts
 
 ## How the CPU works
-- The CPU does instruction, one at a time, [with the fetch decode execute cycle](https://www.youtube.com/watch?v=ctjnYgCo8Bc).
-- [You can simulate a sum](https://www.bit-machine.co.uk/machine.html) with the following instructions: 
 
-  ![](figures/week-2/instructions.png){fig-align="center" width=60%}
+-   The CPU does instruction, one at a time, [with the fetch decode execute cycle](https://www.youtube.com/watch?v=ctjnYgCo8Bc).
+
+-   [You can simulate a sum](https://www.bit-machine.co.uk/machine.html) with the following instructions:
+
+    ![](figures/week-2/instructions.png){fig-align="center" width="60%"}
 
 ## Devices interactions with the CPU {.smaller}
 
-::::::: columns
-:::: {.column .fragment width="50%"}
+::::: columns
+::: {.column .fragment width="50%"}
+-   But wait, how can we interact with external devices? We don't have the instructions on our code!
 
--  But wait, how can we interact with external devices? We don't have the instructions on our code!
+-   The devices connected to your computer, use a mechanism called ["interrupts"](https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html) for being aware of the events.
 
-- The devices connected to your computer, use a mechanism called ["interrupts"](https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html) for being aware of the events.
+    ::: callout-warning
+    This is a super-summarized path (and incorrect one), there's no PIC controller, the IRQ numbers probably are wrong. But it's only for academic purposes.
+    :::
+:::
 
-  ::: callout-warning
-  This is a super-summarized path (and incorrect one), there's no PIC controller, the IRQ numbers probably are wrong. But it's only for academic purposes.
-  :::
-
-::::
-
-:::: {.column .fragment width="50%"}
-![](figures/week-2/keyboard_interrupt.excalidraw.png){fig-align="center" width=80%}
-![](figures/week-2/idt_cpu.excalidraw.png){fig-align="center" width=70%}
-::::
-
-:::::::
-
+::: {.column .fragment width="50%"}
+![](figures/week-2/keyboard_interrupt.excalidraw.png){fig-align="center" width="80%"} ![](figures/week-2/idt_cpu.excalidraw.png){fig-align="center" width="70%"}
+:::
+:::::
 
 ## We didn't configure the IDT table...
 
--    Well, yes, one of the [first steps of the kernel](https://0xax.gitbooks.io/linux-insides/content/Initialization/linux-initialization-2.html) is to tell the cpu to point the IDT table to his part of the code that has the logic for the IDT table.
+-   Well, yes, one of the [first steps of the kernel](https://0xax.gitbooks.io/linux-insides/content/Initialization/linux-initialization-2.html) is to tell the cpu to point the IDT table to his part of the code that has the logic for the IDT table.
 
--    So, now, when we receive an interrupt is the kernel code the one that will be executed! Nice!
+-   So, now, when we receive an interrupt is the kernel code the one that will be executed! Nice!
 
 ::: {.callout-tip .fragment}
-You can see the IDT table inside the [linux kernel source code](https://elixir.bootlin.com/linux/v6.11/source/arch/x86/include/asm/irq_vectors.h#L14
-), and where [it is setup](https://elixir.bootlin.com/linux/v6.16.4/source/arch/x86/kernel/idt.c#L194).
+You can see the IDT table inside the [linux kernel source code](https://elixir.bootlin.com/linux/v6.11/source/arch/x86/include/asm/irq_vectors.h#L14), and where [it is setup](https://elixir.bootlin.com/linux/v6.16.4/source/arch/x86/kernel/idt.c#L194).
 :::
 
 ## Did we get it?
-- It is **very important** to understand (at a concept level) interrupts, so we can understand further things in this session (and course)
-- Did we get it?
-- Sure?
-- Really really sure?
+
+-   It is **very important** to understand (at a concept level) interrupts, so we can understand further things in this session (and course)
+-   Did we get it?
+-   Sure?
+-   Really really sure?
 
 # User-Space and Kernel-Space
 
 ## CPU Protection {.smaller}
 
-::::::: columns
+:::::: columns
 :::: {.column .fragment width="50%"}
-- The CPU allows multiple levels of "security", called rings.
-- Each ring (starting from ring 0) restrict access to certain instructions.
-- Linux uses the ring 0 (do "whatever you want" ring) as the Kernel Space and ring 4 (the ring where you're most limited) as UserSpace (where your programs run).
+-   The CPU allows multiple levels of "security", called rings.
+-   Each ring (starting from ring 0) restrict access to certain instructions.
+-   Linux uses the ring 0 (do "whatever you want" ring) as the Kernel Space and ring 4 (the ring where you're most limited) as UserSpace (where your programs run).
 
 ::: {.callout-warning .fragment}
 Due to restricted access to memory and I/O ports in Ring 4, userspace can do almost nothing to the outside world without calling on the kernel. It can't open files, send network packets, print to the screen, or allocate memory.
@@ -80,95 +77,89 @@ But, I can do a lot of stuff with my userspace programs... How is that possible?
 :::
 ::::
 
-:::: {.column .fragment width="50%"}
+::: {.column .fragment width="50%"}
 ![](figures/week-2/rings.png){fig-align="center"}
-
-::::
-:::::::
+:::
+::::::
 
 ## Syscalls {.smaller}
-- Well, we can write to files, so.... **we're executing some code in ring 0**.
-- We execute code in ring 0 asking the kernel if can do the job for us, and then return the result.
-- This request is a concept named ["syscall"](https://linux-kernel-labs.github.io/refs/heads/master/lectures/syscalls.html) (system call).
+
+-   Well, we can write to files, so.... **we're executing some code in ring 0**.
+-   We execute code in ring 0 asking the kernel if can do the job for us, and then return the result.
+-   This request is a concept named ["syscall"](https://linux-kernel-labs.github.io/refs/heads/master/lectures/syscalls.html) (system call).
 
 ::: {.callout-tip .fragment}
 You can see all the linux kernel syscalls [on this list](https://filippo.io/linux-syscall-table/)
 :::
 
 ## Example {.smaller}
-::::::: columns
-:::: {.column .fragment width="50%"}
+
+:::::: columns
+::: {.column .fragment width="50%"}
 This python code:
+
 ``` {.python code-line-numbers="true"}
 file = open("test.txt", mode='r')
 lines = file.readlines()
 print(lines)
 ```
-::::
+:::
 
-:::: {.column .fragment width="50%"}
-Does the following:
-![](figures/week-2/example.excalidraw.png){fig-align="center" width=100%}
-::::
+::: {.column .fragment width="50%"}
+Does the following: ![](figures/week-2/example.excalidraw.png){fig-align="center" width="100%"}
+:::
 
 ::: {.callout-tip .fragment}
 You can see the system calls the program is doing under the hood, with the [strace tool](https://strace.io/)
 :::
-
-:::::::
-
+::::::
 
 ## What are syscalls (really) {.smaller}
-- We need to switch to ring 0 and there's no instruction for this. We have to `"notify"` the kernel.
-- We saw that we can notify things to the kernel using interrupts (remember the IDT table).
-- Syscalls are a certain type of interrupt (if you see the linux kernel IDT table, the number 128 one [^1]).
-- So yes, the 128 entry in the IDT redirects to a function that analyzes the system call, and execute the kernel function related to it.
+
+-   We need to switch to ring 0 and there's no instruction for this. We have to `"notify"` the kernel.
+-   We saw that we can notify things to the kernel using interrupts (remember the IDT table).
+-   Syscalls are a certain type of interrupt (if you see the linux kernel IDT table, the number 128 one [^1]).
+-   So yes, the 128 entry in the IDT redirects to a function that analyzes the system call, and execute the kernel function related to it.
 
 [^1]: 0x80 in hex
 
 ## Syscall example {.smaller}
 
-::::::: columns
-:::: {.column .fragment width="50%"}
+::::: columns
+::: {.column .fragment width="50%"}
 For example, if we want to execute the `open` system call, we could, in userspace:
 
 ``` {.asm code-line-numbers="true"}
-mov	edx,4		; message length
-mov	ecx,msg		; message to write
-mov	ebx,1		; file descriptor (stdout)
-mov	eax,4		; system call number (sys_write)
-int	0x80		; interrupt! Number 128 (0x80 in hex)
+mov edx,4       ; message length
+mov ecx,msg     ; message to write
+mov ebx,1       ; file descriptor (stdout)
+mov eax,4       ; system call number (sys_write)
+int 0x80        ; interrupt! Number 128 (0x80 in hex)
 ```
-::::
-
-
-:::: {.column .fragment width="50%"}
-![](figures/week-2/example_syscall.excalidraw.png){fig-align="center" width=70%}
-
-::::
-
-:::::::
-
-::: {.callout-tip .fragment}
-Since the Linux Kernel 2.6, it supports the syscall instruction instead of doing an interrupt 128 (0x80) for syscalls. You can [read more here](
-https://scribe.rip/@sachinrajakaruna95/exploring-the-evolution-of-system-call-mechanisms-in-linux-from-int-0x80-to-syscall-e133bb5c151a)
 :::
 
+::: {.column .fragment width="50%"}
+![](figures/week-2/example_syscall.excalidraw.png){fig-align="center" width="70%"}
+:::
+:::::
+
+::: {.callout-tip .fragment}
+Since the Linux Kernel 2.6, it supports the syscall instruction instead of doing an interrupt 128 (0x80) for syscalls. You can [read more here](https://scribe.rip/@sachinrajakaruna95/exploring-the-evolution-of-system-call-mechanisms-in-linux-from-int-0x80-to-syscall-e133bb5c151a)
+:::
 
 ## Brief summary {.smaller}
 
-- The CPU **executes instructions linearly**, one after another.
+-   The CPU **executes instructions linearly**, one after another.
 
-- To interact with the outside world, **it relies on interrupts**.
+-   To interact with the outside world, **it relies on interrupts**.
 
-- The CPU has different **privilege levels, called rings**, which help the operating system enforce security and control. **Our programs usually run in the least privileged ring (user mode)**, which means we can't execute certain instructions directly.
+-   The CPU has different **privilege levels, called rings**, which help the operating system enforce security and control. **Our programs usually run in the least privileged ring (user mode)**, which means we can't execute certain instructions directly.
 
-- **If we want to perform I/O operations or access system resources, we need to ask the kernel to do it for us**.
+-   **If we want to perform I/O operations or access system resources, we need to ask the kernel to do it for us**.
 
-- We communicate with the kernel through **system calls (syscalls)**, which are essentially a type of interrupt.
+-   We communicate with the kernel through **system calls (syscalls)**, which are essentially a type of interrupt.
 
-- The kernel also sets up interrupts on its own to manage processes (like pausing one, switching to another, or handling various system events.) You can [read more here](https://0xax.gitbooks.io/linux-insides/content/Interrupts/linux-interrupts-9.html).
-
+-   The kernel also sets up interrupts on its own to manage processes (like pausing one, switching to another, or handling various system events.) You can [read more here](https://0xax.gitbooks.io/linux-insides/content/Interrupts/linux-interrupts-9.html).
 
 # Kthreads, Processes and Threads
 
@@ -176,90 +167,95 @@ Are you already familiar with those?
 
 ## Definitions {.smaller}
 
-- The kernel has an abstraction of a running program, and calls it ["task (task_struct)"](https://linux-kernel-labs.github.io/refs/heads/master/lectures/processes.html#lecture-objectives).
+-   The kernel has an abstraction of a running program, and calls it ["task (task_struct)"](https://linux-kernel-labs.github.io/refs/heads/master/lectures/processes.html#lecture-objectives).
 
-- Depending of the type of task, we can differentiate between:
-    - Processes: Tasks that abstract a running program. 
-      - Example: execute in a shell `cat /etc/passwd`.
-    - Threads: Tasks that have independent sequences of execution within the same process. They share the process's address space and resources but maintain separate control flows, allowing concurrent operations.
-      - Example: `$cat file.txt file2.txt file3.txt` could create one thread per file.
-    - [Kthreads](https://dengking.github.io/Linux-OS/Kernel/Book-Understanding-the-Linux-Kernel/Chapter-3-Processes/3.4.2-Kernel-Threads/): Threads that run within the kernel and share cpu time with other processes/threads.
-      - Example: The kernel has one thread for executing the scheduling algorithm.
+-   Depending of the type of task, we can differentiate between:
 
-- Threads and processes, can be created with the [`clone`](https://www.man7.org/linux/man-pages/man2/clone.2.html) syscall.
+    -   Processes: Tasks that abstract a running program.
+        -   Example: execute in a shell `cat /etc/passwd`.
+    -   Threads: Tasks that have independent sequences of execution within the same process. They share the process's address space and resources but maintain separate control flows, allowing concurrent operations.
+        -   Example: `$cat file.txt file2.txt file3.txt` could create one thread per file.
+    -   [Kthreads](https://dengking.github.io/Linux-OS/Kernel/Book-Understanding-the-Linux-Kernel/Chapter-3-Processes/3.4.2-Kernel-Threads/): Threads that run within the kernel and share cpu time with other processes/threads.
+        -   Example: The kernel has one thread for executing the scheduling algorithm.
+
+-   Threads and processes, can be created with the [`clone`](https://www.man7.org/linux/man-pages/man2/clone.2.html) syscall.
 
 ## Processes {.smaller}
 
-- The one you did at operating systems with the "fork" syscall [^2].
-- A process is an operating system abstraction that groups together multiple resources:
-
-::::::: columns 
-:::: {.column .fragment width="50%" .nonincremental}
-  - An address space
-  - One or more threads
-  - Opened files
-  - Sockets
-  - Semaphores
-::::
-:::: {.column .fragment width="50%" .nonincremental }
-  - Shared memory regions
-  - Timers
-  - Signal handlers
-  - Many other resources and status information
-::::
-
-:::::::
-- Example: Execute the `cat` program.
+-   The one you did at operating systems with the "fork" syscall [^2].
+-   A process is an operating system abstraction that groups together multiple resources:
 
 [^2]: You can see the `fork` syscall as a subset of operations that the `clone` syscall can do.
 
+::::: columns
+::: {.column .fragment .nonincremental width="50%"}
+-   An address space
+-   One or more threads
+-   Opened files
+-   Sockets
+-   Semaphores
+:::
+
+::: {.column .fragment .nonincremental width="50%"}
+-   Shared memory regions
+-   Timers
+-   Signal handlers
+-   Many other resources and status information
+:::
+:::::
+
+-   Example: Execute the `cat` program.
+
 ## Threads {.smaller}
 
-- You'll study them on `SCP`, where you'll create them with the glibc-pthread library ([which uses the `clone` syscall underneath](https://github.com/bminor/glibc/blob/master/sysdeps/unix/sysv/linux/x86_64/clone.S#L71)).
-- A thread is the basic unit that the kernel process scheduler uses to allow applications to run the CPU. Has the following characteristics:
-  - Each thread has its own stack and together with the register values it determines the thread execution state.
-  - A thread runs in the context of a process and **all threads in the same process share the resources**.
-  - **The kernel schedules threads (tasks) not processes**.
-- They're identified via `tgid`.
+-   You'll study them on `SCP`, where you'll create them with the glibc-pthread library ([which uses the `clone` syscall underneath](https://github.com/bminor/glibc/blob/master/sysdeps/unix/sysv/linux/x86_64/clone.S#L71)).
 
-- Example: If I have multiple files on the `cat` program maybe I need only different execution paths, and I can create one thread for each one.
+-   A thread is the basic unit that the kernel process scheduler uses to allow applications to run the CPU. Has the following characteristics:
+
+    -   Each thread has its own stack and together with the register values it determines the thread execution state.
+    -   A thread runs in the context of a process and **all threads in the same process share the resources**.
+    -   **The kernel schedules threads (tasks) not processes**.
+
+-   They're identified via `tgid`.
+
+-   Example: If I have multiple files on the `cat` program maybe I need only different execution paths, and I can create one thread for each one.
 
 ## Kthreads {.smaller}
 
-- Sometimes the kernel core or device drivers need to perform blocking operations and thus they need to run in process context.
+-   Sometimes the kernel core or device drivers need to perform blocking operations and thus they need to run in process context.
 
-- Kernel threads are used exactly for this and are a special class of tasks that don't "userspace" resources.
+-   Kernel threads are used exactly for this and are a special class of tasks that don't "userspace" resources.
 
-- A `tgid` will also be used to identify them.
+-   A `tgid` will also be used to identify them.
 
-- Example: `ksoftirqd/X`. Where X is the number of cores. Is the scheduler kthread for the core `X` on your computer.
-
+-   Example: `ksoftirqd/X`. Where X is the number of cores. Is the scheduler kthread for the core `X` on your computer.
 
 # ProcFS
 
 ## Definition {.smaller}
+
 <!-- https://fernandovillalba.substack.com/p/a-journey-into-the-linux-proc-filesystem -->
 
-- Finally, the thing we're doing on this assignment!
-- The kernel exposes a /proc folder on the filesystem, that shows you information about the tasks running on the system.
-- [`htop`](https://htop.dev/) is a program that uses [procfs](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c), and shows you the list of tasks and properties.
+-   Finally, the thing we're doing on this assignment!
+-   The kernel exposes a /proc folder on the filesystem, that shows you information about the tasks running on the system.
+-   [`htop`](https://htop.dev/) is a program that uses [procfs](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c), and shows you the list of tasks and properties.
 
 ## Properties {.smaller}
 
-- Doing an `ls -la /proc` **only shows processes**.
-- But **each process can have threads spawned**, this are listed on: `/proc/{pid}/tasks/{tgid}`
-- If a process is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/tasks` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread.
-- Once you have a `tgid`, you can do `ls -la /proc/${tgid}` or `cd` into it.
-- A kernel thread, doesn't have an executable, so `cat /proc/${tgid}/exe` should give `no such file or directory`.
-- You can see more info about the thread, inside `cat /proc/${tgid}/stat` [^3]
+-   Doing an `ls -la /proc` **only shows processes**.
+-   But **each process can have threads spawned**, this are listed on: `/proc/{pid}/tasks/{tgid}`
+-   If a process is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/tasks` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread.
+-   Once you have a `tgid`, you can do `ls -la /proc/${tgid}` or `cd` into it.
+-   A kernel thread, doesn't have an executable, so `cat /proc/${tgid}/exe` should give `no such file or directory`.
+-   You can see more info about the thread, inside `cat /proc/${tgid}/stat` [^3]
 
 [^3]: In fact, htop uses stat for knowing if the task is a kernel thread see [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L302) and [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L1675)
 
 ## Example {.smaller}
 
-::::::: columns
-:::: {.column .fragment width="50%"}
-```{.c code-line-numbers="true"}
+::::: columns
+::: {.column .fragment width="50%"}
+``` {.c code-line-numbers="true"}
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -295,59 +291,56 @@ int main() {
     return 0;
 }
 ```
+:::
 
-::::
-
-:::: {.column .fragment width="50%"}
+::: {.column .fragment width="50%"}
 And in Htop, you should see the following:
+
 ``` {.bash code-line-numbers="false"}
-  └── bash # (process) 			           PID=4912, TGID=4912, PPID=1
+  └── bash # (process)                     PID=4912, TGID=4912, PPID=1
       └── cat # (process, child from bash) PID=4914, TGID=4914, PPID=4912
            └── read one.txt # (thread)     PID=4914, TGID=4915, PPID=4912
            └── read two.txt # (thread)     PID=4914, TGID=4916, PPID=4912
            └── read three.txt # (thread)   PID=4914, TGID=4917, PPID=4912
 ```
-::::
-
-:::::::
-
+:::
+:::::
 
 # Quizz
 
 ## Syscalls questions {.smaller}
 
-- Why we need syscalls?
+-   Why we need syscalls?
 
-- Can we create **kthreads** with the `clone` syscall?
+-   Can we create **kthreads** with the `clone` syscall?
 
 ## ProcFS Questions {.smaller}
 
-- Can I have a thread without a process?
+-   Can I have a thread without a process?
 
-- Where's The /proc filesystem saved?
+-   Where's The /proc filesystem saved?
 
 # References
 
 ## Really Recommended References: {.smaller}
 
-- What are tgids and pids, and the confusion between these: [unviversity of toronto blog](https://utcc.utoronto.ca/~cks/space/blog/linux/PidsTgidsAndTasks) and [hongyu blog](https://hongyu.nl/pid/).
+-   What are tgids and pids, and the confusion between these: [unviversity of toronto blog](https://utcc.utoronto.ca/~cks/space/blog/linux/PidsTgidsAndTasks) and [hongyu blog](https://hongyu.nl/pid/).
 
-- Explaining how htop is implemented: [Peteris blog](https://peteris.rocks/blog/htop/)
+-   Explaining how htop is implemented: [Peteris blog](https://peteris.rocks/blog/htop/)
 
-- Why htop shows kthreads, threads and not only processes: [Htop Issue](https://github.com/htop-dev/htop/issues/99)
+-   Why htop shows kthreads, threads and not only processes: [Htop Issue](https://github.com/htop-dev/htop/issues/99)
 
-- Linux Kernel Internals: Process by Mapple Circuit: [Youtube Video](https://www.youtube.com/watch?app=desktop&v=NzKx9nleP5A)
+-   Linux Kernel Internals: Process by Mapple Circuit: [Youtube Video](https://www.youtube.com/watch?app=desktop&v=NzKx9nleP5A)
 
-- Journey into the proc filesystem: [blog post by Fernando Villalba](https://fernandovillalba.substack.com/p/a-journey-into-the-linux-proc-filesystem)
-
+-   Journey into the proc filesystem: [blog post by Fernando Villalba](https://fernandovillalba.substack.com/p/a-journey-into-the-linux-proc-filesystem)
 
 ## Other recommended references: {.smaller}
 
--  [Linux Kernel Book, chapter about syscalls](https://0xax.gitbooks.io/linux-insides/content/SysCall/linux-syscall-1.html)
--  [How the CPU privilege and protection works](https://manybutfinite.com/post/cpu-rings-privilege-and-protection/)
--  [From The Transistor Book](https://www.fromthetransistor.com/): How your computer works, from a transistor to a fully edge operating system.
+-   [Linux Kernel Book, chapter about syscalls](https://0xax.gitbooks.io/linux-insides/content/SysCall/linux-syscall-1.html)
+-   [How the CPU privilege and protection works](https://manybutfinite.com/post/cpu-rings-privilege-and-protection/)
+-   [From The Transistor Book](https://www.fromthetransistor.com/): How your computer works, from a transistor to a fully edge operating system.
 
-## Additional Exercices {.smaller}
+## Additional Exercices {.smaller #extra}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 

@@ -203,39 +203,37 @@ Tick 6
 
 ## The hung up signal {.smaller}
 
-::::::: columns
-:::: {.column .fragment width="50%"}
+:::::: columns
+::: {.column .fragment width="50%"}
 -   Its default action is **to terminate** the process, same as `SIGKILL`, `SIGTERM`, `SIGINT` and many others.
 
 -   It's sent **when we close the terminal** where we launched a program, thus the name.
-::::
+:::
 
 :::: {.column .fragment width="50%"}
 ::: {.fragment style="text-align:center;"}
 <img src="figures/week-4/sighup.jpg" style="width:100%;"/>
 :::
 ::::
-:::::::
+::::::
 
-
-::: {.callout-tip title="Send the `SIGHUP` signal" .fragment}
+::: {.callout-tip .fragment title="Send the `SIGHUP` signal"}
 Try sending the `SIGHUP` signal to the python program with `kill -HUP <PID>`. It should terminate as when sending `SIGKILL` and print 'Hangup' a the end.
 :::
 
-
 ## Redirecting the program output
 
-- In order to experiment with the `SIGHUP` signal, we'll want to redirect the output of the python program to a file so we can see what happens when the terminal is closed.
+-   In order to experiment with the `SIGHUP` signal, we'll want to redirect the output of the python program to a file so we can see what happens when the terminal is closed.
 
-- To do so, run your program like this: `python amsa.py > out.txt`.
+-   To do so, run your program like this: `python amsa.py > out.txt`.
 
-- Now, after running the program, from another terminal run `cat out.txt` and you'll see the output is being written there.
+-   Now, after running the program, from another terminal run `cat out.txt` and you'll see the output is being written there.
 
 ## Ignoring signals {.smaller}
 
-- Apart from the default action and a custom handler, we can also choose to ignore a signal, which is going to override the default action.
+-   Apart from the default action and a custom handler, we can also choose to ignore a signal, which is going to override the default action.
 
-- Modify the script and add a call to `signal()` that ignores `SIGHUP` as shown below:
+-   Modify the script and add a call to `signal()` that ignores `SIGHUP` as shown below:
 
 ``` {.python code-line-numbers="10"}
 import signal
@@ -262,13 +260,13 @@ if __name__ == "__main__":
 
 ## Testing `SIG_IGN` on `SIGHUP`
 
-1. Run your python script redirecting its output `python amsa.py > out.txt`.
-2. Send the `SIGHUP` signal `kill -HUP <PID>`.
-3. Check the contents of `out.txt` file.
-4. Send the `SIGKILL` signal `kill -KILL <PID>` to terminate the program.
-5. Repeat step 1.
-6. Now close the terminal where you have launched the python program.
-7. Repeat step 3.
+1.  Run your python script redirecting its output `python amsa.py > out.txt`.
+2.  Send the `SIGHUP` signal `kill -HUP <PID>`.
+3.  Check the contents of `out.txt` file.
+4.  Send the `SIGKILL` signal `kill -KILL <PID>` to terminate the program.
+5.  Repeat step 1.
+6.  Now close the terminal where you have launched the python program.
+7.  Repeat step 3.
 
 ## Why this is useful
 
@@ -318,7 +316,7 @@ if __name__ == "__main__":
 
 -   History of `SIGHUP`: <https://en.wikipedia.org/wiki/SIGHUP>
 
-## Additional Exercices {.smaller}
+## Additional Exercices {.smaller #extra}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercises.
 

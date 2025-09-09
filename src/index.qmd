@@ -23,11 +23,14 @@ In the following links you'll find all the activities and its corresponding reso
 
 ## 🤓 Extras
 
-The following are completely optional activities and won't be scored. Not completing this activities is not going to penalize you in any way. 
+The following are completely optional activities and won't be scored (only for those extra points). Not completing this activities is not going to penalize you in any way.
 
 Having said that, we encourage you to give it a try and show us the results, we'll be more than happy to have a look and discuss any doubts!
 
--   [Playing an EFI made tetris](extras/tetris.qmd)
+-   [Playing an EFI made tetris](weeks/week-1.qmd#extra)
+-   [Create your own syscall](weeks/week-2.qmd#extra)
+-   [Implement your own `nice` in python](weeks/week-3.qmd#extra)
+-   [Modify handlers and implement `nohup` in python](weeks/week-4.qmd#extra)
 
 ## 📚 Resources
 

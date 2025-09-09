@@ -12,31 +12,34 @@ format: revealjs
 -   Present and explain Prac-2.2
 
 # Scheduler
+
 ![](images/paste-1.png){fig-align="center"}
 
 ## How does it identify these tasks?
-- Linux doesn't differenciate between processes and threads, in fact, it has a struct ([task_struct](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L812)) that is a Kernel descriptor for both threads and processes (tasks). 
 
-- Threads are just tasks sharing resources.
+-   Linux doesn't differenciate between processes and threads, in fact, it has a struct ([task_struct](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L812)) that is a Kernel descriptor for both threads and processes (tasks).
 
-- We need a scheduler because we want to run things concurrently, and run more tasks than cores.
+-   Threads are just tasks sharing resources.
 
-## What are priorities? What do they have to do with scheduling?{.smaller}
+-   We need a scheduler because we want to run things concurrently, and run more tasks than cores.
+
+## What are priorities? What do they have to do with scheduling? {.smaller}
+
 How do we decide which tasks get CPU time (go into the bar)?
 
 With `priority`, a number tied to each task
 
-- __Range__: -20 (highest priority, most CPU time) to +19 (lowest priority, smallest CPU time)
-- __Default__: 0
-- Only for __normal (non-real-time)__ processes
-- Only for __certain scheduling algorithms__
-- Can be __changed__
+-   **Range**: -20 (highest priority, most CPU time) to +19 (lowest priority, smallest CPU time)
+-   **Default**: 0
+-   Only for **normal (non-real-time)** processes
+-   Only for **certain scheduling algorithms**
+-   Can be **changed**
 
 ## How can we change the priority? The `nice` command
-When a program is nice, it leaves more time for the other programs, leaving more room to other ones.
-By using `nice`, this is exactly what we do, make it "nicer" and alter it's priority.
-In fact, the [nice program code](https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44) is really simple:
-``` {.c}
+
+When a program is nice, it leaves more time for the other programs, leaving more room to other ones. By using `nice`, this is exactly what we do, make it "nicer" and alter it's priority. In fact, the [nice program code](https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44) is really simple:
+
+``` c
 //...
   ok = (setpriority (PRIO_PROCESS, 0, current_niceness + adjustment) == 0); // Syscall to setpriority
 //...
@@ -45,12 +48,13 @@ In fact, the [nice program code](https://github.com/coreutils/coreutils/blob/mas
 ```
 
 ## Internal priority and nice priority
+
 Internally, the priority is actually interpreted different, hence the system uses helper functions to translate between these two types of priorities.
 
-``` {.c}
+``` c
 static inline long nice_to_rlimit(long nice)
 {
-	return (MAX_NICE - nice + 1);
+    return (MAX_NICE - nice + 1);
 }
 
 /*
@@ -58,7 +62,7 @@ static inline long nice_to_rlimit(long nice)
  */
 static inline long rlimit_to_nice(long prio)
 {
-	return (MAX_NICE - prio + 1);
+    return (MAX_NICE - prio + 1);
 }
 ```
 
@@ -72,15 +76,15 @@ See more on [the linux kernel sched code](https://elixir.bootlin.com/linux/v6.16
 
 -   Linux niceness explained: <https://www.youtube.com/watch?v=vd_oGmeoFKs>
 
-## Additional Exercices {.smaller}
+## Additional Exercices {.smaller #extra}
 
-::: {.fragment}
+::: fragment
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "References" first, and then try to do this exercises.
 :::
 
 -   Implement your own "nice" with Python. Assume all parameters will be correct, it should execute via:
 
-```{.bash}
+``` bash
 $ python3 my_nice.py <name_of_the_program_you_want_to_be_nice> <nice_value>
 ```
 
