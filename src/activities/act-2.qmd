@@ -20,7 +20,7 @@ Below is a screenshot of how it looks:
 
 On this activity you are going to build your own simplified version of `htop` by writing python code that analyzes the contents of `/proc`. Once finished, it will look like this:
 
-![](images/amsatop-big.jpg)
+![](images/amsatop.jpg)
 
 ## 2. Delivery
 
@@ -60,10 +60,10 @@ Building your solution on top of a library makes it easier to give you useful to
 
 When you join the Github Classroom activity with the link provided on Step 2, a remote repository is automatically created for you to work on this assignment. This repository will already contain some code, below are the details of what comes with the repo:
 
-1.  It already has `amsatop` library installed.
+1.  It already has `amsatop` library added.
 2.  A class `AmsaTop` with a function to be implemented for each sub-delivery located on `amsatop_solution.py`. **Here is where we expect you to write your code**.
 3.  Unit tests we've made for you to have some guidance (which are not exactly the same tests we're going to use to evaluate your project but they will be similar). Passing the provided tests on the [Ubuntu VM](https://amsa.lol/#resources) is a very good indicator that you're doing it right.
-4.  A `README.md` file where you'll have instructions on how to run the provided tests and linter.
+4.  A `README.md` file where you'll have instructions on how to run the provided tests and linter, and how to set up the python environment.
 
 ## 5. Tasks
 
