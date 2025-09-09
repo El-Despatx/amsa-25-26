@@ -25,8 +25,14 @@ website:
           text: "Activity 1"
       - text: "🤓 Extras"
         menu:
-        - href: extras/tetris.qmd
+        - href: weeks/week-1.qmd#extra
           text: "EFI Tetris"
+        - href: weeks/week-2.qmd#extra
+          text: "Homemade syscall"
+        - href: weeks/week-3.qmd#extra
+          text: "Homemade nice"
+        - href: weeks/week-4.qmd#extra
+          text: "Homemade handlers and custom nohup"
 
 title: "AMSA"
 
