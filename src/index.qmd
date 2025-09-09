@@ -1,6 +1,7 @@
 ---
 title: "Administració i Manteniment de Sistemes i Aplicacions (AMSA)"
 format: html
+toc: false
 ---
 
 ![](logo.png){width="100%" style="display:block; margin:auto;"}
