@@ -9,3 +9,11 @@ a:hover {
   color: #004a99;              /* darker blue on hover */
   text-decoration-thickness: 2px; /* thicker underline on hover */
 }
+
+/* Make bold text more visible in html documents */
+b, strong {
+  font-weight: 900 !important;
+  color: #222 !important; /* darker for contrast */
+  padding: 0 2px;
+  border-radius: 2px;
+}
