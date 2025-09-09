@@ -21,7 +21,7 @@ With typing, you can:
 
   - Catch bugs earlier.
 
-In our library and Prac-2, we use typing. We recommend you to use it too!
+In our library and Prac-2, **we** use typing. We recommend you to use it too!
 
 [🔗 Learn more about Python typing here](https://www.youtube.com/watch?v=15WB30NqDT0)
 
@@ -31,7 +31,7 @@ Instead of managing dependencies the old way with pip: `(pip install ...)`, we�
 
 **Why uv?:**
 
-  - Faster and more modern than pip.
+  - It's faster and more modern than pip.
 
   - Handles virtual environments automatically.
 
@@ -43,13 +43,13 @@ If you want to learn more, check out: [🔗 Why uv is the future of Python tooli
 
 Python follows community standards defined in PEPs ([Python Enhancement Proposals](https://peps.python.org/pep-0000/)). [PEP 8](peps.python.org/pep-0008/), for example, specifies how code should be styled (indentation, line length, naming conventions, etc.).
 
-Of course, no one wants to memorize every detail—so we use linters. The term comes from an old C tool called Lint (1970s), which checked code for bugs and style issues.
+Of course, no one wants to memorize every detail about the standard, so we use linters. The term comes from an old C tool called Lint (1970s), which checked code for bugs and style issues.
 
-For this course, we’ll use [Ruff](github.com/astral-sh/ruff) as a linter because:
+As a summary, is a tool that formats the code according to the python standard. For this course, we’ll use [Ruff](github.com/astral-sh/ruff) as a linter because:
 
-  - Extremely fast.
+  - It's extremely fast.
 
-  - Maintained by the uv team.
+  - Maintained by the astral (the same ones that developed uv)
 
   - Enforces PEP standards automatically.
 
