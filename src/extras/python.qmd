@@ -45,7 +45,7 @@ Python follows community standards defined in PEPs ([Python Enhancement Proposal
 
 Of course, no one wants to memorize every detail about the standard, so we use linters. The term comes from an old C tool called Lint (1970s), which checked code for bugs and style issues.
 
-As a summary, is a tool that formats the code according to the python standard. For this course, we’ll use [Ruff](github.com/astral-sh/ruff) as a linter because:
+As a summary, is a tool that formats the code according to the python standard. For this course, we’ll use [Ruff](https://github.com/astral-sh/ruff) as a linter because:
 
   - It's extremely fast.
 
