@@ -6,7 +6,7 @@ format: revealjs
 
 # Before getting started 🫷
 
--   Visit the subject lab's [website](amsa.lol), there you'll find a **link to download** a Virtual Machine under the **Resources** section. It will download a `.ova` file.
+-   Visit the subject lab's [website](https://amsa.lol), there you'll find a **link to download** a Virtual Machine under the **Resources** section. It will download a `.ova` file.
 -   We'll get into what that is and its purpose on this course, but since its quite a **large file (\~5GB)**, go on and **start the download** so we can get hands-on later on today's session.
 
 # Goals for today 🎯
@@ -95,7 +95,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ## Timeline (Weeks 0 → 8) {.smaller}
 
 | Week | Contents |
-|-----------------------|-------------------------------------------------|
+|------------------------|------------------------------------------------|
 | **0** | 📖 Subject **Intro** |
 | **1** | 📖 Explain **PRAC-1** |
 | **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
@@ -145,6 +145,8 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 
 ::: {.callout-important .fragment}
 Activites can be done in **groups of two** and **cannot be retaken**.
+
+If you do work in groups, we will require __both members of the group to have commited__ in the repo of the assignment.
 
 We **strongly recommend** doing them **individually**.
 :::
