@@ -84,9 +84,11 @@ If you really want to understand a little bit more what happens under the hood, 
 
 -   Implement your own "nice" with Python. Assume all parameters will be correct, it should execute via:
 
+::: {.fragment}
 ``` bash
 $ python3 my_nice.py <name_of_the_program_you_want_to_be_nice> <nice_value>
 ```
+:::
 
 ## Activity 2.2 {.smaller}
 
