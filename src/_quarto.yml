@@ -28,13 +28,13 @@ website:
       - text: "🤓 Extras"
         menu:
         - href: weeks/week-1.qmd#extra
-          text: "EFI Tetris"
+          text: "Week 1"
         - href: weeks/week-2.qmd#extra
-          text: "Homemade syscall"
+          text: "Week 2"
         - href: weeks/week-3.qmd#extra
-          text: "Homemade nice"
+          text: "Week 3"
         - href: weeks/week-4.qmd#extra
-          text: "Homemade handlers and custom nohup"
+          text: "Week 4"
 
 title: "AMSA"
 
