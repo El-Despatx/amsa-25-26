@@ -20,6 +20,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 In the following links you'll find all the activities and its corresponding resources.
 
 -   [Activity 1: Booting & systemd](activities/act-1.qmd)
+-   [Activity 2: Creating our own htop!](activities/act-2.qmd)
 
 ## 🤓 Extras
 

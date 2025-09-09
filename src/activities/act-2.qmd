@@ -1,18 +1,148 @@
 ---
-subtitle: "Prac-2: Creating our own htop!"
+subtitle: "Activity 2: Creating our own htop!"
 format: html
 ---
 
-## Activity 2.1
-### Activity brief
-### What to send?
+## 1. Introduction
 
-## Activity 2.2
-### Activity brief
-### What to send?
+You may have heard about the linux program [htop](https://htop.dev/), it is an **interactive process viewer** for Unix-like systems.
 
-## Activity 2.3
-### Activity brief
-### What to send?
+With `htop` you can:
 
-## Some useful resources
+-   See a **real-time overview** of system processes, CPU cores, memory, and swap usage.
+-   **Scroll and search** through processes easily.
+-   Interactively **sort, filter, and kill processes** with simple key commands.
+-   Get a quick sense of **system health** thanks to its bars and colors.
+
+Below is a screenshot of how it looks:
+
+![](images/htop.png)
+
+On this activity you are going to build your own simplified version of `htop` by writing python code that analyzes the contents of `/proc`.
+
+## 2. Delivery
+
+*Accept the assignment in Github Classroom, following the **TODO**[link]()*
+
+To complete this activity, you must do the following for each sub-delivery (PRAC-2.1, 2.2 and 2.3):
+
+1.  Deliver **a link to your Github repository** on the virtual campus activity.
+
+2.  Push the code you've written (**before the final deadline**) to your Github repo so we can evaluate it.
+
+::: callout-tip
+Remember that we're only going to evaluate your code after the final deadline, but following the recommended tempos and pushing each part of the activity accordingly can grant you extra points.
+:::
+
+## 3. Outline
+
+This activity is split onto 3 incremental parts, which are going to be related to the contents explained during the different classes.
+
+1.  On the first week, once we have explained **syscalls, processes and ProcFS**, your job will be to implement a function that retrieves a list of all the system processes.
+
+2.  Next, after having explained **process priorities**, we'll want you to get the priority of each of the processes.
+
+3.  Finally, since you'll understand the **SIGHUP signal**, the idea is that you also find out which processes are ignoring this signal or not.
+
+## 4. Resources
+
+Building an entire htop is too big of a task and out of the scope of the subject, even if it is a simplified version. For that reason, the teachers have prepared some resources that will hopefully make the activity shorter and more enjoyable.
+
+### `amsatop` library
+
+A python library available on [PyPI](https://pypi.org/project/amsatop/) has been built with all of our love so that it already implements the UI and some abstractions. Make sure to check out the [docs](https://docs.amsa.lol/)!
+
+Building your solution on top of a library makes it easier to give you useful tools such as tests and [helper functions](https://docs.amsa.lol/_apidoc/amsatop.utils.html).
+
+### Repository template
+
+When you join the Github Classroom activity with the link provided on Step 2, a remote repository is automatically created for you to work on this assignment. This repository will already contain some code, below are the details of what comes with the repo:
+
+1.  It already has `amsatop` library installed.
+2.  A class `AmsaTop` with a function to be implemented for each sub-delivery located on `amsatop_solution.py`. **Here is where we expect you to write your code**.
+3.  Unit tests we've made for you to have some guidance (which are not exactly the same tests we're going to use to evaluate your project but they will be similar). Passing the provided tests on the [Ubuntu VM](https://amsa.lol/#resources) is a very good indicator that you're doing it right.
+4.  A `README.md` file where you'll have instructions on how to run the provided tests and linter.
+
+## 5. Tasks
+
+Below is a detailed explanation of what you have to do on each task, but before reading through we want to make something clear.
+
+On each of the following tasks you'll be obtaining a list of processes and then looking for further information on these processes. Notice that if I get a list of all the processes currently active on my system, and then I go fetch information on them, it may have happened that **one of these processes has ended and its information is no longer available**. Your code has to be prepared for this scenario and be prepared to not find any information about a given process because it is no longer running and thus there is nothing for that process inside `/proc`. In that case just exclude the process from the returned list.
+
+### PRAC-2.1: Getting all processes
+
+Implement [this function](https://github.com/El-Despatx/amsatop-template/blob/9cc545e6fbddd58faef7883228db9f8c54a07e14/src/myhtop/amsatop_solution.py#L12) so it returns a list where each element is an instance of [`Process`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process). There has to be an element on the list for each **process, thread and kthread** running on the system.
+
+This part has to be done exclusively by reading the raw contents of `/proc`. It is **strictly forbidden to use any external libraries or commands**.
+
+When creating instances of `Process`, notice that the field `priority` can be `None`. As stated on the docs:
+
+> Can be None if unavailable or you’re doing Prac-2.1.
+
+When working on Prac-2.1 just set that field to `None`.
+
+::: callout-tip
+Make sure to read through [the docs](https://docs.amsa.lol/_apidoc/amsatop.utils.html) of the helper classes and functions, we promise using them will make your life easier 😉!
+:::
+
+::: {.callout-important title="**Very very important 🚨**"}
+It is **very important** that you make use of the property [`proc_folder`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Htop.proc_folder) of the [`Htop`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Htop) class when accessing files on `"/proc"`. **Do not use a hardcoded string "/proc"**, instead use `self.proc_folder` (which is a string that defaults to "/proc"). This is essential for the tests to work.
+
+Here is an example of **what NOT to do**:
+
+``` {.python code-line-numbers="true"}
+...
+
+class Amsatop(Htop):
+    def __init__(self):
+        super().__init__()
+
+    def get_processes(self) -> List[Process]:
+        for entry in os.listdir("/proc"): # Do NOT do it like this ❌
+            if ...
+```
+
+Here is an example of **what you should do**:
+
+``` {.python code-line-numbers="true"}
+...
+
+class Amsatop(Htop):
+    def __init__(self):
+        super().__init__()
+
+    def get_processes(self) -> List[Process]:
+        for entry in os.listdir(self.proc_path): # Do it like this ✅
+            if ...
+```
+:::
+
+### Prac-2.2: Adding priorities
+
+Implement [this function](https://github.com/El-Despatx/amsatop-template/blob/9cc545e6fbddd58faef7883228db9f8c54a07e14/src/myhtop/amsatop_solution.py#L15) so it returns a list of [`Process`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process). It has to be the same list we obtained on **Prac-2.1** but now we want you to set the value of the `priority` field if available.
+
+### Prac-2.3: Filtering where SIGHUP is ignored
+
+Implement [this function](https://github.com/El-Despatx/amsatop-template/blob/9cc545e6fbddd58faef7883228db9f8c54a07e14/src/myhtop/amsatop_solution.py#L18) so it returns a list of [`Process`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process). It has to be the same list we obtained on **Prac-2.2 (with the priorities)** but now we want to add a filter so only those processes that are ignoring the `SIGHUP` signal are returned, those that are not ignoring it are expected to **not be present on the returned list**.
+
+## 6. Evaluation
+
+Your final score will come from various parts:
+
+-   The tests we give you are passing on the Ubuntu VM → 50%.
+-   Our tests (you won't have access to them) are passing on the Ubuntu VM → 25%.
+-   The linter runs without errors → 5%.
+-   Best practices are used → 20%.
+
+## 7. Rules
+
+1.  **No external python libraries** can be used, only `amsatop` and built-in libraries are allowed (e.g `os`, `typing`).
+2.  It is **forbidden to make python execute a Linux command** that will provide the information about processes.
+3.  The process information needed can **only be obtained by reading the contents of `/proc` and parsing it out** (remember you have [helpers](https://docs.amsa.lol/_apidoc/amsatop.utils.html) for that).
+4.  Make sure the tests are passing on the [Ubuntu VM](https://amsa.lol/#resources), we'll pass them on the VM too.
+
+## 8. Doubts
+
+Please don't hesitate to ask the teachers **any doubts**, there are no dumb questions, we're here to help.
+
+You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
