@@ -28,10 +28,10 @@ The following are completely optional activities and won't be scored (only for t
 
 Having said that, we encourage you to give it a try and show us the results, we'll be more than happy to have a look and discuss any doubts!
 
--   [Playing an EFI made tetris](weeks/week-1.qmd#extra)
--   [Create your own syscall](weeks/week-2.qmd#extra)
--   [Implement your own `nice` in python](weeks/week-3.qmd#extra)
--   [Modify handlers and implement `nohup` in python](weeks/week-4.qmd#extra)
+-   [Week 1: Playing with tetris (and boot configs!)](weeks/week-1.qmd#extra)
+-   [Week 2: Create your own syscall](weeks/week-2.qmd#extra)
+-   [Week 3: Implement your own `nice` in python](weeks/week-3.qmd#extra)
+-   [Week 4: Modify handlers and implement `nohup` in python](weeks/week-4.qmd#extra)
 
 ## 📚 Resources
 
