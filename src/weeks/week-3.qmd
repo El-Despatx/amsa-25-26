@@ -13,7 +13,7 @@ format: revealjs
 
 # Scheduler
 
-![](images/paste-1.png){fig-align="center"}
+![](figures/week-3/paste-1.png){fig-align="center"}
 
 ## How does it identify these tasks?
 
