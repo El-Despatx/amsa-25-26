@@ -235,7 +235,7 @@ We will explore **system administration** and **application maintenance** throug
 
 ## Github classroom {.smaller}
 
-We will be using [**GitHub Classroom**](classroom.github.com) to deliver and evaluate all activities.
+We will be using [**GitHub Classroom**](https://classroom.github.com) to deliver and evaluate all activities.
 
 -   Each student will receive a **private GitHub repository** for every activity
     -   Only you and the instructors will have access to it
