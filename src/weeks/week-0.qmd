@@ -323,8 +323,7 @@ You may get prompted regarding the authenticity of the host, just type `yes` and
 Try accessing a "test" assignment to check the flow:
 
 ::: enumerate
-- [Pralab 1](https://classroom.github.com/a/WPz1MLhd)
-- [Pralab 2]()
+- [Pralab](https://classroom.github.com/a/WPz1MLhd)
 :::
 
 ::: {.fragment}
