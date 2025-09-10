@@ -320,6 +320,15 @@ You may get prompted regarding the authenticity of the host, just type `yes` and
 
 ## Regarding Github Classroom
 
+Try accessing a "test" assignment to check the flow:
+
+::: enumerate
+- [Pralab 1](https://classroom.github.com/a/WPz1MLhd)
+- [Pralab 2]()
+:::
+
+::: {.fragment}
 If for some reason you don't have an SSH already configured to work with Github, good news, it's time to grow up.
 
 Github already provides **great documentation** on how to do this, here is the [link](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+:::
