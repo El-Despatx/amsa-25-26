@@ -76,6 +76,8 @@ See more on [the linux kernel sched code](https://elixir.bootlin.com/linux/v6.16
 
 -   Linux niceness explained: <https://www.youtube.com/watch?v=vd_oGmeoFKs>
 
+-   Understanding why we need an scheduler (the PCB named on this video is called `task_struct` on linux): <https://www.youtube.com/watch?v=O2tV9q6784k>
+
 ## Additional Exercices {.smaller #extra}
 
 ::: fragment
