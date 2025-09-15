@@ -1,0 +1,111 @@
+---
+subtitle: "Setting up Virtualbox's OVA and Git brief"
+format: html
+---
+
+# Introduction
+
+This page covers how to set up Virtualbox with the subject's OVA and a brief on Git's basics
+
+## Setting up the subject's OVA in VirtualBox
+### General (both architectures)
+Install Virtualbox
+
+::: callout-important
+If you already have Virtualbox installed, and your version is lower than 7.2.0 (which is pretty probable):
+
+1. __Completely uninstall Virtualbox__
+2. __Reinstall Virtualbox completely__
+:::
+If you're curious about the issue and why it was breaking down, you can check the [issue](https://www.virtualbox.org/ticket/22370) and/or [the commit that broke it all](https://github.com/VirtualBox/virtualbox/commit/f09f78b40df4602d04570a0df1ea4a3d30fb5178).
+
+::: callout-important
+Download the image from safari or firefox, __brave or chrome don't work__.
+:::
+### Non-silicon (Linux/Windows users)
+Download the image from [this link](https://objectstorage.eu-madrid-1.oraclecloud.com/p/iiU7_r7J9v0fN_mxwajUYkm-B3EVgb2Mqj7pCQraRPU-p0Rvyyiw9MD8h9xADNxx/n/ax1drie1vzsx/b/amsa/o/AMSA2526.ova) and double-click it to import the box.
+User `amsa` and password `amsa`
+
+### Silicon (MAC MX users)
+__UNDER CONSTRUCTION__
+<!-- Download the image from [this link]() and double-click it to import the box. -->
+<!-- User `amsa` and password `amsa` -->
+
+## Git summary
+
+As previously stated, we'll be using [Git](https://git-scm.com) and [Github](https://github.com) to complete assignments.
+
+Every time you accept an assignment through Github classroom, a Github repository will be created under your Github account.
+
+### Creating an SSH key to authenticate to Github
+
+**You can skip this step if you already have an SSH key configured on your machine to be used on Github**
+
+The first step will be to create an SSH key on your machien to authenticate to Github and be able to interact with it. For this, you can follow [Github's guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to do it.
+
+``` bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+// Press enter until finished, input a password only if wanted
+
+cat .ssh/id_ed25519
+// Copy all the file
+
+// Go onto github.com -> settings -> SSH & GPG keys
+// Add a new authentication key, with any title and the contents of the file you copied
+```
+
+### Cloning the project
+
+The next step will be to clone this repository so that we can work on it locally. This guide will cover how to set it up via terminal, but you're free to use other tools like *Github Desktop* or Git's extension on *VSCode*
+
+Install git on your system, through your prefered package manager or through [the webpage](https://git-scm.com/downloads) if you use Windows🤢🤮
+
+Now, head onto Github, open your repository and copy the SSH direction of it:
+
+![](images/paste-2.png)
+
+Next move onto the directory where you wish to clone your repository and type:
+
+``` bash
+git clone <SSH direction>
+```
+
+Now you have your projecto on a folder on your computer and you can work on it as if it was any normal folder.
+
+### Uploading new versions of the project
+
+Now that we've added changes to our folder, it's time to commit and upload them. Here we cover some of the main commands
+
+``` bash
+git status
+```
+
+Tells you the current state of the repository. On a folder with uncomited changes it will say something like:
+
+![](images/paste-3.png)
+
+Just as the terminal says, we have to add the new files to be tracked by git.
+We can do so by using:
+```bash
+git add <files>
+```
+![](images/paste-4.png)
+Now, our files are added and tracked.
+The next step is to commit the changes, making a new "snapshot" of our files
+Do so with:
+```bash
+git commit -m <message>
+```
+Take into consideration that the message should be clear, short and representative of the changes you've done to your repo with this commit.
+![](images/paste-5.png)
+
+Now our __local__ repository has a new commit.
+The only missing thing now is to push/upload the changes to the cloud.
+Do it with:
+```bash
+git push
+```
+
+As you can see, our files now are on the cloud, and the working repository tells us there are no more changes to be done.
+![](images/paste-6.png)
+![](images/image.png)
