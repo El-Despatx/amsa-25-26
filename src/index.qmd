@@ -38,5 +38,5 @@ Having said that, we encourage you to give it a try and show us the results, we'
 
 -   [Guia docent](https://guiadocent.udl.cat/html/2025-26_102013)
 -   [Download Virtual Machine](https://objectstorage.eu-madrid-1.oraclecloud.com/p/iiU7_r7J9v0fN_mxwajUYkm-B3EVgb2Mqj7pCQraRPU-p0Rvyyiw9MD8h9xADNxx/n/ax1drie1vzsx/b/amsa/o/AMSA2526.ova) (username: `amsa` & password: `amsa`)
--   [Python Resources for Beginners](extras/python.qmd)
+-   [Python Resources for Beginners](resources/python.qmd)
 -   [Setting up the subject's virtual machine and git brief](resources/vm_git.qmd)
