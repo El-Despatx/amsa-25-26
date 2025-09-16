@@ -27,9 +27,8 @@ Download the image from [this link](https://objectstorage.eu-madrid-1.oracleclou
 User `amsa` and password `amsa`
 
 ### Silicon (MAC M1 or newer users)
-__UNDER CONSTRUCTION__
-<!-- Download the image from [this link]() and double-click it to import the box. -->
-<!-- User `amsa` and password `amsa` -->
+Download the image from [this link](https://objectstorage.eu-madrid-1.oraclecloud.com/p/VibDqXMJDJ9vAwmN1E6VxLLBkl_UaoB7B2FqZWJ97rXylc1l5cIie_c-v7-WYiNy/n/ax1drie1vzsx/b/amsa/o/AMSA2526ARM.ova) and double-click it to import the box.
+User `amsa` and password `amsa`
 
 ## Git summary
 
