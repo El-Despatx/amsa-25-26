@@ -1,6 +1,12 @@
 ---
 subtitle: "Activity 1: Booting & systemd"
-format: html
+format: 
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
 ---
 
 ## Activity brief

@@ -1,6 +1,12 @@
 ---
 subtitle: "Activity 2: Creating our own htop!"
-format: html
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
 ---
 
 ::: {.callout-important title="**Very very important 🚨**"}

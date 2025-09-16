@@ -59,6 +59,8 @@ format:
     theme: lux
     css: styles.css
     toc: true
+  pdf: default
+
 
 editor: visual
 
