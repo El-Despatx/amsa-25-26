@@ -240,16 +240,28 @@ Are you already familiar with those?
 -   The kernel exposes a /proc folder on the filesystem, that shows you information about the tasks running on the system.
 -   [`htop`](https://htop.dev/) is a program that uses [procfs](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c), and shows you the list of tasks and properties.
 
-## Properties {.smaller}
+## Properties of procfs: Processes {.smaller}
+-   Doing an `ls -la /proc` **shows a the list of pids/tgids of processes and kthreads (NOT Threads!)**.
+-   If a process (without threads) is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/tasks` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread of execution (one task_struct inside the kernel).
+-   You can see more info about the current process or thread, inside `cat /proc/${pid}/stat` or `cat /proc/${pid}/status`
 
--   Doing an `ls -la /proc` **only shows processes and kthreads**.
--   But **each process can have threads spawned**, this are listed on: `/proc/{pid}/tasks/{tgid}`
--   If a process is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/tasks` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread.
--   Once you have a `tgid`, you can do `ls -la /proc/${tgid}` or `cd` into it.
--   A kernel thread, doesn't have an executable, so `cat /proc/${tgid}/exe` should give `no such file or directory`.
+## Properties of procfs: Kernel Threads {.smaller}
+-   Doing an `ls -la /proc` **hhows a the list of pids/tgids of processes and kthreads (NOT Threads!)**.
 -   You can see more info about the current process or thread, inside `cat /proc/${tgid}/stat` [^3] or `cat /proc/${tgid}/status`
+-   A kernel thread, doesn't have an executable, so `cat /proc/${tgid}/exe` should give `no such file or directory`.
 
 [^3]: In fact, htop uses stat for knowing if the task is a kernel thread see [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L302) and [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L1675)
+
+## Properties of procfs: Threads {.smaller}
+-   But **each process can have multiple threads spawned**, this are listed on: `/proc/{pid_of_process}/tasks/{tgid}`
+
+    ::: callout-warning
+    Be aware that, if we have a process that spawns two threads, it will have 3 entries inside the tasks folder:
+      - One that is equal to the process id (`tgid == pid`)
+      - Two that are the spawned threads.
+    :::
+
+-   Once you have a `tgid`, you can do `ls -la /proc/${tgid}` or `cd` into it.
 
 ## Example {.smaller}
 
