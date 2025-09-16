@@ -203,7 +203,102 @@ It's normal to see some `kthreads` ignoring SIGHUP!! Don't worry too much about 
 
 ## 6. Setting the environment up!
 
-TODO, comment libfuse, tests, and ci, etc.
+### Installing libfuse
+We use a Linux feature called FUSE in our tests. This lets us emulate the special capabilities of the /proc filesystem without burdening you (the student) with the technical details of our test setup.
+
+For this reason, in the virtual machine’s command line, **you must run the following command for the tests to work**:
+
+```{.bash}
+sudo apt update && sudo apt install libfuse2t64
+```
+
+### Cloning the repository and set it up:
+
+Remember that, once you entered the Github Classroom on [section 2](act-2.qmd#delivery), you will have to clone your repository with [^2]:
+
+```{.bash}
+git clone <ssh_address_of_your_git_repository>
+```
+
+Then, enter inside the folder of the repository and setup a virtual environment for the python project, this will be done with:
+```{.bash}
+uv sync
+```
+
+And then, you can enable the virtualenv on your current shell (zsh or bash) with:
+```{.bash}
+source .venv/bin/activate 
+```
+
+[^2]: If you don't have any idea of what we're talking about, revisit the [setting up the VM and brief git summary](/resources/vm_git.qmd)
+
+### Running tests:
+
+You can run all the tests we give to you with the following command (from the project root path):
+
+```{.bash}
+uv run pytest
+```
+
+You can also run specific test-suites for each prac, for example:
+```{.bash}
+# For prac 2.1:
+uv run pytest test/prac_2_1
+
+# For prac 2.2:
+uv run pytest test/prac_2_2
+
+# For prac 2.3:
+uv run pytest test/prac_2_3
+```
+
+### [Optional] Improving tests experiences with Github Actions
+
+Imagine you accidentally break part of your code from Prac-2.1 while working on Prac-2.2. If this issue isn’t detected by the Prac-2.2 test suite, you won’t realize something is broken, since you’ll only be running the prac_2_2 tests, and you can’t yet run all at onece because you didn't implemnet prac_2_3 yet.
+
+So, how can we solve this?
+
+Ideally, every time we push code to the repository, all the relevant test suites should run automatically. If any of them fail because we broke something, we should immediately be notified (for example, by email).
+
+This is exactly the kind of workflow that GitHub Actions can automate for us.
+
+The teachers have already set everything up for you (you’re welcome! 😉). The only thing you need to do is, once you’ve confirmed that your `prac_2_x` works, uncomment the corresponding test section in `.github/workflows/test.yml` in your repository.
+
+For example, if you want the `prac_2_1` tests to run automatically whenever you push to your repository, simply uncomment its section, like this:
+
+
+::::::: columns
+:::: {.column .fragment width="50%"}
+```{.yaml code-line-numbers="true"}
+       - name: Set up Python
+         run: uv python install 3.13
+        
+       # - name: "Run pytest on prac 2.1"
+       #   run: uv run pytest test/prac_2_1/
+```
+::::
+
+:::: {.column .fragment width="50%"}
+```{.yaml code-line-numbers="true"}
+       - name: Set up Python
+         run: uv python install 3.13
+        
+       - name: "Run pytest on prac 2.1"
+         run: uv run pytest test/prac_2_1/
+```
+::::
+:::::::
+
+
+### [Optional] Running tests with coverage:
+
+If you want to see if all the lines of your code are covered by the tests (this is usually a good indicator), you can run a test coverage, this will display information about the relationship between your code and our tests!
+Run:
+
+```{.bash}
+uv run coverage run -m pytest  -v -s
+uv run coverage report
+```
 
 ## 7. Evaluation
 
