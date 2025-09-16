@@ -4,6 +4,12 @@ format: html
 ---
 
 # Booting tetris.efi 🎮
+::: callout-important
+Sadly, this extra activity is only available for those running Windows/Linux devices.
+
+If you're using Apple Silicon and wish to do this extra activity, contact us to see possibilities.
+:::
+
 This extra activity demonstrates how you can run the Tetris game without relying on an operating system. Simply write an EFI-compliant program, build it, and execute it directly!
 
 ## Reboot to the UEFI VBox firmware:
@@ -20,12 +26,10 @@ It should appear the following screen:
 
 ![](/extras/figures/vbox-firmware.png)
 
+## Execute the EFI Tetris
 
-## Execute the EFI Tetris 
+-   We'll go: `Boot Maintenence Manager => Boot from file => Click on the first (and only option)`
 
-  - We'll go: `Boot Maintenence Manager => Boot from file => Click on the first (and only option)`
+-   Load the file that is saved on: `/EFI/BOOT/tetris.efi`
 
-  - Load the file that is saved on: `/EFI/BOOT/tetris.efi`
-
-  - Have fun! 🥳, and play some tetris games!
-
+-   Have fun! 🥳, and play some tetris games!
