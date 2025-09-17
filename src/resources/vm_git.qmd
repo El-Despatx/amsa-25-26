@@ -22,11 +22,11 @@ If you're curious about the issue and why it was breaking down, you can check th
 ::: callout-important
 Download the image from safari or firefox, __brave or chrome don't work__.
 :::
-### Non-silicon (Linux/Windows users)
+### Non-silicon/x86 (Linux/Windows users)
 Download the image from [this link](https://objectstorage.eu-madrid-1.oraclecloud.com/p/iiU7_r7J9v0fN_mxwajUYkm-B3EVgb2Mqj7pCQraRPU-p0Rvyyiw9MD8h9xADNxx/n/ax1drie1vzsx/b/amsa/o/AMSA2526.ova) and double-click it to import the box.
 User `amsa` and password `amsa`
 
-### Silicon (MAC M1 or newer users)
+### Silicon/ARM (MAC M1 or newer users)
 Download the image from [this link](https://objectstorage.eu-madrid-1.oraclecloud.com/p/VibDqXMJDJ9vAwmN1E6VxLLBkl_UaoB7B2FqZWJ97rXylc1l5cIie_c-v7-WYiNy/n/ax1drie1vzsx/b/amsa/o/AMSA2526ARM.ova) and double-click it to import the box.
 User `amsa` and password `amsa`
 
