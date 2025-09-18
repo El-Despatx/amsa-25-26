@@ -37,7 +37,7 @@ On this activity you are going to build your own simplified version of `htop` by
 
 ## 2. Delivery
 
-*Accept the assignment in Github Classroom, following the [link](https://classroom.github.com/a/eoMHxDDl)*
+*Accept the assignment in Github Classroom, [following the link](https://classroom.github.com/a/BwZznF7h)*
 
 To complete this activity, you must do the following for each sub-delivery (PRAC-2.1, 2.2 and 2.3):
 
