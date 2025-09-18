@@ -1,0 +1,23 @@
+---
+subtitle: "Get the score of your assignment via Github Actions"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+We use [GitHub Actions](https://www.youtube.com/watch?v=yfBtjLxn_6k) to automatically calculate part of your grade: the tests + linter . This accounts for 55% of the final grade. The remaining part is graded manually (good practices and our own tests).
+
+To see the grade you’ll get for the “autocorrected” points, you can run the same GitHub Action that we will use! This way, you’ll already know whether you’ve reached at least 5.5/10!
+
+Follow these steps in the GitHub UI:
+
+![](/resources/images/gh-action/step-1.png)
+![](/resources/images/gh-action/step-2.png)
+![](/resources/images/gh-action/step-3.png)
+![](/resources/images/gh-action/step-4.png)
+![](/resources/images/gh-action/step-5.png)
+![](/resources/images/gh-action/step-6.png)

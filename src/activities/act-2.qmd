@@ -252,48 +252,6 @@ uv run pytest test/prac_2_2
 uv run pytest test/prac_2_3
 ```
 
-### [Optional] Improving tests experiences with Github Actions
-
-Imagine you’re working on **Prac-2.2** and, by mistake, you break something in your **Prac-2.1** code.
-If the **Prac-2.2** tests don’t catch that error, you’ll never know, because you’re only running the `prac_2_2` tests.
-And since you haven’t implemented **Prac-2.3** yet, you can’t just run *all* the tests at once.
-
-**How do we avoid this problem?**
-
-The best solution is that **every time you push code to GitHub, all the test suites you’ve completed should run automatically**.
-That way, if you accidentally break an earlier task, you’ll know immediately (for example, by receiving a notification email which GitHub sends by default with Actions).
-
-This is exactly what **GitHub Actions** is for.
-
-The teachers have already set everything up for you (you’re welcome! 😉).
-Your only job is: whenever you’ve finished a task and you’re confident it works, **uncomment the corresponding test section** in `.github/workflows/test.yml`.
-
-For example, to make the **Prac-2.1** tests run automatically every time you push code, just uncomment its section in the file, like this:
-
-
-::::::: columns
-:::: {.column .fragment width="50%"}
-```{.yaml code-line-numbers="true"}
-       - name: Set up Python
-         run: uv python install 3.13
-        
-       # - name: "Run pytest on prac 2.1"
-       #   run: uv run pytest test/prac_2_1/
-```
-::::
-
-:::: {.column .fragment width="50%"}
-```{.yaml code-line-numbers="true"}
-       - name: Set up Python
-         run: uv python install 3.13
-        
-       - name: "Run pytest on prac 2.1"
-         run: uv run pytest test/prac_2_1/
-```
-::::
-:::::::
-
-
 ### [Optional] Running tests with coverage:
 
 If you want to see if all the lines of your code are covered by the tests (this is usually a good indicator), you can run a test coverage, this will display information about the relationship between your code and our tests!
@@ -309,9 +267,15 @@ uv run coverage report
 Your final score will come from various parts:
 
 -   The tests we give you are passing on the Ubuntu VM → 50%.
+-   The linter (ruff) runs without errors → 5%.
 -   Our tests (you won't have access to them) are passing on the Ubuntu VM → 25%.
--   The linter runs without errors → 5%.
 -   Best practices are used → 20%.
+
+
+::: callout-tip
+Keep in mind that the first two items (tests and linter) can be automatically verified using [Github Actions on your repository](/resources/gh_action.qmd)
+:::
+
 
 ## 8. Rules
 
