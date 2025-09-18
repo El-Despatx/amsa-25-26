@@ -95,7 +95,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ## Timeline (Weeks 0 → 8) {.smaller}
 
 | Week | Contents |
-|------------------------|------------------------------------------------|
+|------------------------|-----------------------------------------------|
 | **0** | 📖 Subject **Intro** |
 | **1** | 📖 Explain **PRAC-1** |
 | **2** | 📖 Explain **PRAC-2.1** ➝ 📤 Deliver **PRAC-1** *(Final PRAC-1)*🏆 |
@@ -146,7 +146,7 @@ We may give you an extra week for final deliveries so we can have doubt sessions
 ::: {.callout-important .fragment}
 Activites can be done in **groups of two** and **cannot be retaken**.
 
-If you do work in groups, we will require __both members of the group to have commited__ in the repo of the assignment.
+If you do work in groups, we will require **both members of the group to have commited** in the repo of the assignment.
 
 We **strongly recommend** doing them **individually**.
 :::
@@ -155,17 +155,16 @@ We **strongly recommend** doing them **individually**.
 While we acknowledge that ChatGPT can be a useful tool, **relying on AI to generate the code** for the assignments without understanding the underlying concepts **will lead to failing the subject**, and you will not be able to answer the exam questions.
 :::
 
-
 ## Extra points ⚡️
-There are an additional 0.5 points in this subject (up to 10.5 points)
-To get these points you can:
 
-- Attend classs
-- Contribute to class being active
-- Do extra activities
-- Find flaws in our notes and contribute via PR to fix them
+There are an additional 0.5 points in this subject (up to 10.5 points) To get these points you can:
 
-::: {.fragment}
+-   Attend classs
+-   Contribute to class being active
+-   Do extra activities
+-   Find flaws in our notes and contribute via PR to fix them
+
+::: fragment
 We will assign those points in function of these things.
 :::
 
@@ -323,10 +322,11 @@ You may get prompted regarding the authenticity of the host, just type `yes` and
 Try accessing a "test" assignment to check the flow:
 
 ::: enumerate
-- [Pralab](https://classroom.github.com/a/WPz1MLhd)
+<!-- -   [Pralab](https://classroom.github.com/a/WPz1MLhd) -->
+- __NOT AVAILABLE ANYMORE__
 :::
 
-::: {.fragment}
+::: fragment
 If for some reason you don't have an SSH already configured to work with Github, good news, it's time to grow up.
 
 Github already provides **great documentation** on how to do this, here is the [link](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
