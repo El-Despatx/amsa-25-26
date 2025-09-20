@@ -342,6 +342,8 @@ And in Htop, you should see the following:
 
 -   Why htop shows kthreads, threads and not only processes: [Htop Issue](https://github.com/htop-dev/htop/issues/99)
 
+-    How a Single Bit Inside Your Processor Shields Your Operating System's Integrity: [Youtube Video](https://www.youtube.com/watch?v=H4SDPLiUnv4)
+
 -   Linux Kernel Internals: Process by Mapple Circuit: [Youtube Video](https://www.youtube.com/watch?app=desktop&v=NzKx9nleP5A)
 
 -   Journey into the proc filesystem: [blog post by Fernando Villalba](https://fernandovillalba.substack.com/p/a-journey-into-the-linux-proc-filesystem)
