@@ -18,7 +18,7 @@ However, don’t miss the important information that comes after Section 5!
 
 ## 1. Introduction
 
-You may have heard about the linux program [htop](https://htop.dev/), it is an **interactive process viewer** for Unix-like systems.
+You may have heard about the linux program [htop](https://htop.dev/){target="_blank"}, it is an **interactive process viewer** for Unix-like systems.
 
 With `htop` you can:
 
@@ -37,7 +37,7 @@ On this activity you are going to build your own simplified version of `htop` by
 
 ## 2. Delivery
 
-*Accept the assignment in Github Classroom, [following the link](https://classroom.github.com/a/BwZznF7h)*
+*Accept the assignment in Github Classroom, [following the link](https://classroom.github.com/a/BwZznF7h){target="_blank"}*
 
 To complete this activity, you must do the following for each sub-delivery (PRAC-2.1, 2.2 and 2.3):
 
@@ -65,9 +65,9 @@ Building an entire htop is too big of a task and out of the scope of the subject
 
 ### `amsatop` library
 
-A python library available on [PyPI](https://pypi.org/project/amsatop/) has been built with all of our love so that it already implements the UI and some abstractions. Make sure to check out the [docs](https://docs.amsa.lol/)!
+A python library available on [PyPI](https://pypi.org/project/amsatop/){target="_blank"} has been built with all of our love so that it already implements the UI and some abstractions. Make sure to check out the [docs](https://docs.amsa.lol/){target="_blank"}!
 
-Building your solution on top of a library makes it easier to give you useful tools such as tests and [helper functions](https://docs.amsa.lol/_apidoc/amsatop.utils.html).
+Building your solution on top of a library makes it easier to give you useful tools such as tests and [helper functions](https://docs.amsa.lol/_apidoc/amsatop.utils.html){target="_blank"}.
 
 ### Repository template
 
@@ -91,7 +91,7 @@ In that case just exclude the process from the returned list. Be aware that some
 
 ### PRAC-2.1: Getting all processes
 
-Implement [the get_processes method](https://github.com/El-Despatx/amsatop-template/blob/main/src/myhtop/amsatop_solution.py#L11) so it returns a list where each element is an instance of [`Process`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process). There has to be an element on the list for each **process, thread and kthread** running on the system.
+Implement [the get_processes method](https://github.com/El-Despatx/amsatop-template/blob/main/src/myhtop/amsatop_solution.py#L11){target="_blank"} so it returns a list where each element is an instance of [`Process`](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process){target="_blank"}. There has to be an element on the list for each **process, thread and kthread** running on the system.
 
 This part has to be done exclusively by reading the raw contents of `/proc`. It is **strictly forbidden to use any external libraries or commands**.
 
@@ -102,11 +102,11 @@ When creating instances of `Process`, notice that the field `priority` can be `N
 When working on Prac-2.1 just set that field to `None`.
 
 ::: callout-tip
-Make sure to read through [the docs](https://docs.amsa.lol/_apidoc/amsatop.utils.html) of the helper classes and functions, we promise using them will make your life easier 😉!
+Make sure to read through [the docs](https://docs.amsa.lol/_apidoc/amsatop.utils.html){target="_blank"} of the helper classes and functions, we promise using them will make your life easier 😉!
 :::
 
 ::: {.callout-important title="**Very very important 🚨**"}
-It is **very important** that you make use of the property [proc_folder](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Htop.proc_folder) of the [Htop](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Htop) class when accessing files on `"/proc"`. **Do not use a hardcoded string "/proc"**, instead use `self.proc_folder` (which is a string that defaults to "/proc"). This is essential for the tests to work.
+It is **very important** that you make use of the property [proc_folder](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Htop.proc_folder){target="_blank"} of the [Htop](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Htop){target="_blank"} class when accessing files on `"/proc"`. **Do not use a hardcoded string "/proc"**, instead use `self.proc_folder` (which is a string that defaults to "/proc"). This is essential for the tests to work.
 
 Here is an example of **what NOT to do**:
 
@@ -136,11 +136,11 @@ class Amsatop(Htop):
 
 #### Hints about how to get the differents processes/threads/kthreads from /proc.
 
-As stated on the [week-2 slides](weeks/week-2), there are different ways to get information about /proc. We recommend you to use the following ones:
+As stated on the [week-2 slides](weeks/week-2){target="_blank"}, there are different ways to get information about /proc. We recommend you to use the following ones:
 
 - To detect processes or kernel threads, the algorithm is "trivial", the idea is:
     1) List the contents of the proc directory, and filter the ones that are digits (pids/tgid).
-    2) Now you have to filter if they're a process o kernel thread. We recommend you to [apply the mask](https://www.youtube.com/watch?v=AHiepE54l88) that the [htop code applies to the flags content](weeks/week-2.html#/properties) to see if they are a kernel thread [^1].
+    2) Now you have to filter if they're a process o kernel thread. We recommend you to [apply the mask](https://www.youtube.com/watch?v=AHiepE54l88){target="_blank"} that the [htop code applies to the flags content](weeks/week-2.html#/properties){target="_blank"} to see if they are a kernel thread [^1].
 	- If it's a kernel thread, add it to the list and stop analyzing.
 	- If it's a process, add it, but be aware that can have threads spawned (next point will explain this).
 - To detect threads, it's a little bit more complicated, you should:
@@ -171,7 +171,7 @@ if (lp.flags & PF_KTHREAD) != 0:
 
 ### Prac-2.2: Adding priorities
 
-Implement [get_priorities method](https://github.com/El-Despatx/amsatop-template/blob/main/src/myhtop/amsatop_solution.py#L14) so it returns a list of [Process](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process). It has to be the same list we obtained on **Prac-2.1** but now we want you to set the value of the `priority` field if available.
+Implement [get_priorities method](https://github.com/El-Despatx/amsatop-template/blob/main/src/myhtop/amsatop_solution.py#L14){target="_blank"} so it returns a list of [Process](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process){target="_blank"}. It has to be the same list we obtained on **Prac-2.1** but now we want you to set the value of the `priority` field if available.
 
 ::: callout-tip
 There are no hints here.... It should be pretty easy to implement if you already have Prac-2.1 solved.
@@ -185,7 +185,7 @@ It's normal to see some "strange" priorities on kernel threads!!
 
 ### Prac-2.3: Filtering where SIGHUP is ignored
 
-Implement [the get_hup method](https://github.com/El-Despatx/amsatop-template/blob/main/src/myhtop/amsatop_solution.py#L17) so it returns a list of [Process](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process). It has to be the same list we obtained on **Prac-2.2 (with the priorities)** but now we want to add a filter so only those processes that are ignoring the `SIGHUP` signal are returned, those that are not ignoring it are expected to **not be present on the returned list**. Be aware that **ignoring a signal is not the same as handling a signal**.
+Implement [the get_hup method](https://github.com/El-Despatx/amsatop-template/blob/main/src/myhtop/amsatop_solution.py#L17){target="_blank"} so it returns a list of [Process](https://docs.amsa.lol/_apidoc/amsatop.html#amsatop.Process){target="_blank"}. It has to be the same list we obtained on **Prac-2.2 (with the priorities)** but now we want to add a filter so only those processes that are ignoring the `SIGHUP` signal are returned, those that are not ignoring it are expected to **not be present on the returned list**. Be aware that **ignoring a signal is not the same as handling a signal**.
 
 #### Hints about detecting signals
 
@@ -195,7 +195,7 @@ In this context:
 
 > If bit (N − 1) of SigIgn is set, then signal number N is being ignored by the process.
 
-Keep in mind that [each signal corresponds to a number...](https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm)
+Keep in mind that [each signal corresponds to a number...](https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm){target="_blank"}
 
 ::: {.callout-important title="**Don't worry too much!🚨**"}
 It's normal to see some `kthreads` ignoring SIGHUP!! Don't worry too much about it!
@@ -214,7 +214,7 @@ sudo apt update && sudo apt install libfuse2t64
 
 ### Cloning the repository and set it up:
 
-Remember that, once you entered the Github Classroom on [section 2](act-2.qmd#delivery), you will have to clone your repository with [^2]:
+Remember that, once you entered the Github Classroom on [section 2](act-2.qmd#delivery){target="_blank"}, you will have to clone your repository with [^2]:
 
 ```{.bash}
 git clone <ssh_address_of_your_git_repository>
@@ -230,7 +230,7 @@ And then, you can enable the virtualenv on your current shell (zsh or bash) with
 source .venv/bin/activate 
 ```
 
-[^2]: If you don't have any idea of what we're talking about, revisit the [setting up the VM and brief git summary](/resources/vm_git.qmd)
+[^2]: If you don't have any idea of what we're talking about, revisit the [setting up the VM and brief git summary](/resources/vm_git.qmd){target="_blank"}
 
 ### Running tests:
 
@@ -273,7 +273,7 @@ Your final score will come from various parts:
 
 
 ::: callout-tip
-Keep in mind that the first two items (tests and linter) can be automatically verified using [Github Actions on your repository](/resources/gh_action.qmd)
+Keep in mind that the first two items (tests and linter) can be automatically verified using [Github Actions on your repository](/resources/gh_action.qmd){target="_blank"}
 :::
 
 
@@ -281,8 +281,8 @@ Keep in mind that the first two items (tests and linter) can be automatically ve
 
 1.  **No external python libraries** can be used, only `amsatop` and built-in libraries are allowed (e.g `os`, `typing`).
 2.  It is **forbidden to make python execute a Linux command** that will provide the information about processes.
-3.  The process information needed can **only be obtained by reading the contents of `/proc` and parsing it out** (remember you have [helpers](https://docs.amsa.lol/_apidoc/amsatop.utils.html) for that).
-4.  Make sure the tests are passing on the [Ubuntu VM](https://amsa.lol/#resources), we'll pass them on the VM too.
+3.  The process information needed can **only be obtained by reading the contents of `/proc` and parsing it out** (remember you have [helpers](https://docs.amsa.lol/_apidoc/amsatop.utils.html){target="_blank"} for that).
+4.  Make sure the tests are passing on the [Ubuntu VM](https://amsa.lol/#resources){target="_blank"}, we'll pass them on the VM too.
 5.  If you are a group of 2, both of you must contribute to the repoistory with at least 1 commit.
 
 ## 9. Doubts
