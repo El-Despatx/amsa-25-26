@@ -241,11 +241,13 @@ Are you already familiar with those?
 -   [`htop`](https://htop.dev/) is a program that uses [procfs](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c), and shows you the list of tasks and properties.
 
 ## Properties of procfs: Processes {.smaller}
+
 -   Doing an `ls -la /proc` **shows a the list of pids/tgids of processes and kthreads (NOT Threads!)**.
--   If a process (without threads) is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/tasks` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread of execution (one task_struct inside the kernel).
+-   If a process (without threads) is launched (e.g., `$cat ...`), running `$ls /proc/${pidOfCat}/task` will list a single thread. This thread's `tgid` (thread group ID) will be the same as `pidOfCat`, since the process consists of only one thread of execution (one task_struct inside the kernel).
 -   You can see more info about the current process or thread, inside `cat /proc/${pid}/stat` or `cat /proc/${pid}/status`
 
 ## Properties of procfs: Kernel Threads {.smaller}
+
 -   Doing an `ls -la /proc` **hhows a the list of pids/tgids of processes and kthreads (NOT Threads!)**.
 -   You can see more info about the current process or thread, inside `cat /proc/${tgid}/stat` [^3] or `cat /proc/${tgid}/status`
 -   A kernel thread, doesn't have an executable, so `cat /proc/${tgid}/exe` should give `no such file or directory`.
@@ -253,12 +255,14 @@ Are you already familiar with those?
 [^3]: In fact, htop uses stat for knowing if the task is a kernel thread see [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L302) and [this](https://github.com/htop-dev/htop/blob/main/linux/LinuxProcessTable.c#L1675)
 
 ## Properties of procfs: Threads {.smaller}
+
 -   But **each process can have multiple threads spawned**, this are listed on: `/proc/{pid_of_process}/tasks/{tgid}`
 
     ::: callout-warning
     Be aware that, if we have a process that spawns two threads, it will have 3 entries inside the tasks folder:
-      - One that is equal to the process id (`tgid == pid`)
-      - Two that are the spawned threads.
+
+    -   One that is equal to the process id (`tgid == pid`)
+    -   Two that are the spawned threads.
     :::
 
 -   Once you have a `tgid`, you can do `ls -la /proc/${tgid}` or `cd` into it.
@@ -342,7 +346,7 @@ And in Htop, you should see the following:
 
 -   Why htop shows kthreads, threads and not only processes: [Htop Issue](https://github.com/htop-dev/htop/issues/99)
 
--    How a Single Bit Inside Your Processor Shields Your Operating System's Integrity: [Youtube Video](https://www.youtube.com/watch?v=H4SDPLiUnv4)
+-   How a Single Bit Inside Your Processor Shields Your Operating System's Integrity: [Youtube Video](https://www.youtube.com/watch?v=H4SDPLiUnv4)
 
 -   Linux Kernel Internals: Process by Mapple Circuit: [Youtube Video](https://www.youtube.com/watch?app=desktop&v=NzKx9nleP5A)
 
@@ -354,7 +358,7 @@ And in Htop, you should see the following:
 -   [How the CPU privilege and protection works](https://manybutfinite.com/post/cpu-rings-privilege-and-protection/)
 -   [From The Transistor Book](https://www.fromthetransistor.com/): How your computer works, from a transistor to a fully edge operating system.
 
-## Additional Exercices {.smaller #extra}
+## Additional Exercices {#extra .smaller}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
