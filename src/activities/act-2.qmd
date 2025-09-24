@@ -128,7 +128,7 @@ class Amsatop(Htop):
         super().__init__()
 
     def get_processes(self) -> List[Process]:
-        for entry in os.listdir(self.proc_path): # Do it like this ✅
+        for entry in os.listdir(self.proc_folder): # Do it like this ✅
             if ...
 ```
 
