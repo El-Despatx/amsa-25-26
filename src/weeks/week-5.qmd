@@ -30,6 +30,10 @@ format: revealjs
 
 -   Example2: <https://example2.com>
 
+-  Introduction to Memory Management in Linux: https://www.youtube.com/watch?v=7aONIVSXiJ8
+
+-  Memory management in linux: https://www.youtube.com/watch?v=Gpm2-ktMLWs
+
 ## Additional Exercices {.smaller}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
