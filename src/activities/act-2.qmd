@@ -262,6 +262,10 @@ uv run coverage run -m pytest  -v -s
 uv run coverage report
 ```
 
+::: callout-tip
+Learn more about [pytest options here](/resources/pytest.qmd)
+:::
+
 ## 7. Evaluation
 
 Your final score will come from various parts:
@@ -285,7 +289,13 @@ Keep in mind that the first two items (tests and linter) can be automatically ve
 4.  Make sure the tests are passing on the [Ubuntu VM](https://amsa.lol/#resources), we'll pass them on the VM too.
 5.  If you are a group of 2, both of you must contribute to the repoistory with at least 1 commit.
 
-## 9. Doubts
+## 9. Resources
+
+ - [Python for begginers](/resources/python.qmd)
+ - [Pytest for begginers](/resources/pytest.qmd)
+ - [Executing Github Actions on your repository for knowing your mark](/resources/gh_action.qmd)
+
+## 10. Doubts
 
 Please don't hesitate to ask the teachers **any doubts**, there are no dumb questions, we're here to help.
 

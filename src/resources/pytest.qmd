@@ -1,0 +1,261 @@
+---
+subtitle: "Tips and understanding tests with pytest"
+format: html
+---
+
+# Introduction
+Pytest is a testing framework for python. You will probably allways run the tests with:
+```{.bash code-line-numbers="false"}
+ $ pytest
+```
+
+Or, if you're using uv in your project (Spoiler: We're using it on Prac-2, so you'll probably run it like this):
+```{.bash code-line-numbers="false"}
+ $ uv run pytest
+```
+
+# Viewing print output in pytest
+
+By default, Pytest only displays standard output (e.g., messages from print(...)) **when a test fails**. For example:
+
+```{.bash code-line-numbers="false"}
+test/prac_2_1/test_get_processes.py:16: AssertionError
+------------------------------------------------------------------------- Captured stdout call -------------------------------------------------------------------------
+Doing pid: 17571
+Doing pid: 17573
+======================================================================= short test summary info ========================================================================
+FAILED test/prac_2_1/test_get_processes.py::test_two_processes_two_threads - AssertionError: assert set() == {Process(pid=17573, command='python3', type=<TaskType.PROCE
+....
+```
+
+If you want to see print output even for passing tests, you can run Pytest with the -s option:
+```{.bash code-line-numbers="false"}
+$ uv run pytest -s
+```
+
+# Executing only one test case:
+Imagine you only want to run a single test case from the file `test/prac_2_1/test_get_processes.py`:
+
+```{.python code-line-numbers="false"}
+$ cat test/prac_2_1/test_get_processes.py
+
+...
+@with_proc_fs(proc_fs_path="test/prac_2_1/empty")
+def test_empty_proc_fs(amsatop: Amsatop):
+    processes = amsatop.get_processes()
+    assert len(processes) == 0
+
+
+@with_proc_fs(proc_fs_path="test/prac_2_1/one")
+def test_two_processes_two_threads(amsatop: Amsatop):
+    processes = amsatop.get_processes()
+    assert set(processes) == {
+        Process(pid=17571, command="python3", type=TaskType.PROCESS, priority=None),
+        Process(pid=17573, command="python3", type=TaskType.PROCESS, priority=None),
+        Process(pid=17574, command="python3", type=TaskType.THREAD, priority=None),
+        Process(pid=17575, command="python3", type=TaskType.THREAD, priority=None),
+    }
+
+....
+```
+
+You can do that with the `-k` flag, for example, for executing only the `test_two_processes_two_threads` inside the file `test/prac_2_1/test_get_processes.py`: 
+```{.bash code-line-numbers="false"}
+$ uv run pytest test/prac_2_1 -k 'test_two_processes_two_threads'
+```
+
+# Show all the output and difference between my solution and the test
+Consider this test:
+
+```{.python code-line-numbers="true"}
+@with_proc_fs(proc_fs_path="test/prac_2_1/one")
+def test_two_processes_two_threads(amsatop: Amsatop):
+    processes = amsatop.get_processes()
+    assert set(processes) == {
+        Process(pid=17571, command="python3", type=TaskType.PROCESS, priority=None),
+        Process(pid=17573, command="python3", type=TaskType.PROCESS, priority=None),
+        Process(pid=17574, command="python3", type=TaskType.THREAD, priority=None),
+        Process(pid=17575, command="python3", type=TaskType.THREAD, priority=None),
+    }
+```
+Here’s what happens:
+
+  - The test calls your implementation, amsatop.get_processes(), which returns a List[Process].
+
+  - The test wraps that list in set(processes) (in catalan, "Conjunt") and compares it to a set of expected Process objects. We use sets because:
+
+    - We don’t care about the order of the elements, and
+
+    - We don’t want duplicate entries to affect the comparison.
+
+If the test were written as:
+```{.python code-line-numbers="false"}
+assert processes == [
+    Process(pid=17571, …),
+    Process(pid=17573, …),
+    Process(pid=17574, …),
+    Process(pid=17575, …),
+]
+```
+Then even if you returned exactly the same elements, the test could fail due to ordering differences. Using a set avoids that.
+
+If we execute pytest on a "faulty" implementation, the output doesn't say much:
+```{.bash code-line-numbers="false"}
+$ uv run pytest test/prac_2_1 -k 'test_two_processes_two_threads'
+========================================================================= test session starts ==========================================================================
+platform linux -- Python 3.13.7, pytest-8.4.1, pluggy-1.6.0
+rootdir: /home/pablo/projects/amsatop-template
+configfile: pyproject.toml
+collected 4 items / 3 deselected / 1 selected
+
+test/prac_2_1/test_get_processes.py F                                                                                                                            [100%]
+=============================================================================== FAILURES ===============================================================================
+____________________________________________________________________ test_two_processes_two_threads ____________________________________________________________________
+
+amsatop = <myhtop.amsatop_solution.Amsatop object at 0x7ffff4de5d30>
+
+    @with_proc_fs(proc_fs_path="test/prac_2_1/one")
+    def test_two_processes_two_threads(amsatop: Amsatop):
+        processes = amsatop.get_processes()
+>       assert set(processes) == {
+            Process(pid=17571, command="python3", type=TaskType.PROCESS, priority=None),
+            Process(pid=17573, command="python3", type=TaskType.PROCESS, priority=None),
+            Process(pid=17574, command="python3", type=TaskType.THREAD, priority=None),
+            Process(pid=17575, command="python3", type=TaskType.THREAD, priority=None),
+        }
+E       AssertionError: assert set() == {Process(pid=...riority=None)}
+E
+E         Extra items in the right set:
+E         Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+E         Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+E         Process(pid=17571, command='pyt...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+test/prac_2_1/test_get_processes.py:16: AssertionError
+```
+This output tells you:
+
+  - Your implementation’s set is empty (set()), meaning no Process objects were returned.
+
+  - The expected set has several items (listed as “Extra items in the right set”).
+
+However, the output is truncated (or limited) by pytest’s default verbosity: it doesn’t fully show everything you may want to see.
+
+You can configure pytest so it does not truncate the output via the `-vv` flag:
+
+```{.bash code-line-numbers="false"}
+$ uv run pytest test/prac_2_1 -k 'test_two_processes_two_threads' -vv
+=============================================================================== FAILURES ===============================================================================
+____________________________________________________________________ test_two_processes_two_threads ____________________________________________________________________
+
+amsatop = <myhtop.amsatop_solution.Amsatop object at 0x7ffff4de5d30>
+
+    @with_proc_fs(proc_fs_path="test/prac_2_1/one")
+    def test_two_processes_two_threads(amsatop: Amsatop):
+        processes = amsatop.get_processes()
+>       assert set(processes) == {
+            Process(pid=17571, command="python3", type=TaskType.PROCESS, priority=None),
+            Process(pid=17573, command="python3", type=TaskType.PROCESS, priority=None),
+            Process(pid=17574, command="python3", type=TaskType.THREAD, priority=None),
+            Process(pid=17575, command="python3", type=TaskType.THREAD, priority=None),
+        }
+E       AssertionError: assert set() == {Process(pid=17573, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None), Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None), Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None), Process(pid=17571, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)}
+E
+E         Extra items in the right set:
+E         Process(pid=17573, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)
+E         Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+E         Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+E         Process(pid=17571, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)
+E
+E         Full diff:
+E         + set()
+E         - {
+E         -     Process(
+E         -         pid=17573,
+E         -         command='python3',
+E         -         type=<TaskType.PROCESS: 'process'>,
+E         -         priority=None,
+E         -     ),
+E         -     Process(
+E         -         pid=17575,
+E         -         command='python3',
+E         -         type=<TaskType.THREAD: 'thread'>,
+E         -         priority=None,
+E         -     ),
+E         -     Process(
+E         -         pid=17574,
+E         -         command='python3',
+E         -         type=<TaskType.THREAD: 'thread'>,
+E         -         priority=None,
+E         -     ),
+E         -     Process(
+E         -         pid=17571,
+E         -         command='python3',
+E         -         type=<TaskType.PROCESS: 'process'>,
+E         -         priority=None,
+E         -     ),
+E         - }
+
+test/prac_2_1/test_get_processes.py:16: AssertionError
+======================================================================= short test summary info ========================================================================
+FAILED test/prac_2_1/test_get_processes.py::test_two_processes_two_threads - AssertionError: assert set() == {Process(pid=17573, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None), Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None), Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None), Process(pid=17571, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)}
+
+  Extra items in the right set:
+  Process(pid=17573, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)
+  Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+  Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+  Process(pid=17571, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)
+
+  Full diff:
+  + set()
+  - {
+  -     Process(
+  -         pid=17573,
+  -         command='python3',
+  -         type=<TaskType.PROCESS: 'process'>,
+  -         priority=None,
+  -     ),
+  -     Process(
+  -         pid=17575,
+  -         command='python3',
+  -         type=<TaskType.THREAD: 'thread'>,
+  -         priority=None,
+  -     ),
+  -     Process(
+  -         pid=17574,
+  -         command='python3',
+  -         type=<TaskType.THREAD: 'thread'>,
+  -         priority=None,
+  -     ),
+  -     Process(
+  -         pid=17571,
+  -         command='python3',
+  -         type=<TaskType.PROCESS: 'process'>,
+  -         priority=None,
+  -     ),
+  - }
+=================================================================== 1 failed, 3 deselected in 1.58s ====================================================================
+```
+
+Wow! That's a lot of information! But if we read carefully this lines:
+
+```{.bash code-line-numbers="false"}
+FAILED test/prac_2_1/test_get_processes.py::test_two_processes_two_threads - AssertionError: assert set() == {Process(pid=17573, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None), Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None), Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None), Process(pid=17571, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)}
+
+  Extra items in the right set:
+  Process(pid=17573, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)
+  Process(pid=17574, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+  Process(pid=17575, command='python3', type=<TaskType.THREAD: 'thread'>, priority=None)
+  Process(pid=17571, command='python3', type=<TaskType.PROCESS: 'process'>, priority=None)
+```
+This tells us that our side (the left-hand set) is empty (set()), while the expected side (the right-hand set) has many Process(...) items. In other words, our implementation returned no processes, but the test expected several.
+
+# Using everything we've explained!
+
+Be aware that you can use all the flags we explained before simultaniously, for example:
+
+```{.bash code-line-numbers="false"}
+$ uv run pytest test/prac_2_1 -k 'test_two_processes_two_threads' -vv
+```
+
+Will only execute the test called `test_two_processes_two_threads`, and will print verbose (extra) information about it!
