@@ -19,7 +19,7 @@ website:
           text: "Week 3"
         - href: weeks/week-4.qmd
           text: "Week 4"
-      - text: "📚 Activites"
+      - text: "📚 Activities"
         menu:
         - href: activities/act-1.qmd
           text: "Activity 1"
