@@ -140,7 +140,7 @@ As stated on the [week-2 slides](weeks/week-2), there are different ways to get 
 
 - To detect processes or kernel threads, the algorithm is "trivial", the idea is:
     1) List the contents of the proc directory, and filter the ones that are digits (pids/tgid).
-    2) Now you have to filter if they're a process o kernel thread. We recommend you to [apply the mask](https://www.youtube.com/watch?v=AHiepE54l88) that the [htop code applies to the flags content](/weeks/week-2.html#/properties-of-procfs-kernel-threads) to see if they are a kernel thread [^1].
+    2) Now you have to filter if they're a process or kernel thread. We recommend you to [apply the mask](https://www.youtube.com/watch?v=AHiepE54l88) that the [htop code applies to the flags content](/weeks/week-2.html#/properties-of-procfs-kernel-threads) to see if they are a kernel thread [^1].
 	- If it's a kernel thread, add it to the list and stop analyzing.
 	- If it's a process, add it, but be aware that can have threads spawned (next point will explain this).
 - To detect threads, it's a little bit more complicated, you should:
