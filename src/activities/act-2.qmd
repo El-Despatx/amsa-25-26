@@ -287,7 +287,7 @@ Keep in mind that the first two items (tests and linter) can be automatically ve
 2.  It is **forbidden to make python execute a Linux command** that will provide the information about processes.
 3.  The process information needed can **only be obtained by reading the contents of `/proc` and parsing it out** (remember you have [helpers](https://docs.amsa.lol/_apidoc/amsatop.utils.html) for that).
 4.  Make sure the tests are passing on the [Ubuntu VM](https://amsa.lol/#resources), we'll pass them on the VM too.
-5.  If you are a group of 2, both of you must contribute to the repoistory with at least 1 commit.
+5.  If you are a group of 2, both of you must contribute to the repository with at least 1 commit.
 
 ## 9. Resources
 
