@@ -40,7 +40,7 @@ Every time you accept an assignment through Github classroom, a Github repositor
 
 **You can skip this step if you already have an SSH key configured on your machine to be used on Github**
 
-The first step will be to create an SSH key on your machien to authenticate to Github and be able to interact with it. For this, you can follow [Github's guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to do it.
+The first step will be to create an SSH key on your machine to authenticate to Github and be able to interact with it. For this, you can follow [Github's guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to do it.
 
 ``` bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -69,7 +69,7 @@ Next move onto the directory where you wish to clone your repository and type:
 git clone <SSH direction>
 ```
 
-Now you have your projecto on a folder on your computer and you can work on it as if it was any normal folder.
+Now you have your project on a folder on your computer and you can work on it as if it was any normal folder.
 
 ### Uploading new versions of the project
 
@@ -79,7 +79,7 @@ Now that we've added changes to our folder, it's time to commit and upload them.
 git status
 ```
 
-Tells you the current state of the repository. On a folder with uncomited changes it will say something like:
+Tells you the current state of the repository. On a folder with uncommited changes it will say something like:
 
 ![](images/paste-3.png)
 
@@ -90,7 +90,7 @@ git add <files>
 ```
 ![](images/paste-4.png)
 Now, our files are added and tracked.
-The next step is to commit the changes, making a new "snapshot" of our files
+The next step is to commit the changes, making a new "snapshot" of our files.
 Do so with:
 ```bash
 git commit -m "your message here"
