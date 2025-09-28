@@ -38,5 +38,4 @@ Having said that, we encourage you to give it a try and show us the results, we'
 
 -   [Guia docent](https://guiadocent.udl.cat/html/2025-26_102013)
 -   [Python Resources for Beginners](resources/python.qmd)
--   [Learning about Pytest](resources/pytest.qmd)
 -   [Setting up the subject's virtual machine and git brief](resources/vm_git.qmd)
