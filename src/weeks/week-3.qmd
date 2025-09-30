@@ -13,11 +13,16 @@ format: revealjs
 
 # Scheduler
 
-![](figures/week-3/paste-1.png){fig-align="center"}
+![](figures/week-3/image.png){fig-align="center"}
 
 ## How does it identify these tasks?
 
--   Linux doesn't differenciate between processes and threads, in fact, it has a struct ([task_struct](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L812)) that is a Kernel descriptor for both threads and processes (tasks).
+-   Linux doesn't differenciate between processes and threads, in fact, it has a struct ([task_struct](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched.h#L812)) that is a Kernel descriptor for both threads and processes (tasks). 
+
+::: {.fragment .callout-note}
+
+In fact, this struct ID is just the PID if it's a process, and the TGID if it's a thred (or kernel thread), but he doesn't care. It's the same for him
+:::
 
 -   Threads are just tasks sharing resources.
 
@@ -35,7 +40,7 @@ With `priority`, a number tied to each task
 -   Only for **certain scheduling algorithms**
 -   Can be **changed**
 
-## How can we change the priority? The `nice` command
+## How can we change the priority? The `nice` command {.smaller}
 
 When a program is nice, it leaves more time for the other programs, leaving more room to other ones. By using `nice`, this is exactly what we do, make it "nicer" and alter it's priority. In fact, the [nice program code](https://github.com/coreutils/coreutils/blob/master/src/nice.c#L44) is really simple:
 
@@ -46,6 +51,11 @@ When a program is nice, it leaves more time for the other programs, leaving more
   execvp (argv[i], &argv[i]);
 //...
 ```
+
+::: {.callout-note}
+- Modifying the priority by making it less nice makes it mandatory to run the command with sudo
+- Sudo is not needed the other way round
+:::
 
 ## Internal priority and nice priority
 
@@ -68,6 +78,13 @@ static inline long rlimit_to_nice(long prio)
 
 See more on [the linux kernel sched code](https://elixir.bootlin.com/linux/v6.16.4/source/include/linux/sched/prio.h#L28)
 
+# Quizz
+
+## Nice & Priority questions
+
+-   Why do we need sudo to lower nice?
+-   Which priority uses our system internally to keep track of priority?
+
 # References {.smaller}
 
 -   Linux Scheduling Performance: <https://www.youtube.com/watch?v=8g9fG7cApbc>
@@ -78,7 +95,7 @@ See more on [the linux kernel sched code](https://elixir.bootlin.com/linux/v6.16
 
 -   Understanding why we need an scheduler (the PCB named on this video is called `task_struct` on linux): <https://www.youtube.com/watch?v=O2tV9q6784k>
 
-## Additional Exercices {.smaller #extra}
+## Additional Exercices {#extra .smaller}
 
 ::: fragment
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "References" first, and then try to do this exercises.
@@ -86,7 +103,7 @@ If you really want to understand a little bit more what happens under the hood, 
 
 -   Implement your own "nice" with Python. Assume all parameters will be correct, it should execute via:
 
-::: {.fragment}
+::: fragment
 ``` bash
 $ python3 my_nice.py <name_of_the_program_you_want_to_be_nice> <nice_value>
 ```
