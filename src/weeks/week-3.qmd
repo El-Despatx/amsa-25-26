@@ -52,7 +52,7 @@ When a program is nice, it leaves more time for the other programs, leaving more
 //...
 ```
 
-::: {.callout-note}
+::: {.callout-note .fragment}
 - Modifying the priority by making it less nice makes it mandatory to run the command with sudo
 - Sudo is not needed the other way round
 :::
