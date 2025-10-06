@@ -25,7 +25,7 @@
       });
     in {
       devShells.${system}.default = pkgs.mkShell {
-        buildInputs = [ quarto-dev pkgs.vscode pkgs.pandoc pkgs.fontconfig pkgs.texliveTeTeX ];
+        buildInputs = [ quarto-dev pkgs.vscode pkgs.pandoc pkgs.fontconfig pkgs.texliveTeTeX pkgs.chromium ];
         shellHook = ''
           export LD_LIBRARY_PATH=${pkgs.lib.getLib pkgs.fontconfig}/lib:${pkgs.freetype}/lib:$LD_LIBRARY_PATH
           # export LD_PRELOAD=${pkgs.fontconfig}/lib/libfontconfig.so.1:${pkgs.freetype}/lib/libfreetype.so.6
@@ -35,7 +35,7 @@
         pname = "amsa-slides";
         version = "2025.2026.v1";
         src = ./src;
-        buildInputs = [ quarto pkgs.which pkgs.pandoc pkgs.fontconfig (pkgs.texlive.combine {
+        buildInputs = [ quarto pkgs.which pkgs.pandoc pkgs.fontconfig pkgs.chromium (pkgs.texlive.combine {
         inherit (pkgs.texlive)
         scheme-medium  # or scheme-small if you want minimal
         collection-latexextra

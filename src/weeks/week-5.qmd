@@ -7,8 +7,205 @@ format: revealjs
 # Goals for today
 
 -   Any questions from the previous session?
+-   Understand memory layout of a process
 -   Understand Swap
 -   Present and explain Prac-3.1
+
+# Recap
+-   From zero to Linux
+-   Linux concept of a: `task` (prac-2).
+-   In the following three sessions we will see:
+    - Memory
+    - FileSystems
+
+# How does memory work on linux?
+
+-   Each process have a Virtual Address Space.
+-   Every Virtual Address Space have "more or less" the same "layout".
+-   The `unit` of the Virtual Address Space is a "page".
+-   Since every process has his own virtual address space, means that, two processes, can have the same virtual address pointing to a different page!
+
+
+# Virtual Address space layout
+
+Lorem ipsum
+
+
+## Text {.smaller}
+
+Just the text (instructions) of the program.
+
+## Data {.smaller}
+
+
+::: fragment
+``` {.c code-line-numbers="1-6|2"}
+// This goes to the data segment of the process VirtualSpace
+int my_global_variable = 5;
+
+int main() {
+  // Main code here...
+}
+```
+:::
+
+
+## Stack {.smaller}
+
+Every time we call a function, the contents of it goes to the stack. 
+
+::::: columns
+::: {.column width="50%"}
+
+``` {.c code-line-numbers="1-16|12|1|2|14|5|6|7|8|14|15|16" }
+void func_1() {
+  float my_var = 0.0f;
+}
+
+int func_2() {
+  int y = 1;
+  int z = 1;
+  return y + z;
+}
+
+int main() {
+  int test = 0;
+  func_1();
+  test = func_2();
+  test = 1;
+}
+```
+:::
+
+
+::: {.column width="50%"}
+
+<section>
+  <img class=fragment code-fragment-index="1" src="figures/week-5/stack-example/1.png" style="position: absolute; top: 40%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="3" src="figures/week-5/stack-example/2.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="4" src="figures/week-5/stack-example/3.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="5" src="figures/week-5/stack-example/4.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="6" src="figures/week-5/stack-example/5.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="7" src="figures/week-5/stack-example/6.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="8" src="figures/week-5/stack-example/7.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="9" src="figures/week-5/stack-example/8.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="10" src="figures/week-5/stack-example/9.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="11" src="figures/week-5/stack-example/10.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+</section>
+
+:::
+
+
+:::::
+
+
+## Stack example, but now with pointers!
+
+::: fragment
+``` {.c code-line-numbers="1-15|11|12|1|2|13|5|6|7|13"}
+void func_1(int *x) {
+  *x = 1;
+}
+
+int func_2() {
+  int y = 3;
+  return y;
+}
+
+int main() {
+  int x = 0;
+  func_1(&x);
+  x = func_2();
+  exit(0);
+}
+```
+:::
+
+## Heap
+
+What if we want a piece of memory that, 
+
+## How to allocate memory from the heap
+
+There are two syscalls `brk/sbrk` and `mmap` for allocating memory and `unmmap` / `brk/sbrk` for deallocating.
+
+You'll probably never use this and use the glibc implementation called `malloc` and `free`.
+
+```{.language=c}
+void func_1(int *x) {
+  *x = 1;
+}
+
+int func_2(int *y) {
+  *y = 20;
+}
+
+int main() {
+  int *var = malloc(sizeof(int));
+  *var = 5; // Set the `var` contents to 5
+  func_1(var);
+  // Now the `var` contents are equal to 1 (changed on func_1)
+  func_2(var);
+  // Now the `var` contents are equal to 20 (changed on func_2)
+  free(var);
+  // Now the `var` virtual memory address is useless, since we
+  // sayed that we want to `free` this memory.
+}
+```
+
+### If I am out of RAM?
+
+- Linux will try to flush the memory related to files (this means, that will move the new contents from ram to the disk).
+- But... What happens if everything (or most) of what we have on memory comes from `malloc`? There's no file to move this information on our FileSystem!
+- We have two options here:
+  1) To kill the process (OOM Killer).
+  2) Send the pages to a `swap partition` or a `swap file` and, when a program ask for this pages, generate a `PageFault` fetch them from the disk and put it again on ram.
+
+## Swap Partition vs Swap File.
+- Swap partition is a partition on the disk that it's occupied only for this cases.
+
+```{.language=bash}
+NAME               MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+nvme0n1            259:0    0 476,9G  0 disk
+├─nvme0n1p1        259:1    0   512M  0 part  /boot
+├─nvme0n1p2        259:2    0     4G  0 part  [SWAP]
+└─nvme0n1p3        259:3    0 472,4G  0 part
+  └─crypted        254:0    0 472,4G  0 crypt
+    └─root_vg-root 254:1    0 472,4G  0 lvm   /
+```
+
+- Swap file: Create a file on your current filesystem.
+
+## How to create a swapfile.
+
+Explain `free` command, `mkswap` and `swapon`.
+
+```{.language=bash}
+# mkswap -U clear --size 4G --file {full_path_of_the_swapfile}
+```
+To enable it:
+```{.language=bash}
+# swapon {full_path_of_the_swapfile}
+```
+
+To disable it:
+```{.language=bash}
+# swapoff {full_path_of_the_swapfile}
+```
+
+If you want to enable the swapfile every time your machine boots, you can add a [systemd service that enables it](https://wiki.archlinux.org/title/Swap#Swap_file_creation)
+
+## How to check if a swapfile is working.
+- See how much RAM memory do you have on your VM / PC with the `free` command.
+- Create a c program that:
+  - Allocates (size_of_your_ram + some_arbitrary_number) with the `malloc` glibc function.
+  - Use the allocated memory (you can use the `memset` function or a loop for assigning values) [^1] 
+- Check with the `free` that swap is being used.
+
+[^1]: This is important because, if you don't use the memory, linux doesn't really allocate the pages.
+
+## Prac-3.1
+Now yes! The Prac-3.1
 
 ## Callouts {.smaller}
 
