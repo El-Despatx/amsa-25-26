@@ -5,3 +5,4 @@ docs
 _site
 src/.quarto
 .direnv
+src/site_libs/**/*
