@@ -39,7 +39,6 @@ Caution is another type of callout.
 Important is another type of callout.
 :::
 
-
 ## Columns
 
 Some other nice things are columns:
@@ -66,14 +65,14 @@ Some other nice things are columns:
 
 ## Tables
 
-| Column 1      | Column 2                                          |
-|-----------|---------------------------------------------------|
-| **Week 0**     | 📖 **Virtualization & Containers** intro          |
-| **Week 1**    | 📖 Explain **PRAC-4.1**                           |
+| Column 1   | Column 2                                 |
+|------------|------------------------------------------|
+| **Week 0** | 📖 **Virtualization & Containers** intro |
+| **Week 1** | 📖 Explain **PRAC-4.1**                  |
 
 ## Smaller slides {.smaller}
 
-- Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
+-   Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
 
 ## Figures
 
@@ -113,7 +112,7 @@ This section can be difficult to follow. If you're an advanced Linux user and yo
 
 -   Example2: <https://example2.com>
 
-## Additional Exercices {.smaller}
+## Additional Exercices {#extra .smaller}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
