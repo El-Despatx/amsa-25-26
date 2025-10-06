@@ -81,7 +81,7 @@ int main() {
 ::: {.column width="50%"}
 
 <section>
-  <img class=fragment code-fragment-index="1" src="figures/week-5/stack-example/1.png" style="position: absolute; top: 40%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="1" src="figures/week-5/stack-example/1.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
   <img class=fragment code-fragment-index="3" src="figures/week-5/stack-example/2.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
   <img class=fragment code-fragment-index="4" src="figures/week-5/stack-example/3.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
   <img class=fragment code-fragment-index="5" src="figures/week-5/stack-example/4.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
@@ -99,10 +99,17 @@ int main() {
 :::::
 
 
+# Stack
+
+With pointers 
+
 ## Stack example, but now with pointers!
 
-::: fragment
-``` {.c code-line-numbers="1-15|11|12|1|2|13|5|6|7|13"}
+::::: columns
+
+::: {.column width="50%"}
+
+``` {.c code-line-numbers="1-15|11|1|2|13|5|6|7|13" }
 void func_1(int *x) {
   *x = 1;
 }
@@ -121,9 +128,28 @@ int main() {
 ```
 :::
 
+
+::: {.column width="50%"}
+
+<section>
+  <img class=fragment code-fragment-index="1" src="figures/week-5/stack-pointers/1.png" style="position: absolute; top: 40%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="2" src="figures/week-5/stack-pointers/2.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="3" src="figures/week-5/stack-pointers/3.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="4" src="figures/week-5/stack-pointers/4.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="5" src="figures/week-5/stack-pointers/5.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="6" src="figures/week-5/stack-pointers/6.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="7" src="figures/week-5/stack-pointers/7.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+  <img class=fragment code-fragment-index="8" src="figures/week-5/stack-pointers/8.png" style="position: absolute; top: 20%; left: 60%; width: 30%; height: auto;">
+</section>
+
+:::
+
+:::::
+
+
 ## Heap
 
-What if we want a piece of memory that, 
+What if we want a piece of memory that, we can do whatever we want
 
 ## How to allocate memory from the heap
 
@@ -131,7 +157,15 @@ There are two syscalls `brk/sbrk` and `mmap` for allocating memory and `unmmap` 
 
 You'll probably never use this and use the glibc implementation called `malloc` and `free`.
 
-```{.language=c}
+# Example of HEAP
+
+## Example
+
+::::: columns
+
+::: {.column width="50%"}
+
+``` {.c code-line-numbers="1-15|10|11|1|2|13|5|6|7|13" }
 void func_1(int *x) {
   *x = 1;
 }
@@ -142,18 +176,36 @@ int func_2(int *y) {
 
 int main() {
   int *var = malloc(sizeof(int));
-  *var = 5; // Set the `var` contents to 5
+  *var = 5;
   func_1(var);
-  // Now the `var` contents are equal to 1 (changed on func_1)
   func_2(var);
-  // Now the `var` contents are equal to 20 (changed on func_2)
   free(var);
   // Now the `var` virtual memory address is useless, since we
   // sayed that we want to `free` this memory.
 }
 ```
+:::
 
-### If I am out of RAM?
+
+::: {.column width="50%"}
+
+<section>
+  <img class=fragment code-fragment-index="1" src="figures/week-5/heap/1.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="2" src="figures/week-5/heap/2.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="3" src="figures/week-5/heap/3.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="4" src="figures/week-5/heap/4.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="5" src="figures/week-5/heap/5.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="6" src="figures/week-5/heap/6.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="7" src="figures/week-5/heap/7.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="8" src="figures/week-5/heap/8.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="9" src="figures/week-5/heap/9.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+</section>
+
+:::
+
+:::::
+
+## If I am out of RAM?
 
 - Linux will try to flush the memory related to files (this means, that will move the new contents from ram to the disk).
 - But... What happens if everything (or most) of what we have on memory comes from `malloc`? There's no file to move this information on our FileSystem!
