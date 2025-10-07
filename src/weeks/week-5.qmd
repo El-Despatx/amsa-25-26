@@ -274,40 +274,41 @@ nvme0n1            259:0    0 476,9G  0 disk
 
 [^1]: This is important because, if you don't use the memory, linux doesn't really allocate the pages.
 
-## Prac-3.1 {.smaller}
-Now yes! The Prac-3.1
-
-## Callouts {.smaller}
-
-- https://chrisdown.name/2018/01/02/in-defence-of-swap.html
-
-- https://wiki.archlinux.org/title/Swap
-
-- https://elixir.bootlin.com/linux/v6.16.4/source/mm/swapfile.c#L3260
-
-- https://docs.kernel.org/power/swsusp-and-swap-files.html
-
 # Quizz
+
+## Memory
+
+- What happens if I overflow the stack?
+- When working with multiple threads (SCP-related), what issues might arise if I pass a reference to a stack-allocated memory chunk?
+
+## Swap
+
+- What happens if I don't have a swap partition/swapile and my memory is full?
+- What happens if my swap file is full?
 
 # References
 
 ## Really Recommended References: {.smaller}
 
--   Example: <https://example.com>
+- Linux Kernel Developer talks about swap: <https://chrisdown.name/2018/01/02/in-defence-of-swap.html>
 
--   Example2: <https://example2.com>
+- Arch Linux Wiki: <https://wiki.archlinux.org/title/Swap>
 
--  Introduction to Memory Management in Linux: https://www.youtube.com/watch?v=7aONIVSXiJ8
+- Linux Kernel docs talk about swap and hibernation: <https://docs.kernel.org/power/swsusp-and-swap-files.html>
 
--  Memory management in linux: https://www.youtube.com/watch?v=Gpm2-ktMLWs
+- Swapon syscall definition: <https://elixir.bootlin.com/linux/v6.16.4/source/mm/swapfile.c#L3260>
+
 
 ## Additional Exercices {.smaller}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
--   Example: <https://example.com>
+- Play with the swapiness of your computer: <https://www.ibm.com/docs/en/license-metric-tool/9.2.0?topic=tdad-configuring-swappiness-in-linux-hosting-db2-database-server>
 
--   Example2: <https://example2.com>
+::: {.callout-note title="We have time?"}
+Observe how the output of the `free` command changes each time you run `prac-3.1` with different swappiness values (e.g., 0 and 100). Then, create some plots to visualize the differences!
+:::
+
 
 ## Activity 3 {.smaller}
 
