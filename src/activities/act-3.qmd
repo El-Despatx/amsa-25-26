@@ -1,7 +1,62 @@
 ---
 subtitle: "Prac-3: Configuring some FS and Quotas!"
-<!-- bibliography: references.bib -->
 format: html
 ---
 
-## TODO: Explain
+## 1. Introduction
+In this activity, we’ll create a configuration script that automates several key system administration tasks.
+Our script will be divided on three parts, and will do the following:
+
+  - Create and enable a swap file, allowing the system to use part of the disk as virtual memory when physical RAM is full.
+
+  - Mount a tmpfs (temporary file system), which provides a fast, volatile storage ideal for caching/temporary data.
+
+  - Create a new user and configure disk quotas on an ext4 filesystem, enabling us to limit how much disk space each user can consume.
+
+## 2. Delivery
+
+*Accept the assignment in Github Classroom, [todo](todo-link)*
+
+To complete this activity, you must do the following for each sub-delivery (PRAC-3.1, 3.2 and 3.3):
+
+1.  Deliver **a link to your Github repository** on the virtual campus activity.
+
+2.  Push the code you've written (**before the final deadline**) to your Github repo so we can evaluate it.
+
+::: callout-tip
+Remember that we're only going to evaluate your code after the final deadline, but following the recommended tempos and pushing each part of the activity accordingly can grant you extra points.
+:::
+
+## 3. Tasks
+
+### PRAC-3.1: Create and enable swap file, and test it
+
+pass
+
+### Prac-3.2: Mount a tmpfs fs, and test it
+
+pass
+
+### Prac-3.3: Create a user and configure quotas
+
+pass
+
+## 4. Evaluation
+
+Your final score will come from various parts:
+
+-   Prac-3.1 code (test and script): 30%
+-   Prac-3.2 code (test and script): 30%
+-   Prac-3.3 code (test and script): 30%
+-   Best practices on code (test and script): 10%
+
+## 5. Rules
+
+1.  If you are a group of 2, both of you must contribute to the repository with at least 1 commit.
+2.  You have to provide
+
+## 6. Doubts
+
+Please don't hesitate to ask the teachers **any doubts**, there are no dumb questions, we're here to help.
+
+You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
