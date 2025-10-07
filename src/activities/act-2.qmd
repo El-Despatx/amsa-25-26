@@ -136,7 +136,7 @@ class Amsatop(Htop):
 
 #### Hints about how to get the differents processes/threads/kthreads from /proc.
 
-As stated on the [week-2 slides](weeks/week-2.qmd#/procfs), there are different ways to get information about /proc. We recommend you to use the following ones:
+As stated on the [week-2 slides](/weeks/week-2.html#/procfs), there are different ways to get information about /proc. We recommend you to use the following ones:
 
 - To detect processes or kernel threads, the algorithm is "trivial", the idea is:
     1) List the contents of the proc directory, and filter the ones that are digits (pids/tgid).
