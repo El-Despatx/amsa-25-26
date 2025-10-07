@@ -125,8 +125,8 @@ sudo useradd -m test
 # Set a password
 sudo passwd test
 
-# Add to 'sudo' group (if desired)
-sudo usermod -aG sudo
+# Add to 'docker' group (if desired)
+sudo usermod -aG docker
 ```
 
 ::: {.callout-tip .fragment}
@@ -176,6 +176,10 @@ sudo su test
 
 ::: {.callout-note .fragment}
 Why does the first command ask for `test` user password and the second one ask for our password?
+:::
+
+::: {.callout-tip .fragment}
+Use the `whoami` command to check which is your current user.
 :::
 
 ------------------------------------------------------------------------
@@ -247,10 +251,13 @@ sudo truncate -s 1G /var/lib/amsa/quota_disk
 # 2) Make it ext4
 sudo mkfs.ext4 -F /var/lib/amsa/quota_disk
 
-# 3) Create mount point
+# 3) Enable ext4 quota feature
+sudo tune2fs -O quota /var/lib/amsa/quota_disk
+
+# 4) Create mount point
 sudo mkdir -p /mnt/quota
 
-# 4) Mount with quotas enabled
+# 5) Mount with quotas enabled
 sudo mount -o loop,usrquota,grpquota /var/lib/amsa/quota_disk /mnt/quota
 ```
 
@@ -263,15 +270,13 @@ For **persistence**, add an `/etc/fstab` entry:
 
 ------------------------------------------------------------------------
 
-## Initialize and enable quotas {.smaller}
+## Initialize and enable quotas
+
+Now we're redy to configure quotas on the filesystem
 
 ``` bash
-# Ensure quota tools are available
+# 1) Ensure quota tools are available
 sudo apt update && sudo apt install quota
-
-# 1) Scan/create quota files
-sudo quotacheck -cug /mnt/quota
-#  -c create, -u users, -g groups
 
 # 2) Turn quotas on (users and groups)
 sudo quotaon -v /mnt/quota
@@ -279,10 +284,6 @@ sudo quotaon -v /mnt/quota
 # 3) Verify current usage/limits
 sudo repquota /mnt/quota
 ```
-
-::: {.callout-note .fragment}
-Quota files `aquota.user` and `aquota.group` will be created at the **root of the mounted fyle system** (`/mnt/quota`). 
-:::
 
 ------------------------------------------------------------------------
 
