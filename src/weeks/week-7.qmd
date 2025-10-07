@@ -171,7 +171,7 @@ To switch to another user, we do not need to log out and log back in as the othe
 su test
 
 # Using sudo (will ask for our user password)
-sudo su labuser
+sudo su test
 ```
 
 ::: {.callout-note .fragment}
