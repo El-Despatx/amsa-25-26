@@ -15,6 +15,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 -   [Week 2: Linux syscalls, processes and ProcFS + PRAC 2.1](weeks/week-2.qmd)
 -   [Week 3: Scheduling and nice + PRAC 2.2](weeks/week-3.qmd)
 -   [Week 4: Communicating processes + PRAC 2.3](weeks/week-4.qmd)
+-   [Week 5: Memory Layout and Swap + PRAC 3.1](weeks/week-5.qmd)
 -   [Week 6: RAM disks and tmpfs + PRAC 3.2](weeks/week-6.qmd)
 
 ## 📝 Activities

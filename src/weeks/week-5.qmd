@@ -28,14 +28,18 @@ format: revealjs
 
 # Virtual Address space layout
 
-Lorem ipsum
+## Layout
+
+![](figures/week-5/virtual-memory-of-process.png){fig-align="center" width="60%"}
 
 
-## Text {.smaller}
+## Text Segment {.smaller}
 
-Just the text (instructions) of the program.
+The code (binary) of the program, loaded to RAM.
 
-## Data {.smaller}
+## Data Segment
+
+That's where global and static variables live, since they will live until the process dies.
 
 
 ::: fragment
@@ -52,7 +56,7 @@ int main() {
 
 ## Stack {.smaller}
 
-Every time we call a function, the contents of it goes to the stack. 
+Every time we call a function, it pushes it contents to the `stack`. The variables initialized on this function also live inside his stack frame
 
 ::::: columns
 ::: {.column width="50%"}
@@ -98,12 +102,14 @@ int main() {
 
 :::::
 
+# Did we get it? {.smaller}
 
-# Stack
+- Really?
+- Sure?
 
-With pointers 
+## Stack example, but now with pointers! {.smaller}
 
-## Stack example, but now with pointers!
+Pointers can be scary, but let's see them in action!
 
 ::::: columns
 
@@ -146,20 +152,23 @@ int main() {
 
 :::::
 
+# The Heap{.smaller}
 
-## Heap
+## Heap {.smaller}
 
-What if we want a piece of memory that, we can do whatever we want
+- If we don’t know how large an array (or whatever data structure) needs to be, or if we need to store data across multiple stack frames, we can use the heap.
+
+- We can allocate memory in this region of the virtual address space and free it when it’s no longer needed.
+
+- Unlike the stack, the heap doesn’t have a fixed size limit (other than available system memory).
 
 ## How to allocate memory from the heap
 
-There are two syscalls `brk/sbrk` and `mmap` for allocating memory and `unmmap` / `brk/sbrk` for deallocating.
+- There are two syscalls `brk/sbrk` and `mmap` for allocating memory and `unmmap` / `brk/sbrk` for deallocating.
 
-You'll probably never use this and use the glibc implementation called `malloc` and `free`.
+- **You'll probably never use the syscalls**, and use the glibc implementation called `malloc` and `free`.
 
-# Example of HEAP
-
-## Example
+## Example of using Heap memory
 
 ::::: columns
 
@@ -190,33 +199,38 @@ int main() {
 ::: {.column width="50%"}
 
 <section>
-  <img class=fragment code-fragment-index="1" src="figures/week-5/heap/1.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="2" src="figures/week-5/heap/2.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="3" src="figures/week-5/heap/3.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="4" src="figures/week-5/heap/4.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="5" src="figures/week-5/heap/5.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="6" src="figures/week-5/heap/6.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="7" src="figures/week-5/heap/7.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="8" src="figures/week-5/heap/8.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
-  <img class=fragment code-fragment-index="9" src="figures/week-5/heap/9.png" style="position: absolute; top: 20%; left: 60%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="1" src="figures/week-5/heap/1.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="2" src="figures/week-5/heap/2.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="3" src="figures/week-5/heap/3.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="4" src="figures/week-5/heap/4.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="5" src="figures/week-5/heap/5.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="6" src="figures/week-5/heap/6.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="7" src="figures/week-5/heap/7.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="8" src="figures/week-5/heap/8.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
+  <img class=fragment code-fragment-index="9" src="figures/week-5/heap/9.png" style="position: absolute; top: 20%; left: 50%; width: 50%; height: auto;">
 </section>
 
 :::
 
 :::::
 
-## If I am out of RAM?
+# What happens if my process allocates a lot of memory?
 
-- Linux will try to flush the memory related to files (this means, that will move the new contents from ram to the disk).
-- But... What happens if everything (or most) of what we have on memory comes from `malloc`? There's no file to move this information on our FileSystem!
-- We have two options here:
-  1) To kill the process (OOM Killer).
-  2) Send the pages to a `swap partition` or a `swap file` and, when a program ask for this pages, generate a `PageFault` fetch them from the disk and put it again on ram.
+## Possible solutions {.smaller}
 
-## Swap Partition vs Swap File.
+- Linux will first try to free up memory by flushing file-related caches (meaning it writes modified file data from RAM back to disk).
+
+- But what happens if most of the memory was allocated using malloc? In that case, there’s no corresponding file on the filesystem to write this data to! At this point, the system has two options:
+
+  1) Kill the process: The Out-Of-Memory (OOM) killer from the kernel may terminate one or more processes to free up memory.
+
+  2) Use swap space: The kernel can move memory pages to a swap partition or swap file. When a process later needs those pages, a page fault occurs, and the kernel retrieves the data from disk back into RAM.
+
+## Swap Partition vs Swap File {.smaller}
+
 - Swap partition is a partition on the disk that it's occupied only for this cases.
 
-```{.language=bash}
+```{.bash}
 NAME               MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
 nvme0n1            259:0    0 476,9G  0 disk
 ├─nvme0n1p1        259:1    0   512M  0 part  /boot
@@ -228,26 +242,30 @@ nvme0n1            259:0    0 476,9G  0 disk
 
 - Swap file: Create a file on your current filesystem.
 
-## How to create a swapfile.
+## How to create a swapfile. {.smaller}
 
-Explain `free` command, `mkswap` and `swapon`.
+- You can create a swapfile with `mkswap` and activate it with `swapon`.
 
-```{.language=bash}
-# mkswap -U clear --size 4G --file {full_path_of_the_swapfile}
-```
-To enable it:
-```{.language=bash}
-# swapon {full_path_of_the_swapfile}
-```
+- Create:
 
-To disable it:
-```{.language=bash}
-# swapoff {full_path_of_the_swapfile}
-```
+  ```{.bash}
+  # mkswap -U clear --size 4G --file {full_path_of_the_swapfile}
+  ```
+- Enable:
+  ```{.bash}
+  # swapon {full_path_of_the_swapfile}
+  ```
+- Disable it:
+  ```{.bash}
+  # swapoff {full_path_of_the_swapfile}
+  ```
 
-If you want to enable the swapfile every time your machine boots, you can add a [systemd service that enables it](https://wiki.archlinux.org/title/Swap#Swap_file_creation)
+  ::: {.callout-note title="We have time?"}
+  If you want to enable the swapfile every time your machine boots, you can add a [systemd service that enables it](https://wiki.archlinux.org/title/Swap#Swap_file_creation)
+  :::
 
-## How to check if a swapfile is working.
+## How to check if a swapfile is working.{.smaller}
+
 - See how much RAM memory do you have on your VM / PC with the `free` command.
 - Create a c program that:
   - Allocates (size_of_your_ram + some_arbitrary_number) with the `malloc` glibc function.
@@ -256,7 +274,7 @@ If you want to enable the swapfile every time your machine boots, you can add a 
 
 [^1]: This is important because, if you don't use the memory, linux doesn't really allocate the pages.
 
-## Prac-3.1
+## Prac-3.1 {.smaller}
 Now yes! The Prac-3.1
 
 ## Callouts {.smaller}
