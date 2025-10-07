@@ -23,7 +23,10 @@ website:
           text: "Week 5"
         - href: weeks/week-6.qmd
           text: "Week 6"
-      - text: "📚 Activities"
+        - href: weeks/week-7.qmd
+          text: "Week 7"
+
+      - text: "📚 Activites"
         menu:
         - href: activities/act-1.qmd
           text: "Activity 1"
@@ -43,6 +46,8 @@ website:
           text: "Week 5"
         - href: weeks/week-6.qmd#extra
           text: "Week 6"
+        - href: weeks/week-7.qmd#extra
+          text: "Week 7"
 
 title: "AMSA"
 

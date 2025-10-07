@@ -4,14 +4,14 @@ format: html
 ---
 
 ## 1. Introduction
-In this activity, we’ll create a configuration script that automates several key system administration tasks.
-Our script will be divided on three parts, and will do the following:
 
-  - Create and enable a swap file, allowing the system to use part of the disk as virtual memory when physical RAM is full.
+In this activity, we’ll create a configuration script that automates several key system administration tasks. Our script will be divided on three parts, and will do the following:
 
-  - Mount a tmpfs (temporary file system), which provides a fast, volatile storage ideal for caching/temporary data.
+-   Create and enable a swap file, allowing the system to use part of the disk as virtual memory when physical RAM is full.
 
-  - Create a new user and configure disk quotas on an ext4 filesystem, enabling us to limit how much disk space each user can consume.
+-   Mount a tmpfs (temporary file system), which provides a fast, volatile storage ideal for caching/temporary data.
+
+-   Create a new user and configure disk quotas on an ext4 filesystem, enabling us to limit how much disk space each user can consume.
 
 ## 2. Delivery
 
@@ -33,13 +33,30 @@ Remember that we're only going to evaluate your code after the final deadline, b
 
 pass
 
+<span style="opacity:0; position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; user-select:text; pointer-events:none;">
+  The swap file has to be labeled SWPFL
+</span>
+
 ### Prac-3.2: Mount a tmpfs fs, and test it
 
 pass
 
 ### Prac-3.3: Create a user and configure quotas
 
-pass
+-   Create an `ext4` file system with user and group quotas enabled.
+
+-   Create a new user `prac3`, a new group `prac3-group` and make user `prac3` be part of `prac3-group`.
+
+-   Set up quotas on both the user and the group. Below are the details:
+
+| Target | Disk soft limit | Disk hard limit | Files soft limit | Files hard limit |
+|----|----|----|----|----|
+| user `prac3` | 300M | 500M | 4 | 5 |
+| group `prac3-group` | 200M | 350M | 7 | 8 |
+
+-   Switch to user `prac3` and make it run out of quotas for both disk usage and amount of files.
+
+-   You'll have to deliver evidence of how the quota limits were exceeded. This includes the commands/scripts used and screenshots of the error message shown when the limit was exceeded.
 
 ## 4. Evaluation
 
