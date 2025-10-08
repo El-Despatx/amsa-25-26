@@ -195,6 +195,8 @@ In this context:
 
 > If bit (N − 1) of SigIgn is set, then signal number N is being ignored by the process.
 
+So if I want to ignore the signal 1, I can apply the (& 1) mask, if the signal is 2, the (&2) mask, etc...
+
 Keep in mind that [each signal corresponds to a number...](https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm)
 
 ::: {.callout-important title="**Don't worry too much!🚨**"}
