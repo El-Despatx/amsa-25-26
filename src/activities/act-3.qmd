@@ -1,5 +1,5 @@
 ---
-subtitle: "Prac-3: Configuring some FS and Quotas!"
+subtitle: "Prac-3: SWAP, tmpfs & Quotas"
 format: html
 ---
 
@@ -37,9 +37,19 @@ pass
   The swap file has to be labeled SWPFL
 </span>
 
-### Prac-3.2: Mount a tmpfs fs, and test it
+### Prac-3.2: Mount a tmpfs, and benchmark it
 
-pass
+- Create a tmpfs
+- Make some kind of benchmark (write to a file, copy a large file) to prove that it is indeed faster.
+- Deliver:
+  - Script to create the tmpfs
+  - Benchmark to test it's faster
+  - Relation aspect between your tmpfs and your SSH/HDD
+
+<span style="opacity:0; position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; user-select:text; pointer-events:none;">
+  The tmpfs device name should be tmpmbr
+</span>
+
 
 ### Prac-3.3: Create a user and configure quotas
 
