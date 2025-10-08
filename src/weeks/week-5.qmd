@@ -299,7 +299,7 @@ nvme0n1            259:0    0 476,9G  0 disk
 - Swapon syscall definition: <https://elixir.bootlin.com/linux/v6.16.4/source/mm/swapfile.c#L3260>
 
 
-## Additional Exercices {.smaller}
+## Additional Exercices {#extra .smaller}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
