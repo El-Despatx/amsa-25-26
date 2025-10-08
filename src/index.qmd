@@ -25,7 +25,7 @@ In the following links you'll find all the activities and its corresponding reso
 
 -   [Activity 1: Booting & systemd](activities/act-1.qmd)
 -   [Activity 2: Creating our own htop!](activities/act-2.qmd)
--   [Activity 3: SWAP, tmpfs & Quotas](activities/act-3.qmd)
+<!-- -   [Activity 3: SWAP, tmpfs & Quotas](activities/act-3.qmd) -->
 
 ## 🤓 Extras
 

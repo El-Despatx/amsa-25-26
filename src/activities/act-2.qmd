@@ -198,14 +198,16 @@ The mask to detect if the Signal N is ignored, has the following formula:
 > mask(N) = 2^(N-1) -> Where N is the signal number.
 
 So:
+
 - If I want to check if the process ignores the signal number 1, I can apply the (& 1) mask
 - If I want to check if the process ignores the signal number 2, I can apply the (&2) mask.
 - If I want to check if the process ignores the signal number 4, I can apply the (&4) mask.
 - Etc.
 
 Be aware that if the result of SIG_IGN & mask:
-    - Is zero: Means that the signal is not ignored
-    - Is different of zero: Means that the signal is ignored.
+
+- Is zero: Means that the signal is not ignored
+- Is different of zero: Means that the signal is ignored.
 
 Keep in mind that [each signal corresponds to a number...](https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm)
 
