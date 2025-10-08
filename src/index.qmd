@@ -25,6 +25,7 @@ In the following links you'll find all the activities and its corresponding reso
 
 -   [Activity 1: Booting & systemd](activities/act-1.qmd)
 -   [Activity 2: Creating our own htop!](activities/act-2.qmd)
+-   [Activity 3: SWAP, tmpfs & Quotas](activities/act-3.qmd)
 
 ## 🤓 Extras
 
@@ -38,6 +39,7 @@ Having said that, we encourage you to give it a try and show us the results, we'
 -   [Week 4: Modify handlers and implement `nohup` in python](weeks/week-4.qmd#extra)
 -   [Week 5: Change the swapiness of your computer](weeks/week-5.qmd#extra)
 -   [Week 6: Make tmpfs use the SWAP](weeks/week-6.qmd#extra)
+-   [Week 7: Quota's extras](weeks/week-7.qmd#extra)
 
 ## 📚 Resources
 
