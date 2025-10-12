@@ -193,21 +193,30 @@ Implement [the get_hup method](https://github.com/El-Despatx/amsatop-template/bl
 
 One of the files inside the process `/proc/{pid}` has a `SigIgn` (signal ignore) field which shows the set of signals the process is currently ignoring. Retrieving this information works in much the same way as checking whether a PID/TID corresponds to a kernel thread (by examining and interpreting bitmasks).
 
-The mask to detect if the Signal N is ignored, has the following formula:
+The field SigIgn is represented as an hexadecimal number. Since it has 16 hex Characters, it means it represents 8 bytes (which are 64 bits).
+The first 32 bits aren't used (for future signal extensions), and the last 32 are a bitmap encoding (each one represents one signal).
+This means that:
+- The last bit corresponds to the first signal. So signal 1 bit is: (0000 0000 0000 0000 0000 0000 0000 00001).
+- The second-last bit corresponds to the second signal. So signal 2 bit is: (0000 0000 0000 0000 0000 0000 0000 00010).
+- The third-last bit corresponds to the third signal. So signal 3 bit is: (0000 0000 0000 0000 0000 0000 0000 00100).
+- Etc.
+
+So, the mask to detect if the Signal N is ignored, has the following formula:
 
 > mask(N) = 2^(N-1) -> Where N is the signal number.
 
 So:
 
-- If I want to check if the process ignores the signal number 1, I can apply the (& 1) mask
-- If I want to check if the process ignores the signal number 2, I can apply the (&2) mask.
-- If I want to check if the process ignores the signal number 4, I can apply the (&4) mask.
+- If I want to check if the process ignores the signal number 1, I can apply the (&1) mask (...00000001 on binary)
+- If I want to check if the process ignores the signal number 2, I can apply the (&2) mask (...00000010 on binary)
+- If I want to check if the process ignores the signal number 3, I can apply the (&4) mask (...00000100 on binary)
+- If I want to check if the process ignores the signal number 4, I can apply the (&8) mask (...00001000 on binary)
 - Etc.
 
 Be aware that if the result of SIG_IGN & mask:
 
-- Is zero: Means that the signal is not ignored
-- Is different of zero: Means that the signal is ignored.
+- Is zero: Means that the signal is not ignored (the mask isn't matching...).
+- Is not equal to zero (technically, it should match the mask): This indicates that the signal is ignored.
 
 Keep in mind that [each signal corresponds to a number...](https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm)
 
