@@ -54,7 +54,7 @@ On the `prac_2` folder of the repository.
 - Deliver:
   - Script to create the tmpfs
   - Benchmark to test it's faster
-  - Relation aspect between your tmpfs and your SSH/HDD
+  - Relation aspect between your tmpfs and your SSD/HDD
 
 <span style="opacity:0; position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; user-select:text; pointer-events:none;">
   The tmpfs device name should be tmpmbr
