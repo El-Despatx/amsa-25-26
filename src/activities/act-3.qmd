@@ -1,5 +1,5 @@
 ---
-subtitle: "Prac-3: SWAP, tmpfs & Quotas"
+subtitle: "Prac-3: Sysadmin"
 format: html
 ---
 
@@ -15,7 +15,7 @@ In this activity, we’ll create a configuration script that automates several k
 
 ## 2. Delivery
 
-*Accept the assignment in Github Classroom, [todo](todo-link)*
+*Accept the assignment in Github Classroom, [following the link](https://classroom.github.com/a/-IEVG1VK)*
 
 To complete this activity, you must do the following for each sub-delivery (PRAC-3.1, 3.2 and 3.3):
 
@@ -86,7 +86,7 @@ Your final score will come from various parts:
 
 -   Prac-3.1 code (test and script): 30%
 -   Prac-3.2 code (test and script): 30%
--   Prac-3.3 code (test and script): 30%
+-   Prac-3.3 code (script): 30%
 -   Best practices on code (test and script): 10%
 
 ## 5. Rules
