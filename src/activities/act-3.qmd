@@ -63,22 +63,39 @@ On the `prac_2` folder of the repository.
 
 ### Prac-3.3: Create a user and configure quotas
 
-On the `prac_3` folder of the repository.
+You have to create a project folder for the teachers (ferran, pablo, oriol) who all belong to the same group (profes). They need a shared folder where:
 
--   Create an `ext4` file system with user and group quotas enabled.
+- They can all access some shared files together
 
--   Create a new user `prac3`, a new group `prac3-group` and make user `prac3` be part of `prac3-group`.
+- Each teacher also has private files that only they can access
 
--   Set up quotas on both the user and the group. Below are the details:
+1. **Create users and a group**
+   - Make three users: ferran, pablo, and oriol
+   - Put all three in a group called "profes"
 
-| Target | Disk soft limit | Disk hard limit | Files soft limit | Files hard limit |
-|----|----|----|----|----|
-| user `prac3` | 300M | 500M | 4 | 5 |
-| group `prac3-group` | 200M | 350M | 7 | 8 |
+2. **Create shared folder**
+   - Create folder `/tmp/prac3`
+   - Set the owner to `root` and the group to `profes`
 
--   Switch to user `prac3` and make it run out of quotas for both disk usage and amount of files.
+3. **Create a shared file for members of the group**
+   - Switch to user ferran
+   - Create a file inside `/tmp/prac3` with some text
+   - Make sure the file's group is "profes"
+   - Set permissions so:
+     - Owner can read, write, execute
+     - Group can read, write, execute  
+     - Others have no access
 
--   You'll have to deliver evidence of how the quota limits were exceeded. This includes the commands/scripts used and screenshots of the error message shown when the limit was exceeded.
+4. **Create personal files**
+   - For each user (ferran, pablo, oriol):
+     - Switch to that user
+     - Create a file in `/tmp/prac3`
+     - Set permissions so only the owner can read, write, execute
+     - Group and others have no access
+
+
+You have to deliver a bash script that when executed on a fresh Ubuntu VM sets up the described scenario.
+
 
 ## 4. Evaluation
 
