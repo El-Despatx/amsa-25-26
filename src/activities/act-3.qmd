@@ -9,7 +9,7 @@ In this activity, we’ll create a configuration script that automates several k
 
 -   Create and enable a swap file, allowing the system to use part of the disk as virtual memory when physical RAM is full.
 
--   Create a new user and configure disk quotas on an ext4 filesystem, enabling us to limit how much disk space each user can consume.
+-   Create and configure users and groups so they have a shared folder where they can have both shared and private files.
 
 -   Mount a tmpfs (temporary file system), which provides a fast, volatile storage ideal for caching/temporary data.
 
