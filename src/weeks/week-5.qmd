@@ -246,12 +246,14 @@ nvme0n1            259:0    0 476,9G  0 disk
 
 - You can create a swapfile with `mkswap` and activate it with `swapon`.
 
-- Create:
+- Create (do everything as root):
 
   ```{.bash}
-  # mkswap -U clear --size 4G --file {full_path_of_the_swapfile}
+  # dd if=/dev/zero of={full_path_of_swapfile} bs=1MiB count=$((number_of_gb*1024))
+  # chmod 0600 {full_path_of_swapfile}
+  # mkswap {full_path_of_swapfile}
   ```
-- Enable:
+- Enable (as root):
   ```{.bash}
   # swapon {full_path_of_the_swapfile}
   ```
