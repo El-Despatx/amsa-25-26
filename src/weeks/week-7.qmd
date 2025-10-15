@@ -1,346 +1,138 @@
 ---
-subtitle: "Week 7: Users, permissions and quotas"
+subtitle: "Week 7: TMPFS"
 format: revealjs
 ---
 
 # Goals for today
 
 -   Any questions from the previous session?
--   Understand Linux users and groups.
--   What happens when we use sudo?
--   Work with file permissions.
--   Understand Linux disk quotas.
+-   Memory based filesystems (RAM disks).
+-   Tmpfs
+-   Tmpfs vs ramfs
+-   How to create it?
+-   Present and explain Prac-3.3
+
+# RAM disks
+
+-   Memory-based filesystem made of Random Access Memory (**RAM**) that the computer treats as if it was a disk drive (a virtual one).
+-   Provides very fast read/write speeds compared to traditional storage devices.
+-   Data stored in RAM disks is volatile—lost when the system is powered off or restarted.
+-   Useful for temporary files, caching, or applications needing high-speed storage.
+
+## Why is it faster?
+
+-   No moving parts (unlike HDD)
+-   No bus being used (IDE/SATA, ...)
+-   No extra writes from the filesystem
+
+::: {.fragment .callout-note}
+It's faster because RAM is volatile per definition, and all data will be lost in case of powering off the system, so there is no point in implementing back ups.
+:::
+
+## How much faster?
+
+::: {.fragment style="text-align:center;"}
+<img src="figures/week-6/speed.png"/>
+:::
+
+# `ramfs` vs `tmpfs`
+
+## `ramfs`
+
+-   Older system type, replaced in most scenarios by `tmpfs`
+-   Creates an in-memory file system as Linux file system cache
+-   Can be estimated by using the `free` command, cannot be seen with `df`
+-   Cannot be limited in size
 
 ------------------------------------------------------------------------
 
-# Users and groups
-
-## Linux users {.smaller}
-
--   Each process runs **as a user** (identified by UID).
--   Files and dirs belong to an **owner** and a **group**.
--   The system keeps users in **`/etc/passwd`** and passwords (hashes) in **`/etc/shadow`**.
--   Most day-to-day work should be done as a **regular user**.
-
-::: {.callout-note .fragment}
-## Why multiple users?
-
--   Isolation and security
-
--   Accountability (who did what)
-
--   Least-privilege principle
-:::
-
-::: {.callout-tip .fragment}
--   In the AMSA VM, you log in as user **`amsa`**.
-:::
-
-------------------------------------------------------------------------
-
-## The superuser: `root`
-
--   **`root`** (UID 0) can read/write anything and change system config.
--   We usually avoid logging in directly as `root`.
--   Instead, we use **`sudo`** to run **one command** with elevated privileges.
-
-::: {.callout-important .fragment}
-`sudo <cmd>` runs `<cmd>` as **root**.
-:::
-
-------------------------------------------------------------------------
-
-## What `sudo` actually does
-
-Are this commands familiar? This a situation among many where we need admin rights, and so we run the command with `sudo` at the beginning.
-
 ``` bash
-sudo apt update
-sudo apt install -y htop
-```
-
-::: {.callout-caution .fragment} 
-If you run tools that **create files** (e.g., `ssh-keygen`) with `sudo`, those files will belong to **root** and land in **root’s home**. 
-:::
-
-------------------------------------------------------------------------
-
-## Linux groups
-
--   A **group** (identified by GID) is a set of users sharing permissions on files/dirs.
-
--   Each user has a **primary group** and may also belong to **other groups**.
-
--   Useful commands:
-
-    -   `groups [user]` – list which groups is `user` part of
-    -   `id [user]` – the same but also shows UID and GIDs
-
-------------------------------------------------------------------------
-
-## System databases
-
-::: {.fragment}
-#### `/etc/passwd` (users)
-
-``` bash
-cat /etc/passwd
-# username:x:UID:GID:comment:home:shell
-# fnao:x:1002:1003::/home/fnao:/bin/bash
-```
-:::
-
-<br>
-
-::: {.fragment}
-#### `/etc/shadow` (passwords)
-
-``` bash
-cat /etc/shadow
-# username:password-hash:lastchange:min:max:warn:inactive:expire:reserved
-```
-:::
-
-<br>
-
-::: {.fragment}
-#### `/etc/group` (groups)
-
-``` bash
-cat /etc/group
-# name:x:GID:user1,user2,...
-```
-:::
-
-<br>
-
-------------------------------------------------------------------------
-
-## Creating users
-
-``` bash
-# Create user 'test' with a home dir
-sudo useradd -m test
-
-# Set a password
-sudo passwd test
-
-# Add to 'docker' group (if desired)
-sudo usermod -aG docker
-```
-
-::: {.callout-tip .fragment}
-`-m` creates **home dir** at `/home/<user>`.
-:::
-
-::: {.callout-note .fragment}
-Which groups will a new user have?
-:::
-
-------------------------------------------------------------------------
-
-## Home directories {.smaller}
-
--   Each user can have a home dir, which by default is located at `/home/<username>`.
-
--   Root user's home dir is not located on `/home/root` but on `/root`
- 
-::: {.fragment}
-``` bash
-amsa@amsa: sudo ssh-keygen
-Generating public/private ed25519 key pair.
-Enter file in which to save the key (/root/.ssh/id_ed25519):
-```
-:::
-
-::: {.callout-important .fragment}
-It is important to understand when to run commands with root and when not to, **do not** prepend `sudo` unless you truly want it for **root**. As a rule of thumb, **avoid using root if you can**.
-:::
-
-::: {.callout-tip .fragment}
-Running the command `cd` without specifying which directory do we want to go to **will take us to our home dir**.
-:::
-
-
-## Switching users
-
-To switch to another user, we do not need to log out and log back in as the other user. Instead, it is possible to switch user temporarily from the terminal.
-
-``` bash
-# Switch to test user (will ask for `test` user password)
-su test
-
-# Using sudo (will ask for our user password)
-sudo su test
+free -g
+       total used free shared buffers cached
+Mem:   31    29   2    0      0       8
+-/+ buffers/cache: 20 11
+Swap:  13    6    7
 ```
 
 ::: {.callout-note .fragment}
-Why does the first command ask for `test` user password and the second one ask for our password?
+This kind of memory is used by Linux to cache recent files and access them from RAM
 :::
 
-::: {.callout-tip .fragment}
-Use the `whoami` command to check which is your current user.
+## `tmpfs`
+
+-   More recent approach, solves many drawbacks
+-   Can be limited in size, gives `disk full` error upon going over it
+-   Can be seen with `df`
+-   Might use **swap** space if running out of memory and available
+
+::: fragment
+``` bash
+df -h /mnt/ramdisk
+Filesystem Size Used Avail Use% Mounted on
+tmpfs      512M 0    512M  0%   /mnt/ramdisk
+```
 :::
+
+# How to create it? Mounting
+
+-   Mounting is making a file system available to use on another one
+-   Uses a `mount point` to anchor the new file system
+-   Attaches the new file system onto the existing directory structure.
 
 ------------------------------------------------------------------------
 
-# File permissions
+``` {.bash code-line-numbers="1|2|3-8|9|10"}
+sudo mkdir -p /mnt/mytmpfs  # Create dir
+sudo mount -t tmpfs tmpfs /mnt/mytmpfs  # Simple tmpfs
+sudo mount -t tmpfs -o size=1G,uid=1000,gid=1000,mode=0770 tmpfs /mnt/mytmpfs
+# -t tmpfs -> filesystem type
+# -o size=<size> -> filesystem size
+# -o uid=<user_id> -> owner user id
+# -o mode=<mode> -> set fs permissions, i.e. 0770 to make it like `/tmp`
+# <name> -> device name
+df -h /tmp/myramdisk  # See space and usage
+sudo umount /mnt/mytmpfs  # Unmount fs
+```
 
-## File permissions model
+See more on the [man page](https://www.man7.org/linux/man-pages/man8/mount.8.html)
+
+## Making it permanent
+
+`/etc/fstab` is a file that tells the Linux system what systems to mount automatically, where and with what options.
 
 ``` bash
-ls -l /etc/hosts
-# -rw-r--r-- 1 root   root  ... /etc/hosts
-#  ^  ^  ^     ^      ^
-#  u  g  o     owner  group
+tmpfs /mntmytmpfs tmpfs size=1G,uid=alice,,mode=0770 0 0
+sudo mount -t tmpfs -o size=1G,uid=amsa,,mode=0770 tmpfs /mnt/mytmpfs
 ```
 
--   **u/g/o** → user / group / others
--   **r/w/x** → read / write / execute
+In the first command, last two zeros are `dump` and `fsck`, non-specifics
 
-------------------------------------------------------------------------
+# Quizz
 
-## Changing permissions and ownership
+## RAM disks
 
-To modify permissions we are going to use `chmod` command.
+-   What do we change to make a ram disk automatically mount on boot?
 
-``` bash
-chmod u+x script.sh 
-# User can execute
+-   Which is the current used one?
 
-chmod g-w,o-r private.txt 
-# Group can't write, others can't read
+-   Which of `tmpfs` or `ramfs` uses SWAP? Is that bad or good?
 
-chmod -R o-r /home/amsa
-# Other can't read on any file/folder under and including `/home/amsa`
-```
+-   What's the max size of either one of them?
 
-For permissions, `chown` command is used.
+# References
 
-``` bash
-sudo chown amsa:amsa myfile.txt
-# Now both owner and group are `amsa`
+## Really Recommended References: {.smaller}
 
-sudo chown -R test:amsa /home/test
-# Now owner is test and group is amsa for any file here
-```
+-   James Coyle blog on `tmpfs` vs `ramfs` difference: <https://www.jamescoyle.net/knowledge/951-the-difference-between-a-tmpfs-and-ramfs-ram-disk>
 
-------------------------------------------------------------------------
+-   `ramfs`vs `tmpfs` youtube video: <https://www.youtube.com/watch?v=WHPD-QL12N4&pp=ygUOcmFtZnMgdnMgdG1wZnPSBwkJ-wkBhyohjO8%3D>
 
-# Quotas
+-   Redhat's docs on mounting a file system: <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_file_systems/mounting-file-systems>
 
-## What are quotas?
+## Additional Exercices {#extra .smaller}
 
--   **Disk quotas** limit how much **space** and how many **files** a **user or group** can consume.
--   Protects against a user filling a filesystem.
--   **Soft limits** (temporarily exceedable during a **grace period**) vs **hard limits** (absolute).
+Create a swapfile, mount a `tmpfs` and max out the RAM so that it uses the SWAP. Provide us proof of this happening.
 
-::: {.callout-note .fragment}
- Quotas are **per-filesystem**. You must enable them **when mounting** the filesystem. 
-:::
+## Activity 3.2 {.smaller}
 
-------------------------------------------------------------------------
-
-## Preparing an ext4 filesystem for quotas {.smaller}
-
-``` bash
-# 1) Create a 1 GiB file to hold the ext4 filesystem
-sudo mkdir -p /var/lib/amsa
-sudo truncate -s 1G /var/lib/amsa/quota_disk
-
-# 2) Make it ext4
-sudo mkfs.ext4 -F /var/lib/amsa/quota_disk
-
-# 3) Enable ext4 quota feature
-sudo tune2fs -O quota /var/lib/amsa/quota_disk
-
-# 4) Create mount point
-sudo mkdir -p /mnt/quota
-
-# 5) Mount with quotas enabled
-sudo mount -o loop,usrquota,grpquota /var/lib/amsa/quota_disk /mnt/quota
-```
-
-::: {.callout-important .fragment}
-For **persistence**, add an `/etc/fstab` entry: 
-```bash   
-/var/lib/amsa/quota_disk /mnt/quota ext4 loop,defaults,usrquota,grpquota 0 2
-```
-:::
-
-------------------------------------------------------------------------
-
-## Initialize and enable quotas
-
-Now we're redy to configure quotas on the filesystem
-
-``` bash
-# 1) Ensure quota tools are available
-sudo apt update && sudo apt install quota
-
-# 2) Turn quotas on (users and groups)
-sudo quotaon -v /mnt/quota
-
-# 3) Verify current usage/limits
-sudo repquota /mnt/quota
-```
-
-------------------------------------------------------------------------
-
-## Setting user and group quotas
-
-- We're going to use **`setquota`** command.
-
-- We'll need to specify the **disk usage** limits (we can use **K, M, G and T** for Kilobytes, Megabytes, ...). 
-
-- To limit the max **amount of files** that can be created we'll set the desired **amount**.
-
-::: {.fragment}
-``` bash
-sudo setquota -u test 50M 60M 2 3 /mnt/quota
-
-sudo setquota -g qproj 80M 100M 0 0 /mnt/quota
-```
-:::
-
-::: {.callout-tip .fragment}
-Check current quotas: `quota -u test -v` (per user), `quota -g amsa -v` (per group). 
-:::
-
-------------------------------------------------------------------------
-
-## What happens when limits are exceeded
-
--   **Soft limit**: temporarily exceedable until the **grace period** expires.
--   **Hard limit**: **immediate** “Disk quota exceeded” on further writes.
-
-::: {.callout-note .fragment}
-To turn quotas off `sudo quotaoff /mnt/quota` 
-:::
-
-------------------------------------------------------------------------
-
-## Quiz
-
--   If you run `sudo ssh-keygen`, where do keys go and why?
--   Decode `-rwxr-xr--`.
--   What does the file `/etc/passwd` contain?
-
-------------------------------------------------------------------------
-
-## References {.smaller}
-
--   Understand the `/etc/passwd` file: <https://www.cyberciti.biz/faq/understanding-etcshadow-file/>
--   Introduction to Users and Groups: <https://tldp.org/LDP/intro-linux/html/sect_03_04.html>
--   Understanding File Permissions: <https://help.ubuntu.com/community/FilePermissions>
--   Disk Quota: <https://wiki.archlinux.org/title/Disk_quota>
-
-## Additional Exercices {#extra}
-
--   Change a file’s permissions so only the owner can read/write it.
--   Find which user owns the most files in your system.
--   Setup quotas for specific users on a tmpfs filesystem.
-
-## Activity 3.3 {.smaller}
-
-Ready to have some fun? Check out the third part of the [third AMSA activity here!](/activities/act-3.qmd)
+Ready to have some fun? Check out the [third AMSA activity here!](/activities/act-3.qmd#)
