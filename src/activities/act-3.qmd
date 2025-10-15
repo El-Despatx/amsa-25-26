@@ -9,9 +9,9 @@ In this activity, we’ll create a configuration script that automates several k
 
 -   Create and enable a swap file, allowing the system to use part of the disk as virtual memory when physical RAM is full.
 
--   Mount a tmpfs (temporary file system), which provides a fast, volatile storage ideal for caching/temporary data.
-
 -   Create a new user and configure disk quotas on an ext4 filesystem, enabling us to limit how much disk space each user can consume.
+
+-   Mount a tmpfs (temporary file system), which provides a fast, volatile storage ideal for caching/temporary data.
 
 ## 2. Delivery
 
