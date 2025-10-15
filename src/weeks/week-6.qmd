@@ -484,12 +484,7 @@ sudo dd if=/dev/zero of=/mnt/amsa/testfile2 bs=1M count=85
 -   Change a file’s permissions so only the owner can read/write it.
 -   Find which user owns the most files in your system.
 -   Setup quotas for specific users on a tmpfs filesystem.
-## Additional Exercices {#extra}
-
--   Change a file’s permissions so only the owner can read/write it.
--   Find which user owns the most files in your system.
--   Setup quotas for specific users on a tmpfs filesystem.
 
 ## Activity 3.2 {.smaller}
 
-Ready to have some fun? Check out the second part of the [third AMSA activity here!](/activities/act-2.qmd)
+Ready to have some fun? Check out the second part of the [third AMSA activity here!](/activities/act-3.qmd)
