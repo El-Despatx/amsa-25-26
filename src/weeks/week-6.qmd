@@ -1,19 +1,21 @@
 ---
-subtitle: "Week 6: Users, permissions and quotas"
+subtitle: "Week 6: Users, permissions, file systems and quotas"
 format: revealjs
 ---
 
 # Goals for today
 
+
 -   Any questions from the previous session?
 -   Understand Linux users and groups.
 -   What happens when we use sudo?
 -   Work with file permissions.
+-   Set up file systems.
 -   Understand Linux disk quotas.
 
-------------------------------------------------------------------------
-
 # Users and groups
+
+-   How do they fit with what we already know?
 
 ## Linux users {.smaller}
 
@@ -36,8 +38,6 @@ format: revealjs
 -   In the AMSA VM, you log in as user **`amsa`**.
 :::
 
-------------------------------------------------------------------------
-
 ## The superuser: `root`
 
 -   **`root`** (UID 0) can read/write anything and change system config.
@@ -48,9 +48,7 @@ format: revealjs
 `sudo <cmd>` runs `<cmd>` as **root**.
 :::
 
-------------------------------------------------------------------------
-
-## What `sudo` actually does
+## How does `sudo` work?
 
 Are this commands familiar? This a situation among many where we need admin rights, and so we run the command with `sudo` at the beginning.
 
@@ -63,8 +61,6 @@ sudo apt install -y htop
 If you run tools that **create files** (e.g., `ssh-keygen`) with `sudo`, those files will belong to **root** and land in **root’s home**.
 :::
 
-------------------------------------------------------------------------
-
 ## Linux groups
 
 -   A **group** (identified by GID) is a set of users sharing permissions on files/dirs.
@@ -76,8 +72,6 @@ If you run tools that **create files** (e.g., `ssh-keygen`) with `sudo`, those f
     -   `groups [user]` – list which groups is `user` part of
     -   `id [user]` – the same but also shows UID and GIDs
 
-------------------------------------------------------------------------
-
 ## System databases
 
 ::: fragment
@@ -86,7 +80,7 @@ If you run tools that **create files** (e.g., `ssh-keygen`) with `sudo`, those f
 ``` bash
 cat /etc/passwd
 # username:x:UID:GID:comment:home:shell
-# fnao:x:1002:1003::/home/fnao:/bin/bash
+# amsa:x:1002:1003::/home/amsa:/bin/bash
 ```
 :::
 
@@ -114,9 +108,9 @@ cat /etc/group
 
 <br>
 
-------------------------------------------------------------------------
-
 ## Creating users
+
+Let's create and configure a test user
 
 ``` bash
 # Create user 'test' with a home dir
@@ -125,8 +119,8 @@ sudo useradd -m test
 # Set a password
 sudo passwd test
 
-# Add to 'docker' group (if desired)
-sudo usermod -aG docker
+# Add to 'wheel' group (if desired)
+sudo usermod -aG wheel
 ```
 
 ::: {.callout-tip .fragment}
@@ -161,7 +155,7 @@ It is important to understand when to run commands with root and when not to, **
 Running the command `cd` without specifying which directory do we want to go to **will take us to our home dir**.
 :::
 
-## Switching users
+## Switching users {.smaller}
 
 To switch to another user, we do not need to log out and log back in as the other user. Instead, it is possible to switch user temporarily from the terminal.
 
@@ -181,8 +175,6 @@ Why does the first command ask for `test` user password and the second one ask f
 Use the `whoami` command to check which is your current user.
 :::
 
-------------------------------------------------------------------------
-
 # File permissions
 
 ## File permissions model
@@ -196,8 +188,6 @@ ls -l /etc/hosts
 
 -   **u/g/o** → user / group / others
 -   **r/w/x** → read / write / execute
-
-------------------------------------------------------------------------
 
 ## Changing permissions and ownership
 
@@ -214,6 +204,7 @@ chmod -R o-r /home/amsa
 # Other can't read on any file/folder under and including `/home/amsa`
 ```
 
+::: fragment
 For permissions, `chown` command is used.
 
 ``` bash
@@ -223,10 +214,161 @@ sudo chown amsa:amsa myfile.txt
 sudo chown -R test:amsa /home/test
 # Now owner is test and group is amsa for any file here
 ```
+:::
 
-------------------------------------------------------------------------
+## We can also use number codes {.smaller}
+
+Just so you know, instead of changing permissions by using their letters, they can also be referred to using numbers.
+
+| Permission   | Value   |
+|--------------|---------|
+| Read         | 4       |
+| Write        | 2       |
+| Execute      | 1       |
+| No perm      | 0       |
+
+So for example, this two commands are equivalent:
+
+``` bash
+chmod u=rwx,g=rx,o=r myscript.sh
+chmod 755 myscript.sh
+```
+
+## Just one more thing: directories
+
+-   You may have noticed there that before the three groups of permissions, there is a character that can be a `d` or a `-`. This indicates if the file is a directory or not.
+
+-   For directories, **`r`** means you can list files, **`w`** means you can create/delete files, and **`x`** means you can enter the directory.
+
+# Sudo part 2
+
+## Surprise, one more permission: setuid and setgid bits {.smaller}
+
+-   When they are set on an executable file, the process will run with the **file owner or group**, not the ones of the user who executed the file.
+-   When `setgid` is set on a directory, files created inside inherit the **group** of the directory. `setuid` has no effect on directories.
+
+::: {.fragment}
+``` bash
+chmod u+s /usr/bin/passwd
+chmod g+s /shared_dir
+```
+:::
+
+::: {.callout-note .fragment}
+If both bits are set on a file, the process runs with both user and group of the file.
+:::
+
+## Let's see an example
+
+Aqui fem un fitxer amb el setuid i tal amb C com vam fer amb el pablo l'altre dia i que printi el effective user id
+
+We'll create a little c program that prints the user that is owning the process when executed.
+
+``` c
+#include <stdio.h>
+#include <unistd.h>
+#include <pwd.h>
+int main() {
+    printf("This processes is owned by user: %s\n", getpwuid(geteuid())->pw_name);
+    return 0;
+}
+```
+
+::: fragment
+Compile and set ownership.
+
+``` bash
+gcc -o test test.c
+sudo chown amsa:amsa test
+```
+:::
+
+## Now, let's see what happens when we run it
+
+We'll run it with sudo, which will make the process be owned by `root`.
+
+``` bash
+amsa@amsa:~$ sudo ./test
+This processes is owned by user: root
+```
+
+::: fragment
+Now we set the setuid bit and run it again, which will make the process be owned by `amsa`, the owner of the file.
+
+``` bash
+amsa@amsa:~$ sudo chmod u+s test
+amsa@amsa:~$ sudo ./test
+This processes is owned by user: amsa
+```
+:::
+
+## What `sudo` actually does
+
+If we take a look at the `sudo` binary, which we can find by running `which sudo`, we can see that it has the setuid bit set and is owned by root.
+
+So, if sudo is a process that will be owned by root, if it executes another process, that process will also be owned by root.
+
+## Sudoers/wheel {.smaller}
+
+-   Okay, but if anyone can run sudo, then anyone can do anything as root!
+-   To prevent this, we only users in certain groups can run sudo.
+-   This is configured in `/etc/sudoers` file, where we'll usually find a line like this:
+
+::: {.fragment}
+``` bash
+%wheel ALL=(ALL) ALL
+```
+:::
+
+-   This means that any user in the `wheel` group can run any command as any user on any host.
+
+::: {.callout-note .fragment}
+Ubuntu does not use `wheel` group, but `sudo` or `adm` instead. The name `wheel` comes from early Unix systems, and it was chosen because it was a "big wheel" group with special privileges, "big wheel" being a slang term for an important person.
+:::
+
+# File systems
+
+## What is a filesystem?
+
+-   For a disk in our computer to be usable, it needs to be formatted with a filesystem.
+-   A filesystem is a way of organizing and storing files on a storage device (like a hard drive or SSD).
+-   Different filesystems have different features, performance characteristics, and compatibility with operating systems.
+
+## Common file systems {.smaller}
+
+| Filesystem | Use case | Notes |
+|-------------------|---------------------------|---------------------------|
+| ext4 | General Linux systems | Most common Linux filesystem |
+| ext2 | Older Linux systems | No journaling |
+| xfs | High-performance systems | Good for large files |
+| btrfs | Advanced features (snapshots, etc) | Still maturing |
+| vfat | USB drives, cross-platform | Compatible with Windows and macOS |
+| ntfs | Windows systems | Read/write support in Linux |
+| tmpfs | Temporary files in RAM | Very fast, data lost on reboot |
+
+## Example: setting up ext4 on a usb {.smaller}
+
+-   We'll format a USB drive with ext4 filesystem. First of all We'll use `lsblk` to identify the device. Make sure you identify it correctly, as using the wrong device can lead to data loss.
+
+-   Then, we'll use `mkfs.ext4` to format it, and `mount` to mount it.
+
+-   Assuming the partition is `/dev/sdb1`, we would do:
+
+::: fragment
+``` bash
+sudo mkfs.ext4 /dev/sdb1
+sudo mkdir -p /mnt/amsa
+sudo mount /dev/sdb1 /mnt/amsa
+```
+:::
+
+::: {.callout-warning .fragment}
+Formatting a drive will erase all data on it. Make sure to back up any important data before proceeding.
+:::
 
 # Quotas
+
+Let's merge what we have learned so far to set up disk quotas.
 
 ## What are quotas?
 
@@ -242,33 +384,30 @@ Quotas are **per-filesystem**. You must enable them **when mounting** the filesy
 
 ## Preparing an ext4 filesystem for quotas {.smaller}
 
+We'll assume you have an ext4 file system for the device `/dev/sdb1` mounted at `/mnt/amsa`. **If your device is different (which will probably be the case)**, please change it accordingly.
+
 ``` bash
-# 1) Create a 1 GiB file to hold the ext4 filesystem
-sudo mkdir -p /var/lib/amsa
-sudo truncate -s 1G /var/lib/amsa/quota_disk
+# Make sure the filesystem is unmounted
+sudo umount /mnt/amsa
 
-# 2) Make it ext4
-sudo mkfs.ext4 -F /var/lib/amsa/quota_disk
+# Permanently enable quotas on the filesystem
+sudo tune2fs -O quota /dev/sdb1
 
-# 3) Enable ext4 quota feature
-sudo tune2fs -O quota /var/lib/amsa/quota_disk
-
-# 4) Create mount point
-sudo mkdir -p /mnt/quota
-
-# 5) Mount with quotas enabled
-sudo mount -o loop,usrquota,grpquota /var/lib/amsa/quota_disk /mnt/quota
+# Mount the filesystem with user and group quotas enabled
+sudo mount -o usrquota,grpquota /dev/sdb1 /mnt/amsa
 ```
 
-::: {.callout-important .fragment}
+::: {.callout-tip .fragment}
+To verify it has been mounted with quotas enabled, run `mount | grep /mnt/amsa` and check for `usrquota` and `grpquota` in the options list.
+:::
+
+::: {.callout-tip .fragment}
 For **persistence**, add an `/etc/fstab` entry:
 
 ``` bash
-/var/lib/amsa/quota_disk /mnt/quota ext4 loop,defaults,usrquota,grpquota 0 2
+/dev/sdb1  /mnt/amsa  ext4  defaults,usrquota,grpquota  0  2
 ```
 :::
-
-------------------------------------------------------------------------
 
 ## Initialize and enable quotas
 
@@ -279,13 +418,11 @@ Now we're redy to configure quotas on the filesystem
 sudo apt update && sudo apt install quota
 
 # 2) Turn quotas on (users and groups)
-sudo quotaon -v /mnt/quota
+sudo quotaon -v /mnt/amsa
 
 # 3) Verify current usage/limits
-sudo repquota /mnt/quota
+sudo repquota /mnt/amsa
 ```
-
-------------------------------------------------------------------------
 
 ## Setting user and group quotas
 
@@ -297,36 +434,42 @@ sudo repquota /mnt/quota
 
 ::: fragment
 ``` bash
-sudo setquota -u test 50M 60M 2 3 /mnt/quota
+sudo setquota -u amsa 50M 60M 2 3 /mnt/amsa
 
-sudo setquota -g qproj 80M 100M 0 0 /mnt/quota
+sudo setquota -g root 80M 100M 0 0 /mnt/amsa
 ```
 :::
 
 ::: {.callout-tip .fragment}
-Check current quotas: `quota -u test -v` (per user), `quota -g amsa -v` (per group).
+Check current quotas: `quota -u amsa -v` (per user), `quota -g root -v` (per group).
 :::
 
-------------------------------------------------------------------------
-
-## What happens when limits are exceeded
+## What happens when limits are exceeded {.smaller}
 
 -   **Soft limit**: temporarily exceedable until the **grace period** expires.
 -   **Hard limit**: **immediate** “Disk quota exceeded” on further writes.
 
 ::: {.callout-note .fragment}
-To turn quotas off `sudo quotaoff /mnt/quota`
+To turn quotas off `sudo quotaoff /mnt/amsa`
 :::
 
-------------------------------------------------------------------------
+::: {.callout-tip .fragment}
+To test quotas, use the following commands to create files until you exceed the limits:
+:::
 
-## Quiz
+::: {.fragment}
+``` bash
+dd if=/dev/zero of=/mnt/amsa/testfile bs=1M count=55
+sudo dd if=/dev/zero of=/mnt/amsa/testfile2 bs=1M count=85
+```
+:::
+
+# Quiz
 
 -   If you run `sudo ssh-keygen`, where do keys go and why?
 -   Decode `-rwxr-xr--`.
+-   And `drwxr-sr-x`?
 -   What does the file `/etc/passwd` contain?
-
-------------------------------------------------------------------------
 
 ## References {.smaller}
 
@@ -334,7 +477,13 @@ To turn quotas off `sudo quotaoff /mnt/quota`
 -   Introduction to Users and Groups: <https://tldp.org/LDP/intro-linux/html/sect_03_04.html>
 -   Understanding File Permissions: <https://help.ubuntu.com/community/FilePermissions>
 -   Disk Quota: <https://wiki.archlinux.org/title/Disk_quota>
+-   Why is the sudo group called wheel?: <https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name>
 
+## Additional Exercices {#extra}
+
+-   Change a file’s permissions so only the owner can read/write it.
+-   Find which user owns the most files in your system.
+-   Setup quotas for specific users on a tmpfs filesystem.
 ## Additional Exercices {#extra}
 
 -   Change a file’s permissions so only the owner can read/write it.
@@ -343,4 +492,4 @@ To turn quotas off `sudo quotaoff /mnt/quota`
 
 ## Activity 3.2 {.smaller}
 
-Ready to have some fun? Check out the third part of the [third AMSA activity here!](/activities/act-3.qmd)
+Ready to have some fun? Check out the second part of the [third AMSA activity here!](/activities/act-2.qmd)
