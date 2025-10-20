@@ -260,9 +260,7 @@ If both bits are set on a file, the process runs with both user and group of the
 
 ## Let's see an example
 
-Aqui fem un fitxer amb el setuid i tal amb C com vam fer amb el pablo l'altre dia i que printi el effective user id
-
-We'll create a little c program that prints the user that is owning the process when executed.
+We'll create a little c program that prints the user that owns the process when executed.
 
 ``` c
 #include <stdio.h>
