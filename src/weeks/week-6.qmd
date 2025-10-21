@@ -120,7 +120,7 @@ sudo useradd -m test
 sudo passwd test
 
 # Add to 'wheel' group (if desired)
-sudo usermod -aG wheel
+sudo usermod -aG wheel test
 ```
 
 ::: {.callout-tip .fragment}
