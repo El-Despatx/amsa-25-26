@@ -67,21 +67,24 @@ You have to create a project folder for the teachers (ferran, pablo, oriol) who 
    - Set the owner to `root` and the group to `profes`
 
 3. **Create a shared file for members of the group**
-   - Switch to user ferran
    - Create a file inside `/tmp/prac3` with some text
-   - Make sure the file's group is "profes"
+   - Change the user and group of the file so owner is one of the teachers (doesn't matter which one) and group is `profes`
    - Set permissions so:
      - Owner can read, write, execute
      - Group can read, write, execute  
-     - Others have no access
+     - Others have no permisions
 
 4. **Create personal files**
-   - For each user (ferran, pablo, oriol):
-     - Switch to that user
-     - Create a file in `/tmp/prac3`
-     - Set permissions so only the owner can read, write, execute
-     - Group and others have no access
+    - Create three new files in `/tmp/prac3` with some text
+    - Change the user of the files so each of the teachers owns one of the three files, set the group to `profes` for all three files.
+    - Set permissions so only the owner can read, write, execute
+    - Group and others have no permisions
 
+::: {.callout-important title="**Very important 🚨**"}
+You don't have to switch from one user to the other during the script, although you should do it yourself to test what you did does indeed work. So after having created and configured the files, try switching to each of the users and test if they can read and write the shared and private files.
+:::
+
+You should end up with 4 files inside the folder. One that can be read, write and executed by any member of the `profes` group, and three that can only be read, written or executed by its owner.
 
 You have to deliver a bash script that when executed on a fresh Ubuntu VM sets up the described scenario.
 
@@ -120,3 +123,4 @@ Your final score will come from various parts:
 Please don't hesitate to ask the teachers **any doubts**, there are no dumb questions, we're here to help.
 
 You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
+

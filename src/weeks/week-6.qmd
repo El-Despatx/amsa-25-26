@@ -116,12 +116,19 @@ Let's create and configure a test user
 # Create user 'test' with a home dir
 sudo useradd -m test
 
+# Create a new group called "testgroup"
+sudo groupadd testgroup
+
 # Set a password
 sudo passwd test
 
 # Add to 'wheel' group (if desired)
 sudo usermod -aG wheel test
 ```
+
+::: {.callout-important .fragment}
+When adding a user to a group, for the cange to take effect we need to log out and log back in as that user. Another way is to use the `su` command to change to another user and then back to the affected user. So for example if I add user `test` to group `testgroup`, I can do `su amsa` to switch to user amsa, `su test` to then switch back to user test which now will be in the `testgroup`.
+:::
 
 ::: {.callout-tip .fragment}
 `-m` creates **home dir** at `/home/<user>`.
