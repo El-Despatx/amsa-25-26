@@ -1,0 +1,115 @@
+---
+subtitle: "Exam Example and Cheat-Sheet"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+
+# Week's slides
+
+| **Week** | **Non-Important Content (for exams)**                                                               |
+| :------: | --------------------------------------------------------------------------------------------------- |
+|     0    | Doesn’t count                                                                                       |
+|     1    | Hardware and firmware (but **software** yes)                                                        |
+|     2    | Interrupts, definitions and properties of kthreads / processes / threads, definitions of **procfs** |
+|     3    | -                                                                                                   |
+|     4    | -                                                                                                   |
+|     5    | Virtual Space Layout (Stack, Heap, etc.)                                                            |
+|     6    | -                                                                                                   |
+
+# Command Reference
+
+| **Week** | **Command**                           | **Description**                                      | **Mnemonics**                          | 
+| :------: | ------------------------------------- | ---------------------------------------------------- | -------------------------------------- | 
+|     1    | `dmesg`                               | See Kernel logs                                      | diagnostic message                     | 
+|     1    | `journalctl`                          | See systemd services (and kernel) logs               | journal control                        | 
+|     1    | `systemctl <subcommand> <service>`    | Manage a systemd unit (enable, start, status, etc.)  | system control `<command>` `<service>` | 
+|     2    | `strace <command>`                    | See syscalls that `<command>` makes to the kernel    | system trace                           | 
+|     3    | `nice -n <niceness> <program>`        | Run `<program>` with given niceness (priority)       | be *nice* with program                 | 
+|     4    | `kill -s <signal> <pid>`              | Send a signal `<signal>` to process with PID `<pid>` | *(no mnemonic — contra-intuitive)*     | 
+|     4    | `nohup <command>`                     | Ignore signal `SIGHUP` for `<command>`               | no hang-up                             | 
+|     5    | `mkswap <file>`                       | Make `<file>` a swapfile                             | make swap                              | 
+|     5    | `swapon <file>`                       | Enable swapfile `<file>`                             | set swap on                            | 
+|     5    | `swapoff <file>`                      | Disable swapfile `<file>`                            | set swap off                           | 
+|     6    | `sudo <command>`                      | Run command as root                                  | superuser do `<command>`               | 
+|     6    | `groups <user>`                       | List which groups a user belongs to                  | -                                      | 
+|     6    | `id <user>`                           | Show UID and GID for user                            | -                                      | 
+|     6    | `useradd -m <username>`               | Create a user with a home directory                  | add user                               | 
+|     6    | `groupadd <group>`                    | Create a group                                       | add group                              | 
+|     6    | `passwd <user>`                       | Set a password for a user                            | password                               | 
+|     6    | `usermod -aG <group> <user>`          | Add user to existing group `<group>`                 | user modify add to group               | 
+|     6    | `su <user>`                           | Switch to user `<user>`                              | switch user                            | 
+|     6    | `whoami`                              | Display current user                                 | -                                      | 
+|     6    | `chmod <perm> <file                   | folder>`                                             | Change permissions for file or folder  | 
+|     6    | `chown [user:group](user:group) <file | folder>`                                             | Change owner and group of file/folder  | 
+|     6    | `lsblk`                               | List block devices (filesystems)                     | list block devices                     | 
+|     6    | `mkfs.<filesystem> <device>`          | Format device with `<filesystem>`                    | make filesystem `<filesystem>`         | 
+|     6    | `mount <device> <mountpoint>`         | Mount device at mountpoint                           | -                                      | 
+|     6    | `tune2fs -O quota <device>`           | Enable quotas on device `<device>`                   | tune filesystem                        | 
+|     6    | `quotaon -v <mountpoint>`             | Enable quota on `<mountpoint>`                       | -                                      | 
+|     6    | `repquota <mountpoint>`               | Show current quotas on `<mountpoint>`                | represent quota                        | 
+|     6    | `setquota <options> <mountpoint>`     | Set quotas with given options                        | -                                      | 
+|     6    | `quotaoff <mountpoint>`               | Disable quota on `<mountpoint>`                      | -                                      | 
+
+
+# Exam Style
+
+## 1) Decodifica, els següents permissos:
+
+```
+.rw-r--r-- pablo users  24 B  Mon Oct 27 10:09:32 2025 test.sh
+.r-s--x--x root root 69 KB Wed Oct 29 08:46:57 2025 /run/wrappers/wrappers.2RNzlIuvsH/sudo
+```
+
+## 2) El meu sistema té poca RAM i el kernel de linux habitualment mata els programes donat que ocupen massa memòria anònima (pàgines del heap), que puc fer per arreglar-ho?
+
+## 3) Estic intentant que el meu programa abarqui més temps de CPU
+
+Estic executant:
+```
+$ nice -n -10 ./my_script.sh
+```
+
+I l'output és:
+
+```
+nice: cannot set niceness: Permission denied
+```
+
+Perquè falla la comanda? (explica-ho en menys de tres línies). Com ho puc arreglar?
+
+## 4) Validació pràctica 3
+
+El programa de la pràctica 3 (que reserva memòria per tal de comprovar que el swapfile fa la seva funció):
+
+```c 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define ONE_MB (1024 * 1024)
+
+int main(void) {
+    char *my_memory_pointer;
+
+    while (true) {
+        my_memory_pointer = malloc(ONE_MB);
+        if (my_memory_pointer == NULL) {
+            printf(stderr, "Memory allocation failed \n");
+        }
+    }
+    return 0;
+}
+```
+No funciona, no entenc perquè no s'està emplemenant la swap. Com ho arreglaries?
+
+## 5) Un procés està abarcant massa CPU, quina comanda puc emprar per a que deixi d'executar-se?
+
+## 6) Quines comandes executaries per tal d'habilitar un servei de sistema? I per arrancar-lo directament? 
+*Dona per suposat que el teu sistema utilitza d'init system systemd*
+
