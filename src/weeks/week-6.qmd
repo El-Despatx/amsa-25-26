@@ -5,7 +5,6 @@ format: revealjs
 
 # Goals for today
 
-
 -   Any questions from the previous session?
 -   Understand Linux users and groups.
 -   What happens when we use sudo?
@@ -108,35 +107,39 @@ cat /etc/group
 
 <br>
 
-## Creating users
+## Creating users {.smaller}
 
 Let's create and configure a test user
 
 ``` bash
 # Create user 'test' with a home dir
 sudo useradd -m test
-
 # Create a new group called "testgroup"
 sudo groupadd testgroup
-
 # Set a password
 sudo passwd test
-
 # Add to 'wheel' group (if desired)
 sudo usermod -aG wheel test
 ```
 
 ::: {.callout-important .fragment}
-When adding a user to a group, for the cange to take effect we need to log out and log back in as that user. Another way is to use the `su` command to change to another user and then back to the affected user. So for example if I add user `test` to group `testgroup`, I can do `su amsa` to switch to user amsa, `su test` to then switch back to user test which now will be in the `testgroup`.
+When adding a user to a group, for the change to take effect we need to log out and log back in as that user. Another way is to use the `su` command to change to another user and then back to the affected user. So for example if I add user `test` to group `testgroup`, I can do `su amsa` to switch to user amsa, `su test` to then switch back to user test which now will be in the `testgroup`.
 :::
 
-::: {.callout-tip .fragment}
-`-m` creates **home dir** at `/home/<user>`.
+::::::: columns
+:::: {.column .fragment width="50%"}
+::: callout-tip
+-m creates home dir at /home/<user>
 :::
+::::
 
-::: {.callout-note .fragment}
+:::: {.column .fragment width="50%"}
+::: callout-note
 Which groups will a new user have?
+
 :::
+::::
+:::::::
 
 ------------------------------------------------------------------------
 
@@ -227,12 +230,12 @@ sudo chown -R test:amsa /home/test
 
 Just so you know, instead of changing permissions by using their letters, they can also be referred to using numbers.
 
-| Permission   | Value   |
-|--------------|---------|
-| Read         | 4       |
-| Write        | 2       |
-| Execute      | 1       |
-| No perm      | 0       |
+| Permission | Value |
+|------------|-------|
+| Read       | 4     |
+| Write      | 2     |
+| Execute    | 1     |
+| No perm    | 0     |
 
 So for example, this two commands are equivalent:
 
@@ -254,7 +257,7 @@ chmod 755 myscript.sh
 -   When they are set on an executable file, the process will run with the **file owner or group**, not the ones of the user who executed the file.
 -   When `setgid` is set on a directory, files created inside inherit the **group** of the directory. `setuid` has no effect on directories.
 
-::: {.fragment}
+::: fragment
 ``` bash
 chmod u+s /usr/bin/passwd
 chmod g+s /shared_dir
@@ -319,7 +322,7 @@ So, if sudo is a process that will be owned by root, if it executes another proc
 -   To prevent this, we only users in certain groups can run sudo.
 -   This is configured in `/etc/sudoers` file, where we'll usually find a line like this:
 
-::: {.fragment}
+::: fragment
 ``` bash
 %wheel ALL=(ALL) ALL
 ```
@@ -462,7 +465,7 @@ To turn quotas off `sudo quotaoff /mnt/amsa`
 To test quotas, use the following commands to create files until you exceed the limits:
 :::
 
-::: {.fragment}
+::: fragment
 ``` bash
 dd if=/dev/zero of=/mnt/amsa/testfile bs=1M count=55
 sudo dd if=/dev/zero of=/mnt/amsa/testfile2 bs=1M count=85

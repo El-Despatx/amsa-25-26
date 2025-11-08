@@ -26,7 +26,7 @@ website:
         - href: weeks/week-7.qmd
           text: "Week 7"
 
-      - text: "📚 Activites"
+      - text: "📚 Activities"
         menu:
         - href: activities/act-1.qmd
           text: "Activity 1"
