@@ -1,7 +1,152 @@
 ---
-subtitle: "Prac-4: Creating our backend application and deploying it to AWS!"
-<!-- bibliography: references.bib -->
-format: html
+subtitle: "Activity 4: Docker & AWS"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
 ---
 
-## TODO: Explain
+## 1. Introduction
+We've seen linux users in detail in this subject.
+Following this concept, we've created an [API](https://www.postman.com/what-is-an-api/#how-do-apis-work), a system that helps communicate between different applications by defining clear rules for how data is requested, sent, and received.
+
+There are lots of different behaviours for APIs, but they will typically have:
+
+- Endpoint: An API endpoint is a dedicated URL that provides access to a specific resource. For instance, the /articles endpoint in a blogging app would include the logic for processing all requests that are related to articles.
+- Method: The request's method indicates the type of operation the client would like to perform on a given resource. REST APIs are accessible through standard HTTP methods, which perform common actions like retrieving, creating, updating, and deleting data.
+- Parameters: Parameters are the variables that are passed to an API endpoint to provide specific instructions for the API to process. These parameters can be included in the API request as part of the URL, in the query string, or in the request body. For example, the /articles endpoint of a blogging API might accept a “topic” parameter, which it would use to access and return articles on a specific topic.
+- Request headers: Request headers are key-value pairs that provide extra details about the request, such as its content type or authentication credentials.
+- Request body: The body is the main part of the request, and it includes the actual data that is required to create, update, or delete a resource. For instance, if you were creating a new article in a blogging app, the request body would likely include the article's content, title, and author.
+
+The objective of this activity is to dockerize and deploy to AWS our API, while also learning about databases in the way.
+
+## 2. Delivery
+
+*Accept the assignment in Github Classroom, [following the link](TODO)*
+
+To complete this activity, you must do the following for each sub-delivery (PRAC-4.1 and 4.2):
+
+1.  Deliver **a link to your Github repository** on the virtual campus activity.
+
+2.  Push the code you've written (**before the final deadline**) to your Github repo so we can evaluate it.
+
+::: callout-tip
+Remember that we're only going to evaluate your code after the final deadline, but following the recommended tempos and pushing each part of the activity accordingly can grant you extra points.
+:::
+
+## 3. Outline
+
+This activity is split onto 2 incremental parts, which are going to be related to the contents explained during the different classes.
+
+1.  On the first weeks, once we have explained **virtualization, containers, OCI images, compose and databses**, your job will be to dockerize the API and communicate it with a database through compose.
+
+<!-- TODO: Make this better once it's clearer -->
+2.  Then, after having explained the **AWS environment, lambdas, gateways, ...**, we'll want you to deploy the work we've done to AWS and communicate it through different services.
+
+
+## 4. Resources
+
+Building this all for yourself may be too out of your scope. For that reason, the teachers have prepared some resources that will hopefully make the activity shorter and more enjoyable.
+
+### `User` API
+
+The python API for the users has been already implemented for you. You will have it available on your repository template.
+
+### Repository template
+
+When you join the Github Classroom activity with the link provided on Step 2, a remote repository is automatically created for you to work on this assignment. This repository will already contain some code, below are the details of what comes with the repo:
+
+1.  It already has the API implemented on the folder `user-api`. It has everything needed to do two different things:
+    - It can create a user given:
+        - A username
+        - A name
+        - A role ("user" or "admin")
+        - A password
+    - It can list all existing users
+
+2.  Some folders where we expect you to deliver the code
+3.  A `README.md` file where you'll have instructions on how to set up the python environment.
+
+
+## 5. Tasks
+
+Below is a detailed explanation of what you have to do on each task, but before reading through we want to make something clear.
+Before, let's make a brief on how our API works. As stated on the previous section, a user can be created with:
+
+- A username
+- A name
+- A role ("user" or "admin")
+- A password
+Once the request is sent, the password is then hashed and the user is given an "automatic" ID.
+Then, the user is stored on the database.
+
+The docker has different ways of "picking" the database:
+
+- By default, it uses an internal [sqlite](https://sqlite.org/index.html)
+- If the `PROD` environment variable is set, then it will attempt to connect to a [postgresql](https://www.postgresql.org) database.
+However, we need more data to connect to this databse:
+    - `DB_USER`: The user who will connect to the database
+    - `DB_PASSWORD`: The password to connect to the database
+    - `DB_HOST`: The IP address of the host of the database
+    - `DB_PORT`: The port of the host of the database
+    - `DB_NAME`: The name of the database inside postgresql
+
+Once the introduction with the API has been done, let's go to the tasks!
+### Prac-4.1: Dockerizing and orchestrating the given code
+
+Your objective is to **dockerize the API and switch the db to a postgresql, and communicate it through Docker compose** 
+Woah woah woah! That looks like a lot! Let's go step by step
+
+1. Dockerize the API: This step is simple: You need to dockerize the given API. Use everything we've taught you in class to do so.
+The goal is to make the image **as small as possible**. Investigate around how to make this.
+2. Move the dockerized image onto a compose service: Now that we've dockerized our API, move it onto a compose file. This should be a straight-forward step
+3. Deploy a postgresql database on the compose. Don't stress on joining them yet!
+4. Now it's time to communicate them. **TIP: We've already told you cannot modify python code. There's probably some way around it...**
+
+### Prac-4.2: TODO!
+
+## 6. Setting the environment up!
+### Cloning the repository and set it up:
+
+Remember that, once you entered the Github Classroom on [section 2](act-4.qmd#delivery), you will have to clone your repository with [^2]:
+
+[^2]: If you don't have any idea of what we're talking about, revisit the [setting up the VM and brief git summary](/resources/vm_git.qmd)
+
+``` bash
+git clone <ssh_address_of_your_git_repository>
+```
+
+Then, enter inside the folder of the repository, on the `user-api` fodler, setup a virtual environment for the python project, which can be done with:
+
+``` bash
+uv sync
+```
+
+## 7. Evaluation
+
+Your final score will come from various parts:
+
+<!-- TODO: Add 4.2 scoring, re-do this -->
+-   The dockerization works → %.
+-   How small the resulting docker image is →.
+-   The orchestration and usage of postgres works → %.
+-   Best practices are used → %.
+
+## 8. Rules
+
+1.  It is **forbidden to modify our python code (the given API)**. It has everything you need and there's no need to modify it. If you feel like modifying the code would make something better, **contact the teachers before doing so**.
+2.  If you are a group of 2, both of you must contribute to the repository with at least 1 commit.
+
+## 9. Resources
+
+-   [Python for begginers](/resources/python.qmd)
+<!-- TODO: Place docker, API, compose, REST, DB, ... resources -->
+
+## 10. Doubts
+
+Please don't hesitate to ask the teachers **any doubts**, there are no dumb questions, we're here to help.
+
+You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
