@@ -71,7 +71,7 @@ A container runs from an **OCI image**, which contains:
 
 - A root filesystem (the files the app needs)
 
-- A config (environment variables, entrypoint…)
+- A config (environment variables, network, entrypoint…)
 
 - Layers (incremental filesystem changes: adding files, installing packages, etc)
 
@@ -103,7 +103,7 @@ We can use `docker inspect <image-name>` to see details of the image, including 
 
 ## Why is the Ubuntu image only 78MB? {.smaller}
 
-Because it includes only the userspace filesystem and essential packages.
+If we do `docker image ls ubuntu`, we'll see it is only 78MB. That is because it includes only the userspace filesystem and essential packages.
 
 ::: {.fragment}
 It does **not include**:
@@ -149,12 +149,11 @@ docker build . -t amsa
 ```
 :::
 
-## Our first useful `Dockerfile`
+## Our first useful `Dockerfile` {.smaller}
 
-We still have only one layer, which makes sense since there are no changes made to the filesystem.
+The resulting image still has only one layer, which makes sense since there are no changes made to the filesystem.
 
-`RUN` keyword lets us execute commands on the base image we are using.
-`CMD` keyword is used to define the command to be executed when we run the built image.
+Let's see an example that makes more sense.
 
 ::: {.fragment}
 ```{.dockerfile}
@@ -164,55 +163,280 @@ CMD figlet "amsa"
 ```
 :::
 
+- `RUN` keyword lets us execute commands on the base image we are using.
+- `CMD` keyword is used to define the default command to be executed when we run a container from this image.
+
+::: {.fragment}
 This time, the resulting image will have 2 layers:
+:::
 
 - The original layer from `ubuntu` image.
 - The one we just added by running a command that modifies the file system.
 
-## 
+## Running containers
+
+Once we've built an image, we can use `docker run` command to make Docker Engine execute it.
+
+```{.bash}
+$ docker run amsa
+
+  __ _ _ __ ___  ___  __ _
+ / _` | '_ ` _ \/ __|/ _` |
+| (_| | | | | | \__ \ (_| |
+ \__,_|_| |_| |_|___/\__,_|
+ ```
+
+::: {.fragment .callout-important}
+Adding `-it` to `docker run` command gives the container an interactive terminal by keeping STDIN open (-i) and allocating a TTY (-t).
+This is why `docker run -it ubuntu` gives us a bash terminal while `docker run ubuntu` doesn't.
+:::
+
+
+## Sharing files
+
+Let's make `figlet` print the contents of a file instead, a file that resides in our host machine:
+
+- `COPY <src-file> <dst-file>` is used to make our files available to the container.
+
+::: {.fragment}
+```{.dockerfile code-line-numbers="4|2|1-4"}
+FROM ubuntu
+COPY message.txt my-message.txt
+RUN apt update && apt install -y figlet
+CMD cat my-message.txt | figlet
+```
+:::
+
+::: {.fragment .callout-warning}
+Every time we change the contents of `message.txt`, we'll have to rebuild the image.
+:::
 
 ## Layer caching
 
-An implicit benefit of using incremental layers, is being able to cache unchanged layers. Let's see an example:
+What is the difference between the Dockerfiles below?
+
+```{.dockerfile}
+FROM ubuntu
+COPY message.txt my-message.txt
+RUN apt update && apt install -y figlet
+CMD cat my-message.txt | figlet
+```
+<br>
+
+```{.dockerfile}
+FROM ubuntu
+RUN apt update && apt install -y figlet
+COPY message.txt my-message.txt
+CMD cat my-message.txt | figlet
+```
+
+::: {.fragment .callout-tip}
+The fact that layers are incremental allows for **caching**. If only layer 3 has changed, layer 1 and 2 **do not have to be rebuilt**. This is something we must keep in mind when writing Dockerfiles.
+:::
+
+## Working with python
+
+Imagine I have Python project with the following files:
+
+```
+├── main.py
+├── message.txt      # The message we want pfiglet to print
+├── requirements.txt # pyfiglet declared as a dependency
+└── .venv            # The python virtual env
+```
+
+Where `main.py` does the following:
+
+```{.python}
+from pyfiglet import Figlet
+
+with open("message.txt") as file:
+  print(Figlet().renderText(file.read()))
+```
+
+## Dockerize our python project {.smaller}
+
+To run my project, I would need to:
+
+```{.bash}
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python main.py
+```
+
+::: {.fragment}
+If I want this to happen inside a container, I could create the following Dockerfile:
+
+```{.dockerfile}
+FROM python
+COPY main.py main.py
+COPY message.txt message.txt
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+CMD python main.py
+```
+:::
+
+::: {.fragment .callout-note}
+Why didn't I create a python virtual environment inside the docker container?
+:::
+
+## `COPY . .`
+
+- Instead of copying every single file, we'll usually copy our entire working directory.
+- `COPY . .` will copy all files on the context directory inside the container.
 
 ::: {.fragment}
 ```{.dockerfile}
-FROM ubuntu
-RUN echo "Hello students!" > /message.txt
-RUN apt update && apt install -y figlet
-CMD ["figlet", "Class 2"]
+FROM python
+COPY . .
+RUN pip install -r requirements.txt
+CMD python main.py
 ```
 :::
 
 
-# Container registries
+## Keeping images small
+
+- When working with containers, we should prioritize the images being **as small as possible**.
+- For the container to work, we saw **only** `message.txt`, `main.py` and `requirements.txt` are needed.
+- But since we're doing `COPY . .` we're also copying `.venv` and `Dockerfile`, **which are useless inside the container**.
+
+## Dockerignore
+
+- Similar to how `.gitignore` works, we can create a file named `.dockerignore`.
+- From the point of view of container we are creating, any file or directory listed inside the `.dockerignore` won't exist.
+- For our python project, we could write the following `.dockerignore`:
+
+::: {.fragment}
+```{.dockerfile}
+.venv/
+Dockerfile
+.dockerignore
+```
+:::
+
+## One more change
+
+- What could we still improve for our dockerized Python app? 
+- What happens if I only change the `message.txt` file?
+
+::: {.fragment}
+```{.dockerfile}
+FROM python
+COPY . .
+RUN pip install -r requirements.txt
+CMD python main.py
+```
+:::
+
+## Remember to use the layer cache
+
+- Real projects will have lots of dependencies, and having to reinstall them **every time a file changes** would be very time consuming.
+- It is good practice to first copy only the files needed to install dependencies, and **then copy the rest of the project**:
+
+::: {.fragment}
+```{.dockerfile}
+FROM python
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY . .
+CMD python main.py
+```
+:::
+
+## Back to the `ubuntu` image
+
+If we had a look at how could the Dockerfile of the `ubuntu` image look like, it could be something like:
+
+```{.dockerfile}
+FROM scratch
+ADD rootfs-22.04-amd64.tar /
+CMD ["/bin/bash"]
+```
+
+- `FROM scratch` means we start with an empty image.
+- `ADD` works like `COPY` but with added functions, like being able to decompress an archive.
+- `CMD ["/bin/bash"]` is very similar to `CMD /bin/bash` [read more here](https://docs.docker.com/reference/dockerfile#shell-and-exec-form).
 
 
-## The Open Container Initiative
+## Recap {.smaller}
 
-Here we are in a regular slide. Some callouts (the cool boxes) we can use are the following:
+So far we've seen various keywords we can use in Dockerfiles:
 
-## Callouts
+- `FROM` – Defines the base image for the build.
+
+- `RUN` – Executes build-time commands.
+
+- `CMD` – Specifies the default runtime command.
+
+- `COPY` – Copies files from the build context into the image.
+
+- `ADD` – Like COPY, but also supports URLs and auto-extracting archives.
 
 ::: {.callout-tip .fragment}
--   Adding `.fragment` to the callout params makes it appear in order same as the bullet points in the slide
+Any line in the Dockerfile that modifies the filesystem of the resulting image **creates a new layer**. Thus, All the above keywords can create layers except for `CMD` which is not executed during build-time.
 :::
 
-::: {.callout-note title="My custom title"}
--   Adding `title="My custom title"` to the callout params enables to customize the card title.
+# Container networking
+
+## A simple webserver {.smaller}
+
+- We are going to use Python to run a simple webserver with `python -m http.server <PORT>`. 
+
+- Executing the command will expose files on the current folder through a web interface.
+
+::: {.fragment style="text-align:center;"}
+<img src="figures/week-10/python-webserver.png" style="width:70%;"/>
 :::
 
-::: callout-warning
-Warning is another type of callout.
+## Containerizing the webserver
+
+A simple Dockerfile that runs the python webserver could be:
+
+```{.dockerfile}
+FROM python
+CMD ["python", "-m", "http.server", "8080"]
+```
+
+::: {.fragment}
+We can now build and run the container:
+
+```{.bash}
+$ docker build . -t amsa
+$ docker run amsa
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+```
 :::
 
-::: callout-caution
-Caution is another type of callout.
+::: {.fragment .callout-note}
+But how do we access the web server? Visiting `http://localhost:8080/` doesn't work..
 :::
 
-::: callout-important
-Important is another type of callout.
+## Of course it doesn't work!
+
+- Remember are designed to be isolated.
+- Apart from having their own file system, **they also have their own network stack**.
+- Port 8080 of the container is not the same as port 8080 of the host machine.
+
+## Mapping ports
+
+- To access services inside containers, **we can map a ports**, that is, "link" a port on our host machine to a port on the container.
+- We'll use the `docker run` command to do so by adding the option `-p`:
+
+::: {.fragment}
+
+```{.bash}
+$ docker run -it -p 8085:8080 amsa
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+```
 :::
+
+- The syntax is `-p HOST_PORT:CONTAINER_PORT`, so with the above example, we would be able to access the webserver on `http://localhost:8085/`
+
+
+# Container registries
 
 ## Columns
 
@@ -233,7 +457,6 @@ Some other nice things are columns:
 #### **Column 2**
 
 -   This takes the 50% to the right
--   Wisky
 :::
 ::::
 :::::::
