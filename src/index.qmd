@@ -19,6 +19,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 -   [Week 6: Users, permissions and quotas + PRAC 3.2](weeks/week-6.qmd)
 -   [Week 7: RAM disks and tmpfs + PRAC 3.3](weeks/week-7.qmd)
 -   [Week 9: Virtualization 101](weeks/week-9.qmd)
+-   [Week 10: Dockerfile & DockerHub](weeks/week-10.qmd)
 
 ## 📝 Activities
 
@@ -42,6 +43,7 @@ Having said that, we encourage you to give it a try and show us the results, we'
 -   [Week 6: Make tmpfs use the SWAP](weeks/week-6.qmd#extra)
 -   [Week 7: Quota's extras](weeks/week-7.qmd#extra)
 -   [Week 9: Run a wordpress webpage using containers](weeks/week-9.qmd#extra)
+-   [Week 9: Dockerfile extras](weeks/week-10.qmd#extra)
 
 ## 📚 Resources
 

@@ -1,0 +1,300 @@
+---
+subtitle: "Week 10: Dockerfile & DockerHub"
+format: revealjs
+---
+
+# Goals for today
+
+-   Any questions from the previous session?
+-   Dockerfile
+-   DockerHub
+
+# Recap
+
+## Let's imagin we have server with lots of resources
+
+::: {style="text-align:center;"}
+<img src="figures/week-10/server-0.png" style="width:50%;"/>
+:::
+
+## We first deploy a Java app
+
+::: { style="text-align:center;"}
+<img src="figures/week-10/server-1.png" style="width:50%;"/>
+:::
+
+## Then we add a Python app
+
+::: { style="text-align:center;"}
+<img src="figures/week-10/server-2.png" style="width:50%;"/>
+:::
+
+## Then we add a React website
+
+::: { style="text-align:center;"}
+<img src="figures/week-10/server-3.png" style="width:50%;"/>
+:::
+
+## This doesn't scale well..
+
+- We have to make sure permisions and users are properly set up to avoid one app being able to access another app's files.
+
+- What if our Java app requries `OpenSSL 1.1.x` while Python app now requires `OpenSSL 3.x`?
+
+- We need **isolation**!
+
+## We have two options
+
+- **VMs** isolate everything with a full OS per app.
+- **Containers** do so while sharing the host kernel.
+- **Containers are lighter and faster**, while VMs provide stronger but heavier isolation.
+
+## We'll choose containers
+
+- We'll build a container for each app.
+- Each app can have whichever version of packages it wants and can only access its files.
+- From the point of view of the app, **it is alone in the server**.
+
+## But how do we build a container for each app?
+
+::: { style="text-align:center;"}
+<img src="figures/week-10/server-4.png" style="width:50%;"/>
+:::
+
+# Containers
+
+What happens when I run `docker run -it ubuntu bash`?
+
+## Container images
+
+A container runs from an **OCI image**, which contains:
+
+- A root filesystem (the files the app needs)
+
+- A config (environment variables, entrypoint…)
+
+- Layers (incremental filesystem changes: adding files, installing packages, etc)
+
+::: {.fragment}
+The image provides:
+:::
+
+- **What** will run
+
+- **How** it should run (metadata)
+
+## Container runtimes
+
+- The runtime is what interprets the image and **creates the container process**.
+
+- It is the one responsible for **executing the app** inside isolation.
+
+- We'll be using **Docker Engine**.
+
+## The `ubuntu` image
+
+- It is an extremely simple image, built **with only one layer**.
+
+- The Ubuntu developers pack all the file system into an archive and that is the first layer.
+
+::: {.callout-tip .fragment}
+We can use `docker inspect <image-name>` to see details of the image, including which layers it has.
+:::
+
+## Why is the Ubuntu image only 78MB? {.smaller}
+
+Because it includes only the userspace filesystem and essential packages.
+
+::: {.fragment}
+It does **not include**:
+:::
+
+- kernel
+- system services
+- drivers
+- desktop environment
+- init system
+- bootloader
+
+::: {.fragment}
+A container is not a VM, **it's just a process isolated with its own filesystem**.
+:::
+
+# Dockerfile
+
+## Working on top of `ubuntu`
+
+- We've seen how ubuntu image is built with just one layer where all the root filesystem is added.
+- But what if I want the image to have additional software?
+- `Dockerfile` makes it possible to add layers and customize image config.
+
+## Our first `Dockerfile`
+
+- To get started, we'll need to create a file called `Dockerfile`.
+- Inside this file, the first thing is to specify which image are we starting from.
+
+::: {.fragment}
+```{.dockerfile}
+FROM ubuntu
+```
+:::
+
+- Now we need to build the image:
+
+::: {.fragment}
+```{.bash}
+docker build . -t amsa 
+# Looks for a Dockerfile in the current directory (.)
+# Names the resulting image as amsa
+```
+:::
+
+## Our first useful `Dockerfile`
+
+We still have only one layer, which makes sense since there are no changes made to the filesystem.
+
+`RUN` keyword lets us execute commands on the base image we are using.
+`CMD` keyword is used to define the command to be executed when we run the built image.
+
+::: {.fragment}
+```{.dockerfile}
+FROM ubuntu
+RUN apt update && apt install figlet
+CMD figlet "amsa"
+```
+:::
+
+This time, the resulting image will have 2 layers:
+
+- The original layer from `ubuntu` image.
+- The one we just added by running a command that modifies the file system.
+
+## 
+
+## Layer caching
+
+An implicit benefit of using incremental layers, is being able to cache unchanged layers. Let's see an example:
+
+::: {.fragment}
+```{.dockerfile}
+FROM ubuntu
+RUN echo "Hello students!" > /message.txt
+RUN apt update && apt install -y figlet
+CMD ["figlet", "Class 2"]
+```
+:::
+
+
+# Container registries
+
+
+## The Open Container Initiative
+
+Here we are in a regular slide. Some callouts (the cool boxes) we can use are the following:
+
+## Callouts
+
+::: {.callout-tip .fragment}
+-   Adding `.fragment` to the callout params makes it appear in order same as the bullet points in the slide
+:::
+
+::: {.callout-note title="My custom title"}
+-   Adding `title="My custom title"` to the callout params enables to customize the card title.
+:::
+
+::: callout-warning
+Warning is another type of callout.
+:::
+
+::: callout-caution
+Caution is another type of callout.
+:::
+
+::: callout-important
+Important is another type of callout.
+:::
+
+## Columns
+
+Some other nice things are columns:
+
+::::::: columns
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Column 1**
+
+-   This uses the first 50% to the left
+-   It has also the param fragment so it appears in order
+:::
+::::
+
+:::: {.column .fragment width="50%"}
+::: callout-note
+#### **Column 2**
+
+-   This takes the 50% to the right
+-   Wisky
+:::
+::::
+:::::::
+
+## Tables
+
+| Column 1   | Column 2                                 |
+|------------|------------------------------------------|
+| **Week 0** | 📖 **Virtualization & Containers** intro |
+| **Week 1** | 📖 Explain **PRAC-4.1**                  |
+
+## Smaller slides {.smaller}
+
+-   Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
+
+## Figures
+
+As with all elements, adding `.fragment` property will make it appear in order. Also, use `style="text-align:center;"` to center the image or easily do it from the visual editor from vscode.
+
+::: {.fragment style="text-align:center;"}
+<img src="figures/week-0/crabs.png" style="width:50%;"/>
+:::
+
+# Quizz
+
+## General: {.smaller}
+
+-   Test?
+
+-   Test2?
+
+## Specific part of the theory: {.smaller}
+
+-   q1?
+
+-   q2?
+
+# References
+
+## Really Recommended References: {.smaller}
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Other References {.smaller}
+
+This section can be difficult to follow. If you're an advanced Linux user and you're interested in exploring the internals, feel free to dive in. Otherwise, it's perfectly fine to skip it for now and come back later (once you feel more comfortable with your operating system and how it works).
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Additional Exercices {#extra .smaller}
+
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+-   Example: <https://example.com>
+
+-   Example2: <https://example2.com>
+
+## Activity 1 {.smaller}
+
+Ready to have some fun? Check out the [second AMSA activity here!](/activities/act-2.qmd)
