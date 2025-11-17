@@ -27,7 +27,7 @@ There are lots of different behaviours for APIs (and we'll explain how ours work
 - Parameters: Parameters are the variables that are passed to an API endpoint to provide specific instructions for the API to process. These parameters can be included in the API request as part of the URL, in the query string, or in the request body. For example, the /articles endpoint of a blogging API might accept a “topic” parameter, which it would use to access and return articles on a specific topic.
 - Request body: The body is the main part of the request, and it includes the actual data that is required to create, update, or delete a resource. For instance, if you were creating a new article in a blogging app, the request body would likely include the article's content, title, and author.
 
-The objective of this activity is to *dockerize* and deploy to AWS our API, while also learning about databases in the way.
+**The objective of this activity is to *dockerize* and deploy to AWS our API, while also learning about databases in the way.**
 
 ## 2. Delivery
 
@@ -65,13 +65,13 @@ When you join the Github Classroom activity with the link provided on Step 2, a 
 
 ### Understanding the API
 
-How does our API work? First, you have sync your python dependencies (more info on the README), and then run it with: `uv run fastapi run`.
+How does our API work? First, [you have to setup your environment and start the server, see section 6](@sec-setup).
 
-By default, the api will expose an http connection using the port `8000`. Be aware that, this means that if you're running it on your pc (without any container), you can access it via `http://localhost:8000` on your browser, if you're running it on a conainer, you'll need to map the port of the container to your host (see [how to map it on our reference cheatsheet](https://amsa.lol/resources/docker.html#run-a-container-given-an-image-advanced)).
+By default, the server listens for HTTP connections on port `8000`. Be aware that, this means that if you're running it on your pc (without any container), you can access it via `http://localhost:8000` on your browser. If you're running it on a conainer, you'll need to map the port of the container to your host so you can access it on your browser (see [how to map it on our reference cheatsheet](https://amsa.lol/resources/docker.html#run-a-container-given-an-image-advanced)).
 
-The API, exposes three"endpoints", let's see them:
+The API, exposes three "endpoints", let's see them:
 
-  - (`GET /docs`) Documentation: Returns an html file (the type of files that your browser knows how to show/paint on the screen), that allows us to easily call the other two endpoints of the API. [1]
+  - (`GET /docs`) Documentation: Returns an html file (the type of files that your browser knows how to show/paint on the screen), that allows us to easily call the other two endpoints of the API. [^1]
   - (`POST /users`) Create a user given:
         - A username
         - A name
@@ -79,21 +79,25 @@ The API, exposes three"endpoints", let's see them:
         - A password
   - (`GET /users`) List all existing users
 
-So, if you want to see the documentation and "play" with the "/users" and "/user" endpoints, you can access "http://localhost:8080/docs" [2]
-
-So, we can create users with `POST http://localhost:8000/users`, and then retrieve the information with `GET http://localhost:8000/users`, nice!
+If you want to see the documentation and "play" with the `/users` endpoints, you can access <http://localhost:8080/docs> [^2] This will allow you to create users with `POST http://localhost:8000/users`, and then retrieve the information with `GET http://localhost:8000/users`, nice!
 
 If it still didn't make clear what an API really is [watch the hardvard cs50 http class](https://www.youtube.com/watch?v=PUPDGbnpSjw), and then think that:
-  - The `/docs` endpoint is just the same as the "facebook" example they show, it returns text in `html` format.
-  - The other two endpoints, (`POST users` and `GET users`) receive and return text in the `json` format, not `html`.
+
+- The `/docs` endpoint is just the same as the "facebook" example they show, it returns text in `html` format.
+- The other two endpoints, (`POST users` and `GET users`) receive and return text in the `json` format, not `html`.
 
 
 ### The database
-Our app needs a way to save the users information! We save it on a database, and we want to choose between different databases [3] :
+::: {.callout-note title="Don't worry too much"}
+You'll switch and explore the databases on PRAC-4.2! Although it is recommended that you try to understand them now, so you can "more or less" see, how our service works!
+:::
+
+
+Our app needs a way to save the users information! We save it on a database, and we want to choose between different databases [^3] :
 
 - By default, it uses an internal [sqlite](https://sqlite.org/index.html), which just uses a "raw" file as the database. This means that it doesn't connect to anything, it just saves the information to an "optimized" file, and that's really it.
 
-- If the `PROD` environment variable is set, then it will attempt to connect to a [postgresql](https://www.postgresql.org) database. This database is another "service" on his own that exposes a port (by default 5432), where you can connect and send values to be saved. Of course, not everyone should connect to this database, only the people with a valid username and password, that's the reason behind that, when you create a postgresql database, you need to tell it the user and password that you want!
+- If the `PROD` environment variable is set [^4] , then it will attempt to connect to a [postgresql](https://www.postgresql.org) database. This database is another "service" on his own, that exposes a port (by default 5432), where you can connect and send values to be saved. Of course, not everyone should connect to this database, only the people with a valid username and password, that's the reason behind that, when you create a postgresql database, you need to tell it the user and password that you want!
 
 Once we have an instance of postgresql running, we can tell the users api to use this instance instead of the sqlite one (This will be a requirement on Prac-4.2!). So, we'll have to tell him the following information via environment variables:
     - `PROD`: Set it to true if you want to use a postgresql instance.
@@ -103,22 +107,27 @@ Once we have an instance of postgresql running, we can tell the users api to use
     - `DB_PORT`: The port of the host of the database
     - `DB_NAME`: The name of the database inside postgresql
 
+### Brief summary
+
+A brief summary of how the app works is shown below (using user creation as an example):
+![](images/example-server.png)
+
+Keep in mind that if you’re running everything on `localhost` (which is likely the case for PRAC-4.1 and PRAC-4.2) the IP address used in the example figure will be `127.0.0.1`, or simply the domain name `localhost`. In this setup (PRAC-4.1 and PRAC-4.2), your machine acts as both the server and the client.
+
 ## 5. Tasks
 ### Prac-4.1: Dockerizing the API
 
-Your objective is to **dockerize the API**
+Your main objective is to **dockerize the API**. That's it, we keep it simple this week. So you should write a `Dockerfile` to run the `users API server` inside a container. The rules are the following:
 
-That's it, we keep it simple this week.
-Write a `Dockerfile` to deploy the API inside a container.
-
-Keep in mind that the command you must run inside the Docker container is *uv run fastapi run*, and that **dependencies have to be synced** before.
+- Keep in mind that the command you must run inside the Docker container is *uv run fastapi run*, and that **dependencies must be synced** before (this means the virtual environment should be created before doing the `uv run`).
+- You must only use the sqlitedb database! This means that, in prac-4.1, you don't have to `docker run` with custom env variables, just the default ones!.
+- Remember to map the container’s port to a port on your host machine, otherwise, the server will remain isolated inside the container and you won’t be able to access it from your host.
+- If you have any questions about what you’re allowed to do in the Dockerfile, please ask the teachers.
 
 Your goal should be to make the resulting image as **small as possible**, as that's what good developers should do!
-TODO: You must only use the sqlitedb database! This means that, in prac-4.1, you don't have to `docker run` with custom env variables, just the default ones!.
-TODO: Be aware that you have to map the port of the container to your host port!
 
 ### Prac-4.2: Moving to Docker Compose 
-This section is still under construction 🚧⛏️️👷️
+No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 <!-- Your objective is to **switch the API's db to a postgresql, and communicate it through Docker compose**  -->
 <!-- Woah woah woah! That looks like a lot! Let's go step by step -->
 <!---->
@@ -128,27 +137,31 @@ This section is still under construction 🚧⛏️️👷️
 <!---->
 <!-- The resulting file should be a `docker-compose.yml` with both services and their respective configuration. -->
 
-### Prac-4.3:
-This section is still under construction 🚧⛏️️👷️
+### Prac-4.3: Using AWS ECR and AppRunner
+No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 
-### Prac-4.4:
-This section is still under construction 🚧⛏️️👷️
+### Prac-4.4: Merging it with AWS RDS!
+No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 
-## 6. Setting the environment up!
+## 6. Setting up the server! {#sec-setup}
 ### Cloning the repository and set it up:
 
-Remember that, once you entered the Github Classroom on [section 2](act-4.qmd#delivery), you will have to clone your repository with [^2]:
+Remember that, once you entered the Github Classroom on [section 2](act-4.qmd#delivery), you will have to clone your repository with:
 
-[^2]: If you don't have any idea of what we're talking about, revisit the [setting up the VM and brief git summary](/resources/vm_git.qmd)
-
-``` bash
+```bash
 git clone <ssh_address_of_your_git_repository>
 ```
 
-Then, enter inside the folder of the repository, on the `user-api` fodler, setup a virtual environment for the python project, which can be done with:
+Then, setup a virtual environment for the python project, which can be done with:
+
+```bash
+uv sync
+```
+
+Now, you're ready to run the `users api server`, do it with:
 
 ``` bash
-uv sync
+uv run fastapi run
 ```
 
 ## 7. Evaluation
@@ -184,14 +197,16 @@ Please don't hesitate to ask the teachers **any doubts**, there are no dumb ques
 
 You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
 
-[1]: In reality, you could also access "http://localhost:8080" instead of "http://localhost:8080/docs", since it will automatically redirect you to "/docs", you can see the code that [does this here](https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25)
+[^1]: In reality, you could also access <http://localhost:8080> instead of <http://localhost:8080/docs>, since it will automatically redirect you to `/docs`, you can see [the code of the server that does this](https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25)
 
-[2]: The "http://localhost:8080/docs" webpage, isn't the only way to "test" the endpoints of the API. Our server exposes a connection http on the port 8000, so any clients that support the "http" protocol could be used instead. If you're curious, you can use another client like for example [postman (see video here)](https://www.youtube.com/watch?v=PfujVETI-i4) or [if you want a cli tool that lives one every linux distro, just use curl](https://www.youtube.com/watch?v=Xy7fDxz39FM)
+[^2]: The `http://localhost:8080/docs` webpage, isn't the only way to "test" the endpoints of the API. Our server exposes a connection http on the port `8000`, so any clients that support the `http` protocol could be used instead. If you're curious, you can use another client like for example [postman (see video here)](https://www.youtube.com/watch?v=PfujVETI-i4) or [if you want a cli tool that is installed on every linux distro, just use curl](https://www.youtube.com/watch?v=Xy7fDxz39FM)
 
-[3]: A database is just a program that makes saving data easy and fast. We could save our users inside a file named "users.txt", ex:
+[^3]: A database is just a program that makes saving and retrieving data easy and fast. We could save our users inside a file named "users.txt", ex:
 ```
 1,pabloteach,Pablo Fraile,admin,4346%3450834
 2,ori,Oriol Agost,admin,435-08345237
 ...
 ```
-But, of course, this would be slow as f**k, that's why we usually use databases.
+But, of course, this would be slow as f**k, that's why we use databases.
+
+[^4]: If you don't know what environment variables are (you should know it from the Operating Systems course), you can have a [great explanation on the hpc-wiki](https://hpc-wiki.info/hpc/Introduction_to_Linux_in_HPC/Environment_variables)
