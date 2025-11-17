@@ -38,6 +38,8 @@ website:
           text: "Activity 2"
         - href: activities/act-3.qmd
           text: "Activity 3"
+        - href: activities/act-4.qmd
+          text: "Activity 4"
       - text: "🤓 Extras"
         menu:
         - href: weeks/week-1.qmd#extra
