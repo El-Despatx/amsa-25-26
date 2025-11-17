@@ -1,0 +1,126 @@
+---
+subtitle: "Docker Commands"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+# Docker Cheat Sheet Reference
+
+## Create/Remove OCI Images
+
+### Create Images
+Build an Image from a Dockerfile
+```
+docker build -t <name_you_want_for_the_image> . 
+```
+Build an Image from a Dockerfile without the cache (re-download base images that are already on your pc)
+```
+docker build -t <name_you_want_for_the_image> . –no-cache
+```
+List local images of our PC
+```
+docker images
+```
+
+### Remove Images
+Delete an Image:
+```
+docker rmi <image_name>
+```
+
+Please remove all images that are not currently used by any running containers:
+```
+docker image prune
+```
+
+## Upload/Download images to/from DockerHub Registry
+
+### Upload
+Login into DockerHub on your terminal:
+```
+docker login -u <username>
+```
+
+Publish an image to Docker Hub with your username:
+```
+docker push <username>/<image_name>
+```
+
+### Download
+Search for an image on DockerHub:
+```
+docker search <image_name>
+```
+Download (pull) an image from Docker Hub:
+```
+docker pull <image_name>
+```
+
+## Run/Stop/Start a container (basic)
+See running containers on the machine:
+```
+docker ps
+```
+
+Create and run a container from an image, with a custom name:
+```
+docker run --name <container_name> <image_name>
+```
+
+Run a container in the background
+```
+docker run -d <image_name>
+``` 
+
+Start or stop an existing container:
+```
+docker start|stop <container_name> (or <container-id>)
+```
+
+Remove a stopped container:
+```
+docker rm <container_name>
+```
+
+## Run a container given an image (advanced)
+Map ports of your host to the container:
+```
+docker run --name <container_name> -p <host_post>:<container_port> <image_name>
+```
+
+Mount a volume from host to container:
+```
+docker run -v <volume-name>:<path-in-container-where-volume-is-mounted> <image-name>
+```
+
+Pass environment variables:
+```
+docker run -e MY_ENV_VAR='whatever' <image_name>
+```
+
+
+## Misc. operations
+Open a shell inside a running container (in this case our shell is `sh`):
+```
+docker exec -it <container_identifier> sh
+```
+
+Fetch and follow the logs of a container:
+```
+docker logs -f <container_name>
+```
+
+To inspect (see all the metadata) of a running container:
+```
+docker inspect <container_name> (or <container_id>)
+```
+
+View resource usage stats of the containers:
+```
+docker container stats
+```
