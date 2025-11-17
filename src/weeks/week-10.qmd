@@ -3,12 +3,6 @@ subtitle: "Week 10: Dockerfile & DockerHub"
 format: revealjs
 ---
 
-# Goals for today
-
--   Any questions from the previous session?
--   Dockerfile
--   DockerHub
-
 # Recap
 
 ## Let's imagin we have server with lots of resources
@@ -61,9 +55,6 @@ format: revealjs
 <img src="figures/week-10/server-4.png" style="width:50%;"/>
 :::
 
-# Containers
-
-What happens when I run `docker run -it ubuntu bash`?
 
 ## Container images
 
@@ -93,7 +84,7 @@ The image provides:
 
 ## The `ubuntu` image
 
-- It is an extremely simple image, built **with only one layer**.
+- The `ubuntu` image is extremely simple, built **with only one layer**.
 
 - The Ubuntu developers pack all the file system into an archive and that is the first layer.
 
@@ -128,7 +119,7 @@ A container is not a VM, **it's just a process isolated with its own filesystem*
 - But what if I want the image to have additional software?
 - `Dockerfile` makes it possible to add layers and customize image config.
 
-## Our first `Dockerfile`
+## Our first `Dockerfile` {.smaller}
 
 - To get started, we'll need to create a file called `Dockerfile`.
 - Inside this file, the first thing is to specify which image are we starting from.
@@ -149,9 +140,11 @@ docker build . -t amsa
 ```
 :::
 
-## Our first useful `Dockerfile` {.smaller}
-
+::: {.fragment}
 The resulting image still has only one layer, which makes sense since there are no changes made to the filesystem.
+:::
+
+## Our first useful `Dockerfile` {.smaller}
 
 Let's see an example that makes more sense.
 
@@ -167,11 +160,11 @@ CMD figlet "amsa"
 - `CMD` keyword is used to define the default command to be executed when we run a container from this image.
 
 ::: {.fragment}
-This time, the resulting image will have 2 layers:
+This time, the resulting image will have **2 layers**:
 :::
 
 - The original layer from `ubuntu` image.
-- The one we just added by running a command that modifies the file system.
+- **The one we just added by running a command that modifies the file system**.
 
 ## Running containers
 
@@ -245,6 +238,7 @@ Imagine I have Python project with the following files:
 └── .venv            # The python virtual env
 ```
 
+::: {.fragment}
 Where `main.py` does the following:
 
 ```{.python}
@@ -253,6 +247,7 @@ from pyfiglet import Figlet
 with open("message.txt") as file:
   print(Figlet().renderText(file.read()))
 ```
+:::
 
 ## Dockerize our python project {.smaller}
 
@@ -300,13 +295,22 @@ CMD python main.py
 ## Keeping images small
 
 - When working with containers, we should prioritize the images being **as small as possible**.
-- For the container to work, we saw **only** `message.txt`, `main.py` and `requirements.txt` are needed.
+- For the container to work, we saw that the **only** files needed were:
+
+::: {.fragment}
+```{.bash}
+message.txt
+main.py
+requirements.txt
+```
+:::
+
 - But since we're doing `COPY . .` we're also copying `.venv` and `Dockerfile`, **which are useless inside the container**.
 
 ## Dockerignore
 
 - Similar to how `.gitignore` works, we can create a file named `.dockerignore`.
-- From the point of view of container we are creating, any file or directory listed inside the `.dockerignore` won't exist.
+- From the point of view of the container we are creating, any file or directory listed inside the `.dockerignore` won't exist.
 - For our python project, we could write the following `.dockerignore`:
 
 ::: {.fragment}
@@ -376,14 +380,20 @@ So far we've seen various keywords we can use in Dockerfiles:
 - `ADD` – Like COPY, but also supports URLs and auto-extracting archives.
 
 ::: {.callout-tip .fragment}
-Any line in the Dockerfile that modifies the filesystem of the resulting image **creates a new layer**. Thus, All the above keywords can create layers except for `CMD` which is not executed during build-time.
+Any line in the Dockerfile that modifies the filesystem of the resulting image **creates a new layer**. Thus, all the above keywords can create layers except for `CMD` which is not executed during build-time.
 :::
 
 # Container networking
 
 ## A simple webserver {.smaller}
 
-- We are going to use Python to run a simple webserver with `python -m http.server <PORT>`. 
+- We are going to use Python to run a simple webserver with 
+
+::: {.fragment}
+``` {.python}
+python -m http.server <PORT>
+```
+:::
 
 - Executing the command will expose files on the current folder through a web interface.
 
@@ -416,13 +426,13 @@ But how do we access the web server? Visiting `http://localhost:8080/` doesn't w
 
 ## Of course it doesn't work!
 
-- Remember are designed to be isolated.
+- Remember containers are designed to be isolated.
 - Apart from having their own file system, **they also have their own network stack**.
 - Port 8080 of the container is not the same as port 8080 of the host machine.
 
 ## Mapping ports
 
-- To access services inside containers, **we can map a ports**, that is, "link" a port on our host machine to a port on the container.
+- To access services inside containers, **we can map ports**, that is, "link" a port on our host machine to a port on the container.
 - We'll use the `docker run` command to do so by adding the option `-p`:
 
 ::: {.fragment}
@@ -435,89 +445,148 @@ Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 
 - The syntax is `-p HOST_PORT:CONTAINER_PORT`, so with the above example, we would be able to access the webserver on `http://localhost:8085/`
 
-
 # Container registries
 
-## Columns
+## What is a container registry? {.smaller}
 
-Some other nice things are columns:
+A **container registry** is a service that stores and distributes container images. Think of it as **GitHub but for container images**.
 
-::::::: columns
-:::: {.column .fragment width="50%"}
-::: callout-note
-#### **Column 1**
-
--   This uses the first 50% to the left
--   It has also the param fragment so it appears in order
+::: {.fragment}
+Common registries include:
 :::
-::::
 
-:::: {.column .fragment width="50%"}
-::: callout-note
-#### **Column 2**
+* DockerHub (default registry when using Docker)
+* GitHub Container Registry (GHCR)
+* GitLab Container Registry
+* AWS ECR / Google Artifact Registry / Azure ACR
 
--   This takes the 50% to the right
+::: {.callout-tip .fragment}
+When we do `docker run ubuntu`, Docker is first looking if we already have an image named `ubuntu` on our system, if we do not, it will download it from DockerHub.
 :::
-::::
-:::::::
 
-## Tables
-
-| Column 1   | Column 2                                 |
-|------------|------------------------------------------|
-| **Week 0** | 📖 **Virtualization & Containers** intro |
-| **Week 1** | 📖 Explain **PRAC-4.1**                  |
-
-## Smaller slides {.smaller}
-
--   Adding `{.smaller}` at the end of the slide title makes the entire slide content smaller.
-
-## Figures
-
-As with all elements, adding `.fragment` property will make it appear in order. Also, use `style="text-align:center;"` to center the image or easily do it from the visual editor from vscode.
-
-::: {.fragment style="text-align:center;"}
-<img src="figures/week-0/crabs.png" style="width:50%;"/>
+::: {.callout-tip .fragment}
+`docker pull ubuntu` will do the same but without running the container.
 :::
+
+## Why do we need registries?
+
+* To **share images** with collaborators.
+* To **deploy containers** on servers.
+* To ensure **versioned, reproducible builds**.
+* To store both **public** and **private** images.
+
+## DockerHub basics {.smaller}
+
+To upload an image to DockerHub:
+
+1. Create an account at [https://hub.docker.com](https://hub.docker.com).
+2. Log in from your terminal with `docker login`.
+3. Tag your image using the DockerHub format:
+
+::: {.fragment}
+```{.bash}
+docker build . -t <your-dockerhub-username>/<image-name>:<image-version>
+```
+:::
+
+4. Push it:
+
+::: {.fragment}
+```{.bash}
+docker push <your-dockerhub-username>/<image-name>:<image-version>
+```
+:::
+
+## What is a tag?
+
+A **tag** is the version label of an image. For example:
+
+```{.bash}
+python:3.12
+python:3.11-slim
+ubuntu:22.04
+node:20-alpine
+myuser/myapp:v1.0.0
+```
+
+::: {.fragment .callout-tip}
+If no tag is specified, Docker assumes `latest` tag.
+:::
+
+## Pulling a specific version
+
+We can use specific versions of images with tags. To do so, add `:<tag>` at the end of the image name when using `docker pull` or `docker run`.
+
+```bash
+docker pull ubuntu:22.04
+docker pull python:3.12
+```
+
+::: {.callout-important .fragment}
+You should **always** use explicit tags in production. Never rely on `latest`.
+:::
+
+## Example workflow
+
+```bash
+# Build image locally
+docker build . -t ferran/amsa:1.0
+
+# Run it locally
+docker run ferran/amsa:1.0
+
+# Push it to registry
+docker push ferran/amsa:1.0
+
+# Later, on a different computer:
+docker pull ferran/amsa:1.0
+docker run ferran/amsa:1.0
+```
+
+## Summary
+
+* **Registries** store and distribute container images.
+* **DockerHub** is the default public registry.
+* **Tags** allow versioning images (`v1`, `v2`, `latest`).
+* Use **explicit tags** (never trust `latest`).
+* Registries enable reproducible and portable deployments.
 
 # Quizz
 
-## General: {.smaller}
+## Quizz: {.smaller}
 
--   Test?
+-   Why is the Ubuntu image only ~78MB even though a full Ubuntu installation is several gigabytes?
 
--   Test2?
+-   Why should heavy steps like `pip install -r requirements.txt` come before copying the full project code?
 
-## Specific part of the theory: {.smaller}
+-   How can we ensure specific files and folders are not copied into the container?
 
--   q1?
+-   What is the difference between `COPY` and `ADD` in a Dockerfile?
 
--   q2?
+-   What is the purpose of the `CMD` instruction, and why does it not create a layer?
+
+-   What does the `-p 8085:8080` option in docker run actually mean?
+
+-   Why can't you access a container’s webserver on `localhost:8080` unless you map a port?
+
+-   Why is relying on the `latest` tag dangerous in production environments?
 
 # References
 
-## Really Recommended References: {.smaller}
+## References: {.smaller}
 
--   Example: <https://example.com>
+-   Youtube playlist on containers: <https://www.youtube.com/playlist?list=PLozcbFx8FoPH30kYPbPuPsvxASWoLo9XB>
 
--   Example2: <https://example2.com>
+-   Docker docs on `CMD` shell vs exec: <https://docs.docker.com/reference/dockerfile#shell-and-exec-form>
 
-## Other References {.smaller}
+## Additional Exercices {#extra}
 
-This section can be difficult to follow. If you're an advanced Linux user and you're interested in exploring the internals, feel free to dive in. Otherwise, it's perfectly fine to skip it for now and come back later (once you feel more comfortable with your operating system and how it works).
+-   Why is it dangerous to run `docker run -v /:/host alpine`?
 
--   Example: <https://example.com>
+-   Why is docker run --network host considered dangerous?
 
--   Example2: <https://example2.com>
+-   Build an image using multi-stage builds.
 
-## Additional Exercices {#extra .smaller}
+## Activity 4 {.smaller}
 
-If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
-
--   Example: <https://example.com>
-
--   Example2: <https://example2.com>
-
-## Activity 1 {.smaller}
-
-Ready to have some fun? Check out the [second AMSA activity here!](/activities/act-2.qmd)
+Ready to have some fun? Check out the [fourth AMSA activity here!](/activities/act-4.qmd)
