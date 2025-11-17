@@ -9,20 +9,25 @@ format:
     colorlinks: true
 ---
 
+::: {.callout-important title="**Very very important 🚨**"}
+**THIS ASSIGNMENT IS "DIFFICULT"!**
+Not because the tasks themselves are hard, but because understanding what the problem is asking can be tricky.
+You'll need to be familiar with certain networking concepts before you begin. We’ve linked the relevant resources below. If you feel lost at any point, please email us or stop by our office, we're here to help.
+:::
+
 ## 1. Introduction
 The objective for this assignment is to __dockerize and orchestrate a provided API.__
 
+We've created a [server API](https://www.postman.com/what-is-an-api/#how-do-apis-work), a program that communicate between different applications by defining clear rules for how data is requested, sent, and received.
 
-We've created an [API](https://www.postman.com/what-is-an-api/#how-do-apis-work), a system that helps communicate between different applications by defining clear rules for how data is requested, sent, and received.
+There are lots of different behaviours for APIs (and we'll explain how ours works in the sections bellow), but they will typically have:
 
-There are lots of different behaviours for APIs, but they will typically have:
-
-- Endpoint: An API endpoint is a dedicated URL that provides access to a specific resource. For instance, the /articles endpoint in a blogging app would include the logic for processing all requests that are related to articles.
+- Endpoints: An API endpoint is a dedicated URL that provides access to a specific resource. For instance, the */articles* endpoint in a blogging app would return all the articles of the server.
 - Method: The request's method indicates the type of operation the client would like to perform on a given resource. REST APIs are accessible through standard HTTP methods, which perform common actions like retrieving, creating, updating, and deleting data.
 - Parameters: Parameters are the variables that are passed to an API endpoint to provide specific instructions for the API to process. These parameters can be included in the API request as part of the URL, in the query string, or in the request body. For example, the /articles endpoint of a blogging API might accept a “topic” parameter, which it would use to access and return articles on a specific topic.
 - Request body: The body is the main part of the request, and it includes the actual data that is required to create, update, or delete a resource. For instance, if you were creating a new article in a blogging app, the request body would likely include the article's content, title, and author.
 
-The objective of this activity is to dockerize and deploy to AWS our API, while also learning about databases in the way.
+The objective of this activity is to *dockerize* and deploy to AWS our API, while also learning about databases in the way.
 
 ## 2. Delivery
 
@@ -35,54 +40,63 @@ To complete this activity, you must do the following for each sub-delivery (PRAC
 2.  Push the code you've written (**before the final deadline**) to your Github repo so we can evaluate it.
 
 ::: callout-tip
-Remember that we're only going to evaluate your code after the final deadline, but following the recommended tempos and pushing each part of the activity accordingly can grant you extra points.
+Remember that we're only going to evaluate your assignment after the final deadline, but following the recommended tempos and pushing each part of the activity accordingly can grant you extra points.
 :::
 
 ## 3. Outline
 This activity is split onto 4 incremental parts, which are going to be related to the contents explained during the different classes.
 
-1.  On the first week, once we have explained **virtualization, containers and OCI images**, your job will be to dockerize the API.
-2.  On the second week, once we have explained **compose and databases**, your job will be to communicate the API with a database through compose.
-3.  Then, after having explained the **AWS environment, apprunners**, we'll want you to deploy the work we've done to AWS and communicate it through different services.
+1.  On the first week, your job will be to **dockerize the API**.
+2.  On the second week, your job will be to communicate the API with a postgresql database using docker-compose.
+3.  Then, we'll want you to deploy the work you've done to AWS.
+4.  Finally, after having explained the **AWS Relational Database Service (RDS)**, you'll connect the AppRunner service to your newly created RDS database.
 
 ## 4. Resources
 
-Building this all for yourself is out of scope for this subject. For that reason, the teachers have prepared some resources that will hopefully make the activity shorter and more enjoyable.
-
-### `User` API
-
-The python API for the users has been already implemented for you. You will have it available on your repository template.
+Since building the users API yourself is outside the scope of this subject, the teachers have prepared some helpful resources to make the activity quicker and more enjoyable. This way, you can focus on the fun parts: containers and AWS services! 
 
 ### Repository template
 
-When you join the Github Classroom activity with the link provided on Step 2, a remote repository is automatically created for you to work on this assignment. This repository will already contain some code, below are the details of what comes with the repo:
+When you join the Github Classroom activity with the link provided on Step 2, a remote repository is automatically created for you to work on this assignment. This repository will already contain all the python code of the API, below are the details of what comes with the repo:
 
-1.  It already has the API implemented on the root folder. It has everything needed serve the API, which you can do by running `uv run fastapi run` after syncing your dependencies (more info on the README).
+1.  It has everything needed to serve the API. 
 
 2.  A `README.md` file where you'll have instructions on how to set up the python environment.
-THe api
 
-### The API
-How does our API work?
+### Understanding the API
 
-While the API is running, by accessing `http://localhost:8000/docs` you will be able to:
-    - Create a user given:
+How does our API work? First, you have sync your python dependencies (more info on the README), and then run it with: `uv run fastapi run`.
+
+By default, the api will expose an http connection using the port `8000`. Be aware that, this means that if you're running it on your pc (without any container), you can access it via `http://localhost:8000` on your browser, if you're running it on a conainer, you'll need to map the port of the container to your host (see [how to map it on our reference cheatsheet](https://amsa.lol/resources/docker.html#run-a-container-given-an-image-advanced)).
+
+The API, exposes three"endpoints", let's see them:
+
+  - (`GET /docs`) Documentation: Returns an html file (the type of files that your browser knows how to show/paint on the screen), that allows us to easily call the other two endpoints of the API. [1]
+  - (`POST /users`) Create a user given:
         - A username
         - A name
         - A role ("user" or "admin")
         - A password
-    - List all existing users
+  - (`GET /users`) List all existing users
 
-Once the request to create a new user is sent, the password is then hashed and the user is given an "automatic" ID.
-Then, the user is stored on the database.
+So, if you want to see the documentation and "play" with the "/users" and "/user" endpoints, you can access "http://localhost:8080/docs" [2]
+
+So, we can create users with `POST http://localhost:8000/users`, and then retrieve the information with `GET http://localhost:8000/users`, nice!
+
+If it still didn't make clear what an API really is [watch the hardvard cs50 http class](https://www.youtube.com/watch?v=PUPDGbnpSjw), and then think that:
+  - The `/docs` endpoint is just the same as the "facebook" example they show, it returns text in `html` format.
+  - The other two endpoints, (`POST users` and `GET users`) receive and return text in the `json` format, not `html`.
+
 
 ### The database
-Our app has different ways of "picking" the database:
+Our app needs a way to save the users information! We save it on a database, and we want to choose between different databases [3] :
 
-- By default, it uses an internal [sqlite](https://sqlite.org/index.html), which just uses a file as the database. This is common for development.
-- If the `PROD` environment variable is set, then it will attempt to connect to a [postgresql](https://www.postgresql.org) database, TODO klk postgres.
-However, we need more data to connect to this database:
+- By default, it uses an internal [sqlite](https://sqlite.org/index.html), which just uses a "raw" file as the database. This means that it doesn't connect to anything, it just saves the information to an "optimized" file, and that's really it.
 
+- If the `PROD` environment variable is set, then it will attempt to connect to a [postgresql](https://www.postgresql.org) database. This database is another "service" on his own that exposes a port (by default 5432), where you can connect and send values to be saved. Of course, not everyone should connect to this database, only the people with a valid username and password, that's the reason behind that, when you create a postgresql database, you need to tell it the user and password that you want!
+
+Once we have an instance of postgresql running, we can tell the users api to use this instance instead of the sqlite one (This will be a requirement on Prac-4.2!). So, we'll have to tell him the following information via environment variables:
+    - `PROD`: Set it to true if you want to use a postgresql instance.
     - `DB_USER`: The user who will connect to the database
     - `DB_PASSWORD`: The password to connect to the database
     - `DB_HOST`: The IP address of the host of the database
@@ -91,6 +105,7 @@ However, we need more data to connect to this database:
 
 ## 5. Tasks
 ### Prac-4.1: Dockerizing the API
+
 Your objective is to **dockerize the API**
 
 That's it, we keep it simple this week.
@@ -99,21 +114,24 @@ Write a `Dockerfile` to deploy the API inside a container.
 Keep in mind that the command you must run inside the Docker container is *uv run fastapi run*, and that **dependencies have to be synced** before.
 
 Your goal should be to make the resulting image as **small as possible**, as that's what good developers should do!
+TODO: You must only use the sqlitedb database! This means that, in prac-4.1, you don't have to `docker run` with custom env variables, just the default ones!.
+TODO: Be aware that you have to map the port of the container to your host port!
 
 ### Prac-4.2: Moving to Docker Compose 
-Your objective is to **switch the API's db to a postgresql, and communicate it through Docker compose** 
-Woah woah woah! That looks like a lot! Let's go step by step
+This section is still under construction 🚧⛏️️👷️
+<!-- Your objective is to **switch the API's db to a postgresql, and communicate it through Docker compose**  -->
+<!-- Woah woah woah! That looks like a lot! Let's go step by step -->
+<!---->
+<!-- 1. Move the dockerized image onto a compose service. This should be a straight-forward step -->
+<!-- 2. Deploy a postgresql database on the compose. Don't stress on joining them yet! -->
+<!-- 3. Now it's time to communicate them. **TIP: We've already told you cannot modify python code. There's probably some way around it...** -->
+<!---->
+<!-- The resulting file should be a `docker-compose.yml` with both services and their respective configuration. -->
 
-1. Move the dockerized image onto a compose service. This should be a straight-forward step
-2. Deploy a postgresql database on the compose. Don't stress on joining them yet!
-3. Now it's time to communicate them. **TIP: We've already told you cannot modify python code. There's probably some way around it...**
-
-The resulting file should be a `docker-compose.yml` with both services and their respective configuration.
-
-### Prac-4.3: TODO!
+### Prac-4.3:
 This section is still under construction 🚧⛏️️👷️
 
-### Prac-4.4: TODO!
+### Prac-4.4:
 This section is still under construction 🚧⛏️️👷️
 
 ## 6. Setting the environment up!
@@ -137,10 +155,10 @@ uv sync
 
 Your final score will come from various parts:
 
--   4.1 → 15%.
--   4.2 → 15%.
--   4.3 → 15%.
--   4.4 → 15%.
+-   4.1: Docker → 15%.
+-   4.2: Docker-Compose  → 15%.
+-   4.3: AppRunner → 15%.
+-   4.4: RDS → 15%.
 -   Best practices are used → 40%.
     - How small is your Docker image?
     - Is your compose deterministic? 
@@ -155,7 +173,7 @@ Your final score will come from various parts:
 
 ## 9. Resources
 
--   [Python for begginers](/resources/python.qmd)
+-   [Docker Commands Reference](https://amsa.lol/resources/docker.html)
 -   [What are Restful APIs?](https://restfulapi.net)
 -   [Docker for beginners](https://docker-curriculum.com)
 -   [Docker compose quickstart](https://docs.docker.com/compose/gettingstarted/)
@@ -165,3 +183,15 @@ Your final score will come from various parts:
 Please don't hesitate to ask the teachers **any doubts**, there are no dumb questions, we're here to help.
 
 You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
+
+[1]: In reality, you could also access "http://localhost:8080" instead of "http://localhost:8080/docs", since it will automatically redirect you to "/docs", you can see the code that [does this here](https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25)
+
+[2]: The "http://localhost:8080/docs" webpage, isn't the only way to "test" the endpoints of the API. Our server exposes a connection http on the port 8000, so any clients that support the "http" protocol could be used instead. If you're curious, you can use another client like for example [postman (see video here)](https://www.youtube.com/watch?v=PfujVETI-i4) or [if you want a cli tool that lives one every linux distro, just use curl](https://www.youtube.com/watch?v=Xy7fDxz39FM)
+
+[3]: A database is just a program that makes saving data easy and fast. We could save our users inside a file named "users.txt", ex:
+```
+1,pabloteach,Pablo Fraile,admin,4346%3450834
+2,ori,Oriol Agost,admin,435-08345237
+...
+```
+But, of course, this would be slow as f**k, that's why we usually use databases.
