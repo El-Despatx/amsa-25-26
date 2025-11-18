@@ -49,7 +49,7 @@ This activity is split onto 4 incremental parts, which are going to be related t
 1.  On the first week, your job will be to **dockerize the API**.
 2.  On the second week, your job will be to communicate the API with a postgresql database using docker-compose.
 3.  Then, we'll want you to deploy the work you've done to AWS.
-4.  Finally, after having explained the **AWS Relational Database Service (RDS)**, you'll connect the AppRunner service to your newly created RDS database.
+4.  Finally, after having explained the **AWS Relational Database Service (RDS)**, you'll connect the ECS service to your newly created RDS database.
 
 ## 4. Resources
 
@@ -139,7 +139,7 @@ No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 <!---->
 <!-- The resulting file should be a `docker-compose.yml` with both services and their respective configuration. -->
 
-### Prac-4.3: Using AWS ECR and AppRunner
+### Prac-4.3: Using AWS ECR and ECS
 No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 
 ### Prac-4.4: Merging it with AWS RDS!
@@ -172,7 +172,7 @@ Your final score will come from various parts:
 
 -   4.1: Docker → 15%.
 -   4.2: Docker-Compose  → 15%.
--   4.3: AppRunner → 15%.
+-   4.3: ECR & ECS → 15%.
 -   4.4: RDS → 15%.
 -   Best practices are used → 40%.
     - How small is your Docker image?
