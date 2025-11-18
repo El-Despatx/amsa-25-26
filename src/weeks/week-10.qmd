@@ -166,6 +166,10 @@ This time, the resulting image will have **2 layers**:
 - The original layer from `ubuntu` image.
 - **The one we just added by running a command that modifies the file system**.
 
+::: {.fragment .callout-note}
+Why am I not using sudo?
+:::
+
 ## Running containers
 
 Once we've built an image, we can use `docker run` command to make Docker Engine execute it.
@@ -523,7 +527,7 @@ docker pull python:3.12
 ```
 
 ::: {.callout-important .fragment}
-You should **always** use explicit tags in production. Never rely on `latest`.
+You should **always** use explicit tags in production. Never rely on `latest`. In fact, we should rely on hashes for maximum **reproducibility**.
 :::
 
 ## Example workflow
@@ -583,7 +587,7 @@ docker run ferran/amsa:1.0
 
 -   Why is it dangerous to run `docker run -v /:/host alpine`?
 
--   Why is docker run --network host considered dangerous?
+-   Why is `docker run --network host` considered dangerous?
 
 -   Build an image using multi-stage builds.
 
