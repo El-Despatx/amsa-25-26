@@ -31,7 +31,7 @@ There are lots of different behaviours for APIs (and we'll explain how ours work
 
 ## 2. Delivery
 
-*Accept the assignment in Github Classroom, [following the link](https://classroom.github.com/a/HU7ENUMi)*
+*Accept the assignment in Github Classroom, [following the link](https://classroom.github.com/a/5dUv_d7Z)*
 
 To complete this activity, you must do the following for each sub-delivery (PRAC-4.1, PRAC-4.2, PRAC-4.3 and PRAC-4.4):
 
