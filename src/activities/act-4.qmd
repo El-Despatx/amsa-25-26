@@ -73,10 +73,11 @@ The API, exposes three "endpoints", let's see them:
 
   - (`GET /docs`) Documentation: Returns an html file (the type of files that your browser knows how to show/paint on the screen), that allows us to easily call the other two endpoints of the API. [^1]
   - (`POST /users`) Create a user given:
-        - A username
-        - A name
-        - A role ("user" or "admin")
-        - A password
+
+    - A username
+    - A name
+    - A role ("user" or "admin")
+    - A password
   - (`GET /users`) List all existing users
 
 If you want to see the documentation and "play" with the `/users` endpoints, you can access <http://localhost:8080/docs> [^2] This will allow you to create users with `POST http://localhost:8000/users`, and then retrieve the information with `GET http://localhost:8000/users`, nice!
@@ -100,12 +101,13 @@ Our app needs a way to save the users information! We save it on a database, and
 - If the `PROD` environment variable is set [^4] , then it will attempt to connect to a [postgresql](https://www.postgresql.org) database. This database is another "service" on his own, that exposes a port (by default 5432), where you can connect and send values to be saved. Of course, not everyone should connect to this database, only the people with a valid username and password, that's the reason behind that, when you create a postgresql database, you need to tell it the user and password that you want!
 
 Once we have an instance of postgresql running, we can tell the users api to use this instance instead of the sqlite one (This will be a requirement on Prac-4.2!). So, we'll have to tell him the following information via environment variables:
-    - `PROD`: Set it to true if you want to use a postgresql instance.
-    - `DB_USER`: The user who will connect to the database
-    - `DB_PASSWORD`: The password to connect to the database
-    - `DB_HOST`: The IP address of the host of the database
-    - `DB_PORT`: The port of the host of the database
-    - `DB_NAME`: The name of the database inside postgresql
+
+  - `PROD`: Set it to true if you want to use a postgresql instance.
+  - `DB_USER`: The user who will connect to the database
+  - `DB_PASSWORD`: The password to connect to the database
+  - `DB_HOST`: The IP address of the host of the database
+  - `DB_PORT`: The port of the host of the database
+  - `DB_NAME`: The name of the database inside postgresql
 
 ### Brief summary
 
@@ -197,9 +199,10 @@ Please don't hesitate to ask the teachers **any doubts**, there are no dumb ques
 
 You can reach us by email (find them at the top of this page) or come to our office at EPS 3.07 (we're here mostly during mornings).
 
-[^1]: In reality, you could also access <http://localhost:8080> instead of <http://localhost:8080/docs>, since it will automatically redirect you to `/docs`, you can see [the code of the server that does this](https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25)
+[^1]: The `http://localhost:8080/docs` webpage, isn't the only way to "test" the endpoints of the API. Our server exposes a connection http on the port `8000`, so any clients that support the `http` protocol could be used instead. If you're curious, you can use another client like for example [postman (see video here)](https://www.youtube.com/watch?v=PfujVETI-i4) or [if you want a cli tool that is installed on every linux distro, just use curl](https://www.youtube.com/watch?v=Xy7fDxz39FM)
 
-[^2]: The `http://localhost:8080/docs` webpage, isn't the only way to "test" the endpoints of the API. Our server exposes a connection http on the port `8000`, so any clients that support the `http` protocol could be used instead. If you're curious, you can use another client like for example [postman (see video here)](https://www.youtube.com/watch?v=PfujVETI-i4) or [if you want a cli tool that is installed on every linux distro, just use curl](https://www.youtube.com/watch?v=Xy7fDxz39FM)
+[^2]: In reality, you could also access <http://localhost:8080> instead of <http://localhost:8080/docs>, since it will automatically redirect you to `/docs`, you can see [the code of the server that does this](https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25https://github.com/El-Despatx/cloud-template/blob/main/main.py#L25)
+
 
 [^3]: A database is just a program that makes saving and retrieving data easy and fast. We could save our users inside a file named "users.txt", ex:
 ```
