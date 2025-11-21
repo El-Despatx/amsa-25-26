@@ -1,0 +1,67 @@
+---
+subtitle: "Week 11: Orchestrating containers"
+format: revealjs
+---
+
+# The problem
+
+## Let's remember our server and how we fixed the situation with Docker
+
+::: { style="text-align:center;"}
+<img src="figures/week-11/server.png" style="width:50%;"/>
+:::
+
+## Dockerizing our apps
+
+::: { style="text-align:center;"}
+<img src="figures/week-11/commands.png" style="width:90%;"/>
+:::
+
+
+## This doesn't scale well..
+
+- Starting/restarting/stopping our services needs us to move between different folders
+- Docker containers are treated as standalone services when they'll usually have some logic between them
+
+::: {.callout-tip .fragment}
+Wouldn't it be cool if there was something to orchestrate this different services?
+Something that also gave us the capability to manage some logic between them?
+:::
+
+# The solution
+
+## Introducing docker compose
+A `yaml` file that:
+- **Simplified control**: define and control multiple containers from a single file and bring them up/down with one command.
+- **Services**: declare each component (image or build context, ports, environment variables, volumes).
+- **Networks & Volumes**: centrally configure networking and persistent storage for services.
+- **Orchestration**: express dependencies (`depends_on`), healthchecks, and scaling (e.g., `docker compose up --scale`).
+- **Reproducibility**: shareable, versioned configuration suited for local development, CI/CD, and deployments.
+
+# Summary
+
+## Summary
+<!-- TODO: Make summary -->
+* **Registries** store and distribute container images.
+* **DockerHub** is the default public registry.
+* **Tags** allow versioning images (`v1`, `v2`, `latest`).
+* Use **explicit tags** (never trust `latest`).
+* Registries enable reproducible and portable deployments.
+
+# Quizz
+
+## Quizz: {.smaller}
+<!-- TODO: Make quizz -->
+
+# References
+
+## References: {.smaller}
+<!-- TODO: Make references -->
+
+
+## Additional Exercices {#extra}
+<!-- TODO: Make extra exercise -->
+
+## Activity 4 {.smaller}
+
+Ready to have some fun? Check out the second part of the [fourth AMSA activity here!](/activities/act-4.qmd)
