@@ -30,38 +30,281 @@ Something that also gave us the capability to manage some logic between them?
 
 # The solution
 
-## Introducing docker compose
+## Introducing docker compose {.smaller}
 A `yaml` file that:
+
+:::{.fragment}
 - **Simplified control**: define and control multiple containers from a single file and bring them up/down with one command.
 - **Services**: declare each component (image or build context, ports, environment variables, volumes).
 - **Networks & Volumes**: centrally configure networking and persistent storage for services.
 - **Orchestration**: express dependencies (`depends_on`), healthchecks, and scaling (e.g., `docker compose up --scale`).
 - **Reproducibility**: shareable, versioned configuration suited for local development, CI/CD, and deployments.
+:::
+
+## Our first compose file
+:::: columns
+::: {.column .small .fragment width="50%"}
+```{.yaml}
+services:
+  frontend:
+    build: folder_1
+    ports:
+      - "4000:3000"
+```
+:::
+::: {.column .fragment width="50%"}
+<img src="figures/week-11/node.png" style="width:100%;"/>
+:::
+::::
+
+::: {.fragment .small-text}
+- `services` is always needed, top level definition to introduce the docker services
+- "frontend" declares a new container, named like that. We can put whatever we want here
+- `build` specifies the folder from which the docker should be built upon. It will search for a `Dockerfile` in that folder
+:::
+
+
+## Interacting with the services
+:::: columns
+::: {.column .fragment width="50%"}
+```{.bash}
+docker build -t frontend .
+docker run -p 3000:3000 frontend
+```
+:::
+::: {.column .fragment width="50%"}
+```{.bash}
+docker compose build frontend
+docker compose up frontend
+```
+:::
+::::
+
+- Bash is almost the same, `docker` "turns" to `docker compose`
+- We no longer use tags to refer to docker containers, but refer to them by the service name in the compose file.
+
+::: {.callout-tip .fragment}
+If no service is specified, we will refer to the whole compose file (all services)
+:::
+
+
+## Some more commands
+
+- `docker compose up` -> Start all services (foreground)
+- `docker compose up -d` -> Start all services (detached)
+- `docker compose down` -> Stop all services
+- `docker compose ps` -> List all running services
+- `docker compose logs` -> View logs from all services
+- `docker compose exec api bash` -> Open a bash terminal in the `api` service
+
+## Scalling services (k8s)
+- `docker compose up --scale api=3 -d` -> Start 3 instances of the `api` service
+- Useful for load balancing
+
+::: fragment
+Sometimes, we want to have multiple instances of a service running to handle more traffic.
+We can also use kubernetes for more advanced orchestration.
+Kubernetes is a powerful container orchestration platform that can manage complex deployments, scaling, and networking of containerized applications.
+:::
+
+## Non-build images
+For now, we've always built our images from a `Dockerfile`.
+What if we want to use an existing image from a registry and just configure it?
+
+:::: columns
+::: {.column .fragment width="50%"}
+```.dockerfile
+FROM mysql: 8.0
+
+ENV     MYSQL_ROOT_PASSWORD=rootpassword \
+        MYSQL_DATABASE=appdb \
+        MYSQL_USER-appuser \
+        MYSQL_PASSWORD-apppassword
+EXPOSE 3306
+```
+:::
+::: {.column .fragment width="50%"}
+```{.yaml}
+services:
+    db:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: appdb
+            MYSQL_USER: appuser
+            MYSQL_PASSWORD: apppassword
+        ports:
+            - "3306:3306"
+```
+:::
+::::
+
+::: fragment
+We can directly specify the image to use with the `image` key.
+:::
+
+
+# Networking between services 🚨
+## Networking between services 🚨
+If our service has the mapping:
+```{.yaml}
+ports:
+    - "4000:3000"
+```
+What's the address we should use to see it from our browser?
+
+- `localhost:4000` 
+
+## Networking between services 🚨
+Why localhost?
+
+Localhost is a special address that always points to the machine you're currently using. 
+When you run a web server on your computer and map its port to your localhost, you're essentially telling your computer to listen for incoming requests on that specific port.
+
+If the server was running on a different machine, you would need to use that machine's IP address or hostname to access it.
+
+## Networking between services 🚨
+Can you detect the problem here?
+```yaml
+services:
+  backend:
+    build: folder_2
+    ports:
+      - "4000:3000"
+  db:
+    image: mysql:8.0
+    ports:
+      - "5000:5000"
+```
+
+## Networking between services 🚨
+::: fragment
+Will we ever access the database from the outside?
+
+No! The database is only needed by the backend service.
+:::
+
+::: fragment
+But what if...
+
+No, you really shouldn't expose the database to the outside world unless absolutely necessary.
+:::
+
+
+## Networking between services 🚨
+In order to avoid exposing unnecessary ports, we can remove the `ports` section from the `db` service
+```yaml
+services:
+  backend:
+    build: folder_2
+    ports:
+      - "4000:3000"
+  db:
+    image: mysql:8.0
+```
+But how does the backend service access the database then?
+
+## Networking between services 🚨
+Docker Compose automatically creates a default network for all services defined in the `docker-compose.yml` file.
+Each service can communicate with other services using the service name as the hostname (IP).
+
+So, in our case, the backend service can access the database using the hostname `db` and the default MySQL port `3306`.
+```yaml
+services:
+  backend:  # For backend, the db is accessible at `db:3306`
+    build: folder_2
+    ports:
+      - "4000:3000"
+  db:
+    image: mysql:8.0
+```
+
+# Dependencies between services
+## Dependencies between services {.smaller}
+Sometimes, we want to make sure that a service starts only after another service is up and running
+We can use the `depends_on` key to specify these dependencies
+```yaml
+services:
+    backend:
+        build: folder_2
+        ports:
+            - "4000:3000"
+        depends_on:
+            - db
+    db:
+        image: mysql:8.0
+```
+::: callout-tip
+Note that `depends_on` only ensures that the `db` service is started before the `backend` service. It does not guarantee that the `db` service is ready to accept connections.
+To ensure that a service is ready, you may need to implement health checks or wait-for-it scripts.
+:::
+
+# Volumes
+## Volumes {.smaller}
+Sometimes, we want to persist data generated by a service, even if the container is removed.
+For example, a database service needs to store its data on disk.
+
+We can use volumes to persist data
+```yaml
+services:
+    db:
+        image: mysql:8.0
+        volumes:
+            - ./db-data:/var/lib/mysql
+```
+This will create a bind mount volume that maps the `./db-data` directory on the host to the `/var/lib/mysql` directory in the container.
+
+::: callout-tip
+You can also use named volumes for better portability and management
+```yaml
+services:
+    db:
+        image: mysql:8.0
+        volumes:
+            - db-data:/var/lib/mysql  
+volumes:
+    db-data:
+```
+:::
 
 # Summary
 
-## Summary
-<!-- TODO: Make summary -->
-* **Registries** store and distribute container images.
-* **DockerHub** is the default public registry.
-* **Tags** allow versioning images (`v1`, `v2`, `latest`).
-* Use **explicit tags** (never trust `latest`).
-* Registries enable reproducible and portable deployments.
+## Summary {.smaller}
+* **Compose basics**: describe multiple services in one YAML file; refer to containers by service name.
+* **Build vs image**: use `build:` for local Dockerfiles, `image:` to pull a registry image.
+* **Networking**: services reach each other by hostname = service name; internal ports need not be exposed.
+* **Ports**: `host:container` maps host ports; expose only what is necessary.
+* **Common commands**: `docker compose build`, `up`/`down`, `ps`, `logs`, `exec`; `-d` to detach, `--scale` to run multiple instances.
+* **Volumes**: persist data with bind mounts or named volumes; useful for databases.
+* **Dependencies**: use `depends_on` to control startup order; consider health checks for readiness.
+* **Best practices**: avoid exposing databases, use explicit image tags, keep secrets out of compose files.
 
 # Quizz
 
 ## Quizz: {.smaller}
-<!-- TODO: Make quizz -->
+1. Does `depends_on` guarantee that the depended-on service is ready to accept connections? If not, how to make it wait?
+2. What's the practical difference between `- ./data:/data` (bind mount) and `volumes: - db-data:/var/lib/mysql` (named volume)?
+3. If `image:` is given without a tag (e.g., `redis`), what is pulled and why is that a reproducibility risk?
+4. When do we use `docker compose up` vs `docker compose up -d`?
+5. What's `docker compose -d` another alternative for?
+6. When do we use `build:` vs `image:` in a service definition?
+7. How do services communicate with each other in Docker Compose networking?
+
 
 # References
 
 ## References: {.smaller}
-<!-- TODO: Make references -->
+- Docker compose documentation: <https://docs.docker.com/compose/>
+- Volumes and persistence (bind mounts vs named volumes): <https://docs.docker.com/storage/volumes/>
+- Healthcheck (container readiness) and using it with depends_on: <https://docs.docker.com/engine/reference/builder/#healthcheck> and <https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on>
+- Scaling & orchestration; when to move to Kubernetes: <https://docs.docker.com/compose/reference/up/> and <https://kubernetes.io/docs/>
+- Troubleshooting networking and platform differences (Linux vs macOS/Windows): <https://docs.docker.com/desktop/networking/>
 
 
 ## Additional Exercices {#extra}
-<!-- TODO: Make extra exercise -->
+Create a super-simple api and implement a healthcheck endpoint.
+
+Verify that the healthcheck works by using it in a `depends_on` clause in a docker-compose file.
 
 ## Activity 4 {.smaller}
-
 Ready to have some fun? Check out the second part of the [fourth AMSA activity here!](/activities/act-4.qmd)
