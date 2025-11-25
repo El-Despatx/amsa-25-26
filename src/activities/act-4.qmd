@@ -129,11 +129,11 @@ Your main objective is to **"dockerize" the API**. That's it, we keep it simple 
 Your goal should be to make the resulting image as **small as possible**, as that's what good developers should do!
 
 ### Prac-4.2: Moving to Docker Compose 
-No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 Your objective is to **switch the API's db to a postgresql, and communicate it through Docker compose** 
+
   1. Move the dockerized image onto a compose service. This should be a straight-forward step
   2. Deploy a postgresql database on the compose. Don't stress on joining them yet!
-  3. Now it's time to communicate them. **TIP: We've already told you cannot modify python code. There's probably some way around it...**
+  3. Now it's time to communicate them.
 
 The resulting file should be a `docker-compose.yml` with both services and their respective configuration.
 
