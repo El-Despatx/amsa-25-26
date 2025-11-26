@@ -140,6 +140,13 @@ The resulting file should be a `docker-compose.yml` with both services and their
 The topology should be something like this:
 ![](images/internal-example.png)
 
+::: callout-tip
+You can see the logs of the container for asserting that it is using the PostgreSQL database (you can see [the code that does this here](https://github.com/El-Despatx/cloud-template/blob/main/db/db.py#L24) ).
+
+Also, you can connect to the database and query the tables! See [this cheatsheet for connecting and querying postgresql](https://quickref.me/postgres.html)
+:::
+
+
 ### Prac-4.3: Using AWS ECR and ECS
 No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
 
