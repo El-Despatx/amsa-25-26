@@ -20,6 +20,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 -   [Week 7: RAM disks and tmpfs + PRAC 3.3](weeks/week-7.qmd)
 -   [Week 9: Virtualization 101](weeks/week-9.qmd)
 -   [Week 10: Dockerfile & DockerHub](weeks/week-10.qmd)
+-   [Week 11: Docker Compose: Orchestrating containers](weeks/week-11.qmd)
 
 ## 📝 Activities
 
