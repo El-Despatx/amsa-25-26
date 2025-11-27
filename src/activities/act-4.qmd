@@ -134,6 +134,7 @@ Your objective is to **switch the API's db to a postgresql, and communicate it t
   1. Move the dockerized image onto a compose service. This should be a straight-forward step
   2. Deploy a postgresql database on the compose. Don't stress on joining them yet!
   3. Now it's time to communicate them.
+  4. Lastly, make sure that the database persists the information even if the container is removed.
 
 The resulting file should be a `docker-compose.yml` with both services and their respective configuration.
 
