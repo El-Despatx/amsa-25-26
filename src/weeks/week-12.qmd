@@ -1,0 +1,151 @@
+---
+subtitle: "Week 12: AWS Networking, EC2, ECS and ECR"
+format: revealjs
+---
+
+# Goals for today
+
+- Understand AWS Networking `https://scribe.rip/@AlexanderObregon/aws-networking-fundamentals-for-beginners-86dfb35ccc03`
+- Understand what is AWS EC2.
+- Understand what is AWS ECR.
+- Understand what is AWS ECS.
+
+# Recap
+
+- What we've done?
+- TODO: Remember VM's vs containers
+- TODO: What we did until now (everything local...)
+- TODO: 
+
+## Running Locally on your own network
+
+![](figures/week-12/example_local_network.png){fig-align="center"}
+
+## Exposing it to the internet
+
+![](figures/week-12/example_expose_app_isp.png){fig-align="center"}
+
+## What could be wrong?
+
+- We expose our home network.
+- We are responsible of working it out.
+- We can't poweroff our computer.
+	
+
+# The Cloud
+
+Cloud is just another people computer.
+
+## Cloud providers.
+
+There are quite a few:
+
+- AWS
+- Gcloud
+- Azure
+- Etc.
+
+# AWS
+
+We'll be using AWS, because we've access to **aws academy**.
+
+# IAM
+
+Users, Permissions, etc.
+
+## Users
+
+## Roles
+
+# Networking
+
+## VPC (Virtual Private Cloud) {.smaller}
+
+- IP Addressing in Amazon Virtual Private Cloud (VPC) refers to the assignment of IP addresses to the resources within a VPC.
+
+- VPC is Amazon Web Services (AWS) solution for providing isolated network environments for AWS resources. IP addresses in a VPC are used for communication between resources within the VPC, as well as for communication between the VPC and the Internet. 
+
+![](figures/week-12/empty_vpc.png){fig-align="center"}
+
+## Subnets
+- We want to have networks given a VPC.
+![](figures/week-12/vpc_with_subnets.png){fig-align="center"}
+
+## Routing Tables
+- We want to communicate the subnets we created earlier.
+
+![](figures/week-12/route_table.png){fig-align="center"}
+
+## Internet Gateway
+- If we want a subnet to have access to the internet and/or have a public ip address, we have to connect it to the internet gateway.
+
+![](figures/week-12/internet_gw.png){fig-align="center"}
+
+# EC2
+
+- [An EC2 instance is a virtual server in the AWS Cloud.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+
+![](figures/week-12/ec2.png){fig-align="center"}
+
+## Example of EC-2 with our App
+
+![](figures/week-12/ec2_fastatp.png){fig-align="center"}
+
+## Benefits?
+
+::::: columns
+::: {.column width="50%"}
+
+### Good:
+
+- We don't expose our home network.
+- Our laptop/PC doesn't have to be powered on.
+- Change the specs of the vm's.
+
+:::
+
+::: {.column .incremental width="50%"}
+
+### Bad:
+- Although our workload is only used on a per-request basis, AWS bills us as though the machine is running continuously for 24 hours.
+:::
+:::::
+
+# Serverless
+
+Our app runs on a server/virtual machine that you don't have to buy or manage.
+
+## ECS
+
+Container runs in response to some event, on a server you don't have to manage.
+
+## ECR
+
+- We need to upload our container image to a registry, so we can tell ECS to start an instance of this image.
+- Allows us to create a public registry or a private one.
+
+# Other Services
+
+- Lambda: Similar to ECS but in the code level, not container level.
+- AppRunner: Easier than ECS (isn't included on AWS academy...)
+- EKS: Kubernetes on AWS.
+- Etc.
+
+# Quizz {.smaller}
+  
+  - Lorem
+  - ipsum
+  - Ipsum
+  
+# References
+
+## Really Recommended References: {.smaller}
+
+- A
+
+## Additional Exercices {#extra .smaller}
+
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+- Create a funny server
+
