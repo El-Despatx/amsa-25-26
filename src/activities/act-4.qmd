@@ -263,8 +263,9 @@ Once you’ve configured the AWS CLI, the steps that the aws guide shows you are
 
 ##### 4) Create a Task Definition for our ECS.
 
-- The launch type should be `fargate`, for [having a true serverless service](/weeks/week-12.html#serverless)
+- The launch type should be `fargate`
 - The architecture should be `Linux/X86_64` if you builded the image with an `x86_64` computer, or `Linux/ARM64` otherwise (Mac M1, M2, M3, M4 users, and MicroChof Windows Snapdragon users)
+- Enable auto-scaling to minimize resource usage during low demand and allow scaling up to a maximum of five instances when needed (for having a true serverless service...)
 - For the `logging` values, left the default ones.
 
 ::: {.callout-important title="**Be a Rat! 🐀**"}

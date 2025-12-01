@@ -6,35 +6,36 @@ format: revealjs
 # Goals for today
 
 - Understand AWS Networking `https://scribe.rip/@AlexanderObregon/aws-networking-fundamentals-for-beginners-86dfb35ccc03`
-- Understand what is AWS EC2.
-- Understand what is AWS ECR.
-- Understand what is AWS ECS.
+- Understand what are cloud providers.
+- Understand the concepts behind: EC2, ECR and ECS 
 
 # Recap
 
-- What we've done?
-- TODO: Remember VM's vs containers
-- TODO: What we did until now (everything local...)
-- TODO: 
+- Remember the differences between VM's and Containers.
+- What we've done on PRAC-4.1 and PRAC-4.2?
 
 ## Running Locally on your own network
 
 ![](figures/week-12/example_local_network.png){fig-align="center"}
 
-## Exposing it to the internet
+## Exposing it to the internet {.smaller}
+Take into account this example [^1]
 
 ![](figures/week-12/example_expose_app_isp.png){fig-align="center"}
 
+[^1]: In this example, the router has a static IP address, and you can also configure it to forward traffic on a specific port.
+
 ## What could be wrong?
 
-- We expose our home network.
-- We are responsible of working it out.
+- We expose our home network (or at least one service running on it)
+- We are responsible for all aspects of the setup, including electricity, network connectivity, device updates, and more.
 - We can't poweroff our computer.
-	
 
 # The Cloud
 
-Cloud is just another people computer.
+- [There is no `cloud` it's just someone else's computer.](https://www.amazon.es/There-Cloud-Someone-Elses-Computer/dp/B0BK1ZYKSS?customId=B07536XX75&customizationToken=MC_Assembly_1%23B07536XX75&th=1&psc=1)
+
+- [Sometimes this is bad](https://builder.aws.com/content/34eRiYFzLeWXtdBSp1a1n1EMa2f/post-mortem-analyzing-the-recent-aws-us-east-1-n-virginia-outage)
 
 ## Cloud providers.
 
@@ -48,14 +49,6 @@ There are quite a few:
 # AWS
 
 We'll be using AWS, because we've access to **aws academy**.
-
-# IAM
-
-Users, Permissions, etc.
-
-## Users
-
-## Roles
 
 # Networking
 
@@ -76,8 +69,10 @@ Users, Permissions, etc.
 
 ![](figures/week-12/route_table.png){fig-align="center"}
 
-## Internet Gateway
-- If we want a subnet to have access to the internet and/or have a public ip address, we have to connect it to the internet gateway.
+## Internet Gateway {.smaller}
+
+- If we want a subnet to have access to the internet and/or have a public ip address, we have to connect it to the internet gateway 
+- We could also use a NAT Gateway (if we don't need a public ip), but it's out of the scope of this class.
 
 ![](figures/week-12/internet_gw.png){fig-align="center"}
 
@@ -130,6 +125,254 @@ Container runs in response to some event, on a server you don't have to manage.
 - AppRunner: Easier than ECS (isn't included on AWS academy...)
 - EKS: Kubernetes on AWS.
 - Etc.
+
+# IAM
+
+IAM means: Identity and Access Management. 
+
+## Why IAM? {.smaller}
+
+- I may have multiple users/services on my AWS project, so I want to have permissions for each one.
+- [When **you first create an AWS account**, you begin with one sign-in identity that has complete access to all AWS services and resources in the account. **This identity is called the AWS account root user.**]( https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
+
+## Users {.smaller}
+
+- IAM User: this is a "real" identity in AWS associated with a specific person (or application) inside a single AWS account.
+- [An IAM User has long-term credentials (like a password and/or access keys) that don't expire](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html)
+
+## IAM Roles {.smaller}
+
+> [*An IAM role is an IAM identity that you can create in your account that has specific permissions. An IAM role is similar to an IAM user, in that it is an AWS identity with permission policies that determine what the identity can and cannot do in AWS. However, instead of being uniquely associated with one person, a role is intended to be assumable by anyone who needs it. Also, a role does not have standard long-term credentials such as a password or access keys associated with it. Instead, when you assume a role, it provides you with temporary security credentials for your role session.*](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)
+
+Roles are very useful for:
+
+- Granting temporary or time-limited access.
+
+- Letting external identities or different AWS accounts access resources
+
+- Letting AWS services (like EC2, Lambda, etc.) act on your behalf without embedding permanent credentials
+
+## Policies {.smaller}
+> *[Manage access in AWS by creating policies and attaching them to IAM identities (users, groups of users, or roles) or AWS resources. A policy is an object in AWS that, when associated with an identity or resource, defines their permissions. AWS evaluates these policies when an IAM principal (user or role) makes a request](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_id-based)*
+
+ - Policies assigned to a Role or User, tells us the capabilties it has:
+
+    ```bash
+    $ aws iam get-account-authorization-details --no-cli-pager
+    ...
+    {
+                "Path": "/",
+                "RoleName": "LabRole",
+                "RoleId": "AROAVRUVSF2D77Y24LJWD",
+                "Arn": "arn:aws:iam::381492014727:role/LabRole",
+                "CreateDate": "2025-12-01T09:02:47+00:00",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "arn:aws:iam::381492014727:role/LabRole",
+                                "Service": [
+                                    "elasticloadbalancing.amazonaws.com",
+                                    "ec2.amazonaws.com",
+                                    "iot.amazonaws.com",
+                                    "elasticfilesystem.amazonaws.com",
+                                    "lambda.amazonaws.com",
+                                    "eks.amazonaws.com",
+                                    "rekognition.amazonaws.com",
+                                    "logs.amazonaws.com",
+                                    "glue.amazonaws.com",
+                                    "iotevents.amazonaws.com",
+                                    "cloudtrail.amazonaws.com",
+                                    "codecommit.amazonaws.com",
+                                    "events.amazonaws.com",
+                                    "servicecatalog.amazonaws.com",
+                                    "elasticbeanstalk.amazonaws.com",
+                                    "codewhisperer.amazonaws.com",
+                                    "rds.amazonaws.com",
+                                    "cloud9.amazonaws.com",
+                                    "backup.amazonaws.com",
+                                    "credentials.iot.amazonaws.com",
+                                    "pipes.amazonaws.com",
+                                    "ecs-tasks.amazonaws.com",
+                                    "batch.amazonaws.com",
+                                    "scheduler.amazonaws.com",
+                                    "sagemaker.amazonaws.com",
+                                    "autoscaling.amazonaws.com",
+                                    "states.amazonaws.com",
+                                    "apigateway.amazonaws.com",
+                                    "elasticmapreduce.amazonaws.com",
+                                    "ec2.application-autoscaling.amazonaws.com",
+                                    "cognito-idp.amazonaws.com",
+                                    "eks-fargate-pods.amazonaws.com",
+                                    "resource-groups.amazonaws.com",
+                                    "cloudformation.amazonaws.com",
+                                    "deepracer.amazonaws.com",
+                                    "forecast.amazonaws.com",
+                                    "athena.amazonaws.com",
+                                    "firehose.amazonaws.com",
+                                    "secretsmanager.amazonaws.com",
+                                    "codedeploy.amazonaws.com",
+                                    "sqs.amazonaws.com",
+                                    "redshift.amazonaws.com",
+                                    "ecs.amazonaws.com",
+                                    "dynamodb.amazonaws.com",
+                                    "kinesisanalytics.amazonaws.com",
+                                    "application-autoscaling.amazonaws.com",
+                                    "ssm.amazonaws.com",
+                                    "kms.amazonaws.com",
+                                    "iotanalytics.amazonaws.com",
+                                    "kinesis.amazonaws.com",
+                                    "sns.amazonaws.com",
+                                    "s3.amazonaws.com",
+                                    "databrew.amazonaws.com"
+                                ]
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "InstanceProfileList": [
+                    {
+                        "Path": "/",
+                        "InstanceProfileName": "LabInstanceProfile",
+                        "InstanceProfileId": "AIPAVRUVSF2D4J5LB7TUJ",
+                        "Arn": "arn:aws:iam::381492014727:instance-profile/LabInstanceProfile",
+                        "CreateDate": "2025-12-01T09:03:12+00:00",
+                        "Roles": [
+                            {
+                                "Path": "/",
+                                "RoleName": "LabRole",
+                                "RoleId": "AROAVRUVSF2D77Y24LJWD",
+                                "Arn": "arn:aws:iam::381492014727:role/LabRole",
+                                "CreateDate": "2025-12-01T09:02:47+00:00",
+                                "AssumeRolePolicyDocument": {
+                                    "Version": "2012-10-17",
+                                    "Statement": [
+                                        {
+                                            "Effect": "Allow",
+                                            "Principal": {
+                                                "AWS": "arn:aws:iam::381492014727:role/LabRole",
+                                                "Service": [
+                                                    "elasticloadbalancing.amazonaws.com",
+                                                    "ec2.amazonaws.com",
+                                                    "iot.amazonaws.com",
+                                                    "elasticfilesystem.amazonaws.com",
+                                                    "lambda.amazonaws.com",
+                                                    "eks.amazonaws.com",
+                                                    "rekognition.amazonaws.com",
+                                                    "logs.amazonaws.com",
+                                                    "glue.amazonaws.com",
+                                                    "iotevents.amazonaws.com",
+                                                    "cloudtrail.amazonaws.com",
+                                                    "codecommit.amazonaws.com",
+                                                    "events.amazonaws.com",
+                                                    "servicecatalog.amazonaws.com",
+                                                    "elasticbeanstalk.amazonaws.com",
+                                                    "codewhisperer.amazonaws.com",
+                                                    "rds.amazonaws.com",
+                                                    "cloud9.amazonaws.com",
+                                                    "backup.amazonaws.com",
+                                                    "credentials.iot.amazonaws.com",
+                                                    "pipes.amazonaws.com",
+                                                    "ecs-tasks.amazonaws.com",
+                                                    "batch.amazonaws.com",
+                                                    "scheduler.amazonaws.com",
+                                                    "sagemaker.amazonaws.com",
+                                                    "autoscaling.amazonaws.com",
+                                                    "states.amazonaws.com",
+                                                    "apigateway.amazonaws.com",
+                                                    "elasticmapreduce.amazonaws.com",
+                                                    "ec2.application-autoscaling.amazonaws.com",
+                                                    "cognito-idp.amazonaws.com",
+                                                    "eks-fargate-pods.amazonaws.com",
+                                                    "resource-groups.amazonaws.com",
+                                                    "cloudformation.amazonaws.com",
+                                                    "deepracer.amazonaws.com",
+                                                    "forecast.amazonaws.com",
+                                                    "athena.amazonaws.com",
+                                                    "firehose.amazonaws.com",
+                                                    "secretsmanager.amazonaws.com",
+                                                    "codedeploy.amazonaws.com",
+                                                    "sqs.amazonaws.com",
+                                                    "redshift.amazonaws.com",
+                                                    "ecs.amazonaws.com",
+                                                    "dynamodb.amazonaws.com",
+                                                    "kinesisanalytics.amazonaws.com",
+                                                    "application-autoscaling.amazonaws.com",
+                                                    "ssm.amazonaws.com",
+                                                    "kms.amazonaws.com",
+                                                    "iotanalytics.amazonaws.com",
+                                                    "kinesis.amazonaws.com",
+                                                    "sns.amazonaws.com",
+                                                    "s3.amazonaws.com",
+                                                    "databrew.amazonaws.com"
+                                                ]
+                                            },
+                                            "Action": "sts:AssumeRole"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "RolePolicyList": [],
+                "AttachedManagedPolicies": [
+                    {
+                        "PolicyName": "c189452a4889395l12836487t1w381492014727-VocLabPolicy1-zEGBNp6Sfju0",
+                        "PolicyArn": "arn:aws:iam::381492014727:policy/c189452a4889395l12836487t1w381492014727-VocLabPolicy1-zEGBNp6Sfju0"
+                    },
+                    {
+                        "PolicyName": "c189452a4889395l12836487t1w381492014727-VocLabPolicy2-egpPySJqgXEM",
+                        "PolicyArn": "arn:aws:iam::381492014727:policy/c189452a4889395l12836487t1w381492014727-VocLabPolicy2-egpPySJqgXEM"
+                    },
+                    {
+                        "PolicyName": "c189452a4889395l12836487t1w381492014727-VocLabPolicy3-zGRYRYp1eJvu",
+                        "PolicyArn": "arn:aws:iam::381492014727:policy/c189452a4889395l12836487t1w381492014727-VocLabPolicy3-zGRYRYp1eJvu"
+                    },
+                    {
+                        "PolicyName": "AmazonSSMManagedInstanceCore",
+                        "PolicyArn": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+                    },
+                    {
+                        "PolicyName": "AmazonEKSClusterPolicy",
+                        "PolicyArn": "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+                    },
+                    {
+                        "PolicyName": "AmazonEC2ContainerRegistryReadOnly",
+                        "PolicyArn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+                    },
+                    {
+                        "PolicyName": "AmazonEKSWorkerNodePolicy",
+                        "PolicyArn": "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "cloudlab",
+                        "Value": "c189452a4889395l12836487t1w381492014727"
+                    }
+                ],
+                "RoleLastUsed": {
+                    "LastUsedDate": "2025-12-01T12:11:28+00:00",
+                    "Region": "us-east-1"
+                }
+            },
+    ...
+    ```
+
+## Don't worry too much!
+
+- In AWS Academy, no IAM users are created for us.
+
+- We cannot modify policies, create roles, or add new users.
+
+- Instead, AWS Academy provides a preconfigured role called `LabRole`, which already has the necessary permissions attached.
+
+- This role gives us all the access we need to complete the assignment.
+
 
 # Quizz {.smaller}
   
