@@ -13,7 +13,7 @@ This is a guide that shows you how to how to setup the aws-cli to get your crede
 
 # Install the AWS-CLI.
 
-This depends on your linux distribution (or, if you’re on Windows, your questionable operating system), for ubuntu you can use [the following tutorial](https://scribe.rip/install-aws-cli-version-2-on-ubuntu-windows-and-mac-545e19814496).
+This depends on your linux distribution (or, if you’re on Windows, your questionable operating system), [read the official documentation for installing it](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
 
 ::: {.callout-important title="**Very very important 🚨**"}
 **Be sure to install AWS CLI v2 (not v1).**

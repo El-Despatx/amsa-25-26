@@ -50,7 +50,13 @@ And now, start an AWS environment, click on **▶️Start Lab** !:
 
 The first time you run the lab (or after resetting it), you'll need to execute the command we provided. This will automatically create the resources required for PRAC-4.3 and PRAC-4.4, so you don’t have to create them manually.
 
-Simply copy the command and paste it into the terminal.
+Simply copy the command and paste it into the terminal:
+```bash
+git clone https://github.com/El-Despatx/cloud-formation-prac-4.git template && cd template && aws cloudformation deploy \
+  --stack-name amsa2526 \
+  --template-file template.yaml \
+  --capabilities CAPABILITY_NAMED_IAM
+```
 
 Make sure the lab is running (the indicator in the top-left corner should show `AWS 🟢`, not `AWS 🔴`):
 

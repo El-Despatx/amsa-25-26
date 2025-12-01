@@ -221,18 +221,20 @@ In AWS, this "black box" maps to an architecture with the services shown in the 
 Okay, now that we understand the architecture we’ll be building, the next steps are as follows:
 
   1) Login to AWS academy and start the lab
-  2) Create an ECR Registry
-  3) Upload your container image to the ECR Registry.
-  4) Create a Task Definition for our ECS.
-  5) Create a Task with the definition we configured on step 3.
+  2) Create a registry and upload the image to it:
+      1) Create an ECR Registry
+      2) Upload your container image to the ECR Registry.
+  3) Create the ECS in fargate mode:
+      1) Create a Task Definition for our ECS.
+      2) Create a Task with the definition we configured on the previous step.
 
 Let's se them step by step.
 
-##### Login to AWS academy and start the lab
+##### 1) Login to AWS academy and start the lab
 
 The first step is to open the AWS Academy webpage and start the lab. Since you’ll be doing this frequently, it’s also listed on the resources page, [you can find it here](/resources/aws_academy.html)
 
-##### Create an ECR Registry
+##### 2) Create an ECR Registry
 
 This step is straightforward: simply create a registry using the `namespace` and `repo-name` you prefer.
 
@@ -243,7 +245,7 @@ For Image tag mutability, choose the option that fits your workflow. Keep in min
 
 For encryption settings, you can leave the default configuration, we don't need to adjust anything there
 
-##### Upload your container image to the ECR
+##### 3) Upload your container image to the ECR
 
 To upload the image, the AWS ECR page includes a very useful `View push commands` button that walks you through the exact steps needed to push an image to your registry. The aws guide assumes that you've already installed and configured the AWS CLI with your credentials.
 
@@ -259,7 +261,7 @@ Once you’ve configured the AWS CLI, the steps that the aws guide shows you are
  
  4) Push the image to your ECR registry.
 
-##### Create a Task Definition for our ECS.
+##### 4) Create a Task Definition for our ECS.
 
 - The launch type should be `fargate`, for [having a true serverless service](/weeks/week-12.html#serverless)
 - The architecture should be `Linux/X86_64` if you builded the image with an `x86_64` computer, or `Linux/ARM64` otherwise (Mac M1, M2, M3, M4 users, and MicroChof Windows Snapdragon users)
@@ -270,7 +272,7 @@ Please, be aware to create the task definition with the less usage of resources 
 :::
 
 
-##### Create a Task from our definition
+##### 5) Create a Task from our definition
 
 - You should create the task on the `amsa2526-ECSCluster`. 
 - On Networking, use our VPC `amsa2526-vpc` and our public subnet...
@@ -281,7 +283,7 @@ Please, be aware to create the task definition with the less usage of resources 
 Please, be aware to create the task with the less usage of resources possible!
 :::
 
-##### Test the Service!
+##### 6) Test the Service!
 
 You should be able to access the public IP that Amazon assigned to your task on port `8000` and view the `/docs` page.
 
