@@ -11,8 +11,11 @@ format:
 
 ::: {.callout-important title="**Very very important 🚨**"}
 **THIS ASSIGNMENT IS "DIFFICULT"!**
+
 Not because the tasks themselves are hard, but because understanding what the problem is asking can be tricky.
 You'll need to be familiar with certain networking concepts before you begin. We’ve linked the relevant resources below. If you feel lost at any point, please email us or stop by our office, we're here to help.
+
+**SO PLEASE MAKE SURE TO READ THE ENTIRE DOCUMENT CAREFULLY AND UNDERSTAND WHAT WE’RE ASKING YOU TO DO**
 :::
 
 ## 1. Introduction
@@ -131,7 +134,7 @@ Your goal should be to make the resulting image as **small as possible**, as tha
 ### Prac-4.2: Moving to Docker Compose 
 Your objective is to **switch the API's db to a postgresql, and communicate it through Docker compose** 
 
-  1. Move the dockerized image onto a compose service. This should be a straight-forward step
+  1. Move the _dockerized_ image onto a compose service. This should be a straight-forward step.
   2. Deploy a postgresql database on the compose. Don't stress on joining them yet!
   3. Now it's time to communicate them.
   4. Lastly, make sure that the database persists the information even if the container is removed.
@@ -152,7 +155,135 @@ Feel free to use PostgreSQL 18 or 18.1 (there’s no meaningful difference for o
 :::
 
 ### Prac-4.3: Using AWS ECR and ECS
-No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
+
+#### Deliverable
+For the deliverable, you have to create a `/documentation/prac_4_3` folder on your github project [^6].
+
+[^6]: This means that you'll probably want to add this folder to the .dockerignore....
+
+This folder, will contain:
+
+  - the screenshots of the steps you're doing to create the aws services (no need to make screenshots about login to aws, etc, etc), just the ones that shows how you're creating the services and one that asserts that your service is running (an http request and response to the public api...)
+  - A markdown file named `README.md` that explains in less than one paragraph each step, referencing the screenshoot you're talking about.
+
+An example of the file would be:
+
+```markdown
+# Deploying the ECS service
+
+## Step 1: One step
+
+Explain something here, we reference it on the following image:
+
+![](my_image.png)
+
+## Step 2: Two step
+
+We do X because Y, the following image shows how to configure it:
+
+![](my_other_image.png)
+```
+
+#### Description
+
+::: {.callout-important title="**Very very important 🚨**"}
+**Understand what you're doing. Not just what you're clicking**
+
+The PRAC-4.3 and PRAC-4.4 assignments may look like simple "click-through" tasks on the AWS console. In fact, even our grandma with zero cloud/virtualization/containers could do it with time and effort.
+
+But that’s not the goal.
+
+You need to understand why you're clicking those buttons, what each service actually does, and how it works under the hood. The value isn’t in completing the steps, it’s in learning the concepts and the architecture behind them.
+:::
+
+Your objective is to deploy the API to the **aws cloud**. We'll deploy them in her basic way, with `sqlite` as the database backend, so no need to deploy a postgresql for now [^5].
+
+[^5]: In fact, we'll do this on PRAC-4.4!
+
+For this deployment, we'll use *the Elastic Container Registry (ECR)* and *Elastic Container Service (ECS)* services. We **will not** deploy using a raw `EC2 instance` with Docker, you should understand why ([see the Week-12 slides for a refresher](/weeks/week-12.html)).
+
+In the end, we'll arrive at a setup similar to the following schema. It’s not very different from PRAC-4.1, but this time we treat the API as a "black box" that we'll configure later through the AWS UI:
+
+![](images/act-4/act-4-3-blackbox.png)
+
+In AWS, this "black box" maps to an architecture with the services shown in the figure below. Keep the following in mind:
+
+  1) Blue components represent the services you **MUST** create for this assignment.
+
+  2) Red components **are NOT relevant right now**. they will be used later in PRAC-4.4.
+
+  3) You **DO NOT NEED to create any services that are not highlighted in blue**. However, you **NEED TO CONFIGURE THE BLUE SERVICES SO THAT THEY CORRECTLY REFERENCE AND USE THE RESOURCES** they're connected to in the diagram.
+
+![](images/act-4/act_4_3_schema.png)
+
+#### Steps
+
+Okay, now that we understand the architecture we’ll be building, the next steps are as follows:
+
+  1) Login to AWS academy and start the lab
+  2) Create an ECR Registry
+  3) Upload your container image to the ECR Registry.
+  4) Create a Task Definition for our ECS.
+  5) Create a Task with the definition we configured on step 3.
+
+Let's se them step by step.
+
+##### Login to AWS academy and start the lab
+
+The first step is to open the AWS Academy webpage and start the lab. Since you’ll be doing this frequently, it’s also listed on the resources page, [you can find it here](/resources/aws_academy.html)
+
+##### Create an ECR Registry
+
+This step is straightforward: simply create a registry using the `namespace` and `repo-name` you prefer.
+
+For Image tag mutability, choose the option that fits your workflow. Keep in mind:
+
+- Mutable tags allow you to overwrite existing tags. This means you can push multiple images with the same tag. The most recently uploaded image will take over that tag.
+- Immutable tags prevent overwriting. If an image is already tagged with a name, you won’t be able to push another image with the same tag name.
+
+For encryption settings, you can leave the default configuration, we don't need to adjust anything there
+
+##### Upload your container image to the ECR
+
+To upload the image, the AWS ECR page includes a very useful `View push commands` button that walks you through the exact steps needed to push an image to your registry. The aws guide assumes that you've already installed and configured the AWS CLI with your credentials.
+
+If you haven't done that yet (and you probably haven’t), start by following our guide on installing and configuring the AWS CLI. [You can find it here](/resources/aws_cli.html)
+
+Once you’ve configured the AWS CLI, the steps that the aws guide shows you are straightforward:
+
+ 1) Log in to AWS using your CLI credentials.
+ 
+ 2) Configure Docker so it recognizes your registry and uses your AWS CLI credentials.
+ 
+ 3) Build your Docker image.
+ 
+ 4) Push the image to your ECR registry.
+
+##### Create a Task Definition for our ECS.
+
+- The launch type should be `fargate`, for [having a true serverless service](/weeks/week-12.html#serverless)
+- The architecture should be `Linux/X86_64` if you builded the image with an `x86_64` computer, or `Linux/ARM64` otherwise (Mac M1, M2, M3, M4 users, and MicroChof Windows Snapdragon users)
+- For the `logging` values, left the default ones.
+
+::: {.callout-important title="**Be a Rat! 🐀**"}
+Please, be aware to create the task definition with the less usage of resources possible!
+:::
+
+
+##### Create a Task from our definition
+
+- You should create the task on the `amsa2526-ECSCluster`. 
+- On Networking, use our VPC `amsa2526-vpc` and our public subnet...
+- Use our already existing SecurityGroup: `amsa2526-svc-sg`
+- Turn the public IP on.
+
+::: {.callout-important title="**Be a Rat! 🐀 **"}
+Please, be aware to create the task with the less usage of resources possible!
+:::
+
+##### Test the Service!
+
+You should be able to access the public IP that Amazon assigned to your task on port `8000` and view the `/docs` page.
 
 ### Prac-4.4: Merging it with AWS RDS!
 No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷

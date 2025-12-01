@@ -1,0 +1,58 @@
+---
+subtitle: "AWS CLI configuration"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+This is a guide that shows you how to how to setup the aws-cli to get your credentials of the current lab.
+
+# Install the AWS-CLI.
+
+This depends on your linux distribution (or, if you’re on Windows, your questionable operating system), for ubuntu you can use [the following tutorial](https://scribe.rip/install-aws-cli-version-2-on-ubuntu-windows-and-mac-545e19814496).
+
+::: {.callout-important title="**Very very important 🚨**"}
+**Be sure to install AWS CLI v2 (not v1).**
+The versions are not fully compatible, and many commands work differently.
+:::
+
+# Configure the AWS-Cli with your credentials
+
+Click the `AWS Details` button on the lab:
+
+![](/resources/images/aws-academy/click-info.png)
+
+
+Then, click on the `AWS CLI: Show` button:
+![](/resources/images/aws-academy/click-show.png)
+
+Now, do the steps that the ui tell's you, this mean:
+
+1) **On your machine**, create the file:  `/home/{your_user}/.aws/credentials`.
+2) Paste the credentials provided on the AWS page into that file.
+
+![](/resources/images/aws-academy/aws-copy-paste.png)
+
+# Assert that you're authenticated
+
+Run the following command to verify that you’re authenticated:
+
+```bash
+$ aws sts get-caller-identity
+```
+
+You should see output similar to:
+
+```json
+{
+    "UserId": "AROAVRUVSF2DSXYQRBTVG:user4610787=Pablo_Fraile",
+    "Account": "381492014727",
+    "Arn": "arn:aws:sts::381492014727:assumed-role/voclabs/user4610787=Pablo_Fraile"
+}
+```
+
+Make sure the result shows your name.
