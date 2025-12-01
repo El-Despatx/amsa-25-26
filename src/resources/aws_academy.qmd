@@ -1,0 +1,101 @@
+---
+subtitle: "AWS Academy Usage"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+This is a guide that shows you how to:
+
+  1) Access the AWS academy and start the lab you'll be working on.
+  2) How to automatically create the resources that we give to you for PRAC-4.3 and PRAC-4.4 (VPC's, subnets, etc.)
+  3) \[Optional\]: How to stop the lab in case you don't want to run your resources 24/7
+  4) \[Optional\]: How to reset the lab, so you can "start fresh" if something is wrong or you want to re-try the assignment from a "clean" aws environment.
+
+# Login to AWS Academy and access the course
+
+::: {.callout-important title="**Very very important 🚨**"}
+**Please check your email and accept our course invitation before proceeding.**
+If you still need to create your account, go ahead and complete that step first.
+:::
+
+First of all, go to the [aws academy login webpage](https://www.awsacademy.com/vforcesite/LMS_Login), you will see the following page, click on **Student Login**:
+![](/resources/images/aws-academy/step-1-login.png)
+
+Log-in, be aware that it will send a 2FA code to your email. After that, AWS-Academy will show you the next page, click on *LMS*:
+![](/resources/images/aws-academy/step-2-lms.png)
+
+After that, it will show you the AWS-Academy Learning Management System page, you'll se a dashboard with all your courses, click on the **AWS Academy Learner Lab \[147008\]** one!:
+
+![](/resources/images/aws-academy/step-3-click-on-course.png)
+
+Hey! You're now on the AMSA-25/26 course page. Here you'll find the instructions you need to set up your lab.
+
+To get started, open the link listed in **Step 1 (Anar a AWS Academy Learner Lab)**.
+
+**We STRONGLY recommend opening it in a new tab**:
+![](/resources/images/aws-academy/step-4-homepage-course-amsa.png)
+
+After that, click on *Launch AWS Academy Learner Lab*:
+![](/resources/images/aws-academy/step-5-click-on-launch-aws.png)
+
+And now, start an AWS environment, click on **▶️Start Lab** !:
+![](/resources/images/aws-academy/step-6-click-on-run.png)
+
+# \[Optional: only on first time or lab Reset\] Create the networks of our Lab
+
+The first time you run the lab (or after resetting it), you'll need to execute the command we provided. This will automatically create the resources required for PRAC-4.3 and PRAC-4.4, so you don’t have to create them manually.
+
+Simply copy the command and paste it into the terminal.
+
+Make sure the lab is running (the indicator in the top-left corner should show `AWS 🟢`, not `AWS 🔴`):
+
+![](/resources/images/aws-academy/step-7-stack-created.png)
+
+::: {.callout-important title="**Wait! 🚨**"}
+**Wait for the command to finish, or the resources won't be created successfully!**
+:::
+
+# Access AWS UI
+Click on the `AWS 🟢` on the top left corner:
+
+![](/resources/images/aws-academy/click-aws.png)
+
+You're now on a "normal" AWS Services UI:
+![](/resources/images/aws-academy/step-8-welcome-aws.png)
+
+# End the Lab
+
+::: {.callout-important title="**Why you should end the lab! 🚨**"}
+Ending an AWS lab ensures that all the resources created during the session are properly shut down.
+
+If you don’t end the lab, those resources may continue running and consume your limited AWS budget. While you can leave the lab without ending it, a misconfigured or resource-intensive service could use up your 50$ credit unexpectedly.
+
+This may prevent you from completing future assignments, so it’s important to end each lab to avoid unnecessary costs.
+:::
+
+Click on the `end lab` button:
+![](/resources/images/aws-academy/click-stop.png)
+
+Accept it:
+![](/resources/images/aws-academy/step-9-end-lab.png)
+
+# Reset the Lab
+
+::: {.callout-important title="**Why you would want to reset the lab! 🚨**"}
+You might want to reset an AWS lab to return the environment to its original, clean state when things go wrong or become confusing.
+
+If a service is misconfigured, settings are changed in the wrong way, or the environment no longer matches the lab instructions, resetting is often faster and easier than trying to fix everything manually. 
+
+TLDR; Resetting lets you start fresh.
+:::
+
+Click on the `reset` button:
+![](/resources/images/aws-academy/click-reset.png)
+
+Accept it:
+![](/resources/images/aws-academy/step-10-reset.png)
