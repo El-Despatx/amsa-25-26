@@ -105,6 +105,7 @@ We'll be using AWS, because we've access to **aws academy**.
 ::: {.column .incremental width="50%"}
 
 ### Bad:
+- Doesn't scale well
 - Although our workload is only used on a per-request basis, AWS bills us as though the machine is running continuously for 24 hours.
 - We've to manage the virtual machine (updates, etc.)
 :::
