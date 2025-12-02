@@ -5,8 +5,8 @@ format: revealjs
 
 # Goals for today
 
-- Understand AWS Networking `https://scribe.rip/@AlexanderObregon/aws-networking-fundamentals-for-beginners-86dfb35ccc03`
 - Understand what are cloud providers.
+- Understand AWS Networking (at a concept level)
 - Understand the concepts behind: EC2, ECR and ECS 
 
 # Recap
@@ -50,6 +50,8 @@ There are quite a few:
 
 We'll be using AWS, because we've access to **aws academy**.
 
+![](figures/week-12/bezos.jpg){fig-align="center"}
+
 # Networking
 
 ## VPC (Virtual Private Cloud) {.smaller}
@@ -79,6 +81,7 @@ We'll be using AWS, because we've access to **aws academy**.
 # EC2
 
 - [An EC2 instance is a virtual server in the AWS Cloud.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+- Runs an instance of the VirtualMachine with the OS you select.
 
 ![](figures/week-12/ec2.png){fig-align="center"}
 
@@ -86,7 +89,7 @@ We'll be using AWS, because we've access to **aws academy**.
 
 ![](figures/week-12/ec2_fastatp.png){fig-align="center"}
 
-## Benefits?
+## Benefits? {.smaller}
 
 ::::: columns
 ::: {.column width="50%"}
@@ -103,16 +106,55 @@ We'll be using AWS, because we've access to **aws academy**.
 
 ### Bad:
 - Although our workload is only used on a per-request basis, AWS bills us as though the machine is running continuously for 24 hours.
+- We've to manage the virtual machine (updates, etc.)
 :::
 :::::
+
+# Security Groups {.smaller}
+- A firewall for our services.
+- Let's put an example with EC-2
+
+## Example of a SG with EC-2 {.smaller}
+
+![](figures/week-12/security_group.png){fig-align="center"}
 
 # Serverless
 
 Our app runs on a server/virtual machine that you don't have to buy or manage.
 
-## ECS
+You could (theoritecally) scale to zero.
 
-Container runs in response to some event, on a server you don't have to manage.
+## ECS {.smaller}
+
+- Container runs on machines you don't really manage.
+- Shares the same architecture with EC2, but it follows a different execution model: no OS layer is exposed. You simply run the defined workload.
+
+![](figures/week-12/fargate.png){fig-align="center"}
+
+## Benefits? {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+
+### Good:
+
+- We don't expose our home network.
+- Our laptop/PC doesn't have to be powered on.
+- Change the specs of the vm's.
+- We don't have to manage the VM updates, security, etc.
+
+:::
+
+::: {.column .incremental width="50%"}
+
+### Bad:
+
+ - Doesn't scale to zero.... [It's a known issue...](https://github.com/aws/apprunner-roadmap/issues/9) [^1]
+
+[^1]: If you want true serverless that scales to zero, use AWS Lambda.
+
+:::
+:::::
 
 ## ECR
 
@@ -133,7 +175,7 @@ IAM means: Identity and Access Management.
 ## Why IAM? {.smaller}
 
 - I may have multiple users/services on my AWS project, so I want to have permissions for each one.
-- [When **you first create an AWS account**, you begin with one sign-in identity that has complete access to all AWS services and resources in the account. **This identity is called the AWS account root user.**]( https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
+- [When **you first create an AWS account**, you begin with one sign-in identity that has complete access to all AWS services and resources in the account. **This identity is called the AWS account root user.**](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
 
 ## Users {.smaller}
 
@@ -376,19 +418,25 @@ Roles are very useful for:
 
 # Quizz {.smaller}
   
-  - Lorem
-  - ipsum
-  - Ipsum
+- Why is using a cloud provider (like AWS) generally safer and more reliable than exposing an application directly from your home network?
+- Explain how subnets, route tables, and an Internet Gateway work together to allow resources inside a VPC to access the internet.
+- Compare EC2 and ECS: In what situations would you prefer ECS over EC2 for running an application, and why?
   
 # References
 
 ## Really Recommended References: {.smaller}
 
-- A
+- [AWS Fundamentals for beginners](https://scribe.rip/@AlexanderObregon/aws-networking-fundamentals-for-beginners-86dfb35ccc03)
+- [AWS Shortage](https://builder.aws.com/content/34eRiYFzLeWXtdBSp1a1n1EMa2f/post-mortem-analyzing-the-recent-aws-us-east-1-n-virginia-outage)
+- [AWS EC-2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+- [AWS IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
+- [Firecracker execute containers on it](https://archive.fosdem.org/2019/schedule/event/containers_firecracker/)
+- [Create your own init with firecracker](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-5260-create-a-custom-linux-init-in-python/)
 
 ## Additional Exercices {#extra .smaller}
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
-- Create a funny server
+- Make the PRAC-4.3 section using EC2 instead of ECS. This means, creating an instance of EC2, installing docker on it and run the same docker-compose setup there! (Be aware that you'll probably need a public ip for that...).
+- Alternatively, deploy your own fun server on an EC2 instance, for example Minecraft, Rust, or anything interesting [you find on awesome-self-hosted](https://awesome-selfhosted.net/).
 
