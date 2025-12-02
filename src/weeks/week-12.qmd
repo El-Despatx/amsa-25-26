@@ -150,9 +150,9 @@ You could (theoritecally) scale to zero.
 
 ### Bad:
 
- - Doesn't scale to zero.... [It's a known issue...](https://github.com/aws/apprunner-roadmap/issues/9) [^1]
+ - Doesn't scale to zero.... [It's a known issue...](https://github.com/aws/apprunner-roadmap/issues/9) [^2]
 
-[^1]: If you want true serverless that scales to zero, use AWS Lambda.
+[^2]: If you want true serverless that scales to zero, use AWS Lambda.
 
 :::
 :::::
