@@ -265,7 +265,6 @@ Once you’ve configured the AWS CLI, the steps that the aws guide shows you are
 
 - The launch type should be `fargate`
 - The architecture should be `Linux/X86_64` if you builded the image with an `x86_64` computer, or `Linux/ARM64` otherwise (Mac M1, M2, M3, M4 users, and MicroChof Windows Snapdragon users)
-- Enable auto-scaling to allow more resource usage during high demand, allow scaling up to a maximum of five instances when needed.
 - For the `logging` values, left the default ones.
 
 ::: {.callout-important title="**Be a Rat! 🐀**"}
@@ -278,6 +277,7 @@ Please, be aware to create the task definition with the less usage of resources 
 - You should create the task on the `amsa2526-ECSCluster`. 
 - On Networking, use our VPC `amsa2526-vpc` and our public subnet...
 - Use our already existing SecurityGroup: `amsa2526-svc-sg`
+- Enable auto-scaling to allow more resource usage during high demand, allow scaling up to a maximum of five instances when needed.
 - Turn the public IP on.
 
 ::: {.callout-important title="**Be a Rat! 🐀 **"}
