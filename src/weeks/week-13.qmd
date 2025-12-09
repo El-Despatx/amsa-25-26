@@ -1,0 +1,60 @@
+---
+subtitle: "Week 13: AWS RDS"
+format: revealjs
+---
+
+# Goals for today
+
+- Understand why we probably need someone to manage our Database.
+- See how RDS works and what can it offers us.
+
+# Recap
+
+- What we covered in the last class.
+
+## Running our API (server + database) with docker on EC2
+
+![](figures/week-12/ec2.png){fig-align="center"}
+
+## What could be wrong (on the database side)?
+
+- Scalabilty issues.
+- Non-Redundancy issues.
+- The EC2 disk is full.
+
+# Welcome RDS!
+
+A service that amazon gives to us, so we can:
+
+- Scale.
+- Add Redundancy.
+- No need to worry about installing PostgreSQL or other dependencies.
+
+## Configure RDS:
+
+- AWS must
+
+# Quizz {.smaller}
+  
+- 
+- 
+- Compare EC2 and ECS: In what situations would you prefer ECS over EC2 for running an application, and why?
+  
+# References
+
+## Really Recommended References: {.smaller}
+
+- [AWS Fundamentals for beginners](https://scribe.rip/@AlexanderObregon/aws-networking-fundamentals-for-beginners-86dfb35ccc03)
+- [AWS Shortage](https://builder.aws.com/content/34eRiYFzLeWXtdBSp1a1n1EMa2f/post-mortem-analyzing-the-recent-aws-us-east-1-n-virginia-outage)
+- [AWS EC-2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+- [AWS IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
+- [Firecracker execute containers on it](https://archive.fosdem.org/2019/schedule/event/containers_firecracker/)
+- [Create your own init with firecracker](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-5260-create-a-custom-linux-init-in-python/)
+
+## Additional Exercices {#extra .smaller}
+
+If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
+
+- Make the PRAC-4.3 section using EC2 instead of ECS. This means, creating an instance of EC2, installing docker on it and run the same docker-compose setup there! (Be aware that you'll probably need a public ip for that...).
+- Alternatively, deploy your own fun server on an EC2 instance, for example Minecraft, Rust, or anything interesting [you find on awesome-self-hosted](https://awesome-selfhosted.net/).
+

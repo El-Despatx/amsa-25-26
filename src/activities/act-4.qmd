@@ -289,7 +289,60 @@ Please, be aware to create the task with the less usage of resources possible!
 You should be able to access the public IP that Amazon assigned to your task on port `8000` and view the `/docs` page.
 
 ### Prac-4.4: Merging it with AWS RDS!
-No worries! We’ll upload it as soon as the date arrives. 🚧⛏️👷
+
+#### Deliverable
+For the deliverable, you have to create a `/documentation/prac_4_4` folder on your github project
+
+This folder, will contain:
+
+  - the screenshots of the steps you're doing to create the aws services (no need to make screenshots about login to aws, etc, etc), just the ones that shows how you're creating the services and one that asserts that your service is running (an http request and response to the public api...)
+  - A markdown file named `README.md` that explains in less than one paragraph each step, referencing the screenshoot you're talking about.
+
+#### Description and steps
+
+Now we'll connect our `ECS` created on `PRAC-4.3`, with an `RDS` instance. The steps will be as follows:
+
+  1) Login to AWS academy and start the lab
+  2) Create an RDS instance, with our own user and password.
+  3) Edit the ECS configuration so has the needed environment variables for connecting to the RDS.
+
+And the resulting architecture diagram should be the following one:
+
+![](images/act-4/act_4_full_schema.png)
+
+##### 2) Create an RDS instance.
+
+Create an RDS instance with the following specifications:
+
+- Choose PostgreSQL as the engine, with version 18.1-R1.
+- You've to use a single AZ (Availability Zone).
+- You'll probably want it `Self-Managed` for configuring your own password... (for the env variables)
+- The instance configuration **MUST** be `db.t3.micro` (is the only one allowed for our AWS LabRole..)
+- Connect to our VPC (`amsa2526-vpc`).
+- Use the db subnet group (`amsa2526-dbsubnetgroup`).
+- Security group should be the `amsa2526-DBSecurityGroup`.
+- For the Availability Zone by default, see the architecture diagram, which one we're using....
+- **For all other options, choose wisely and explain your choice in the document**
+
+
+##### 3) Edit the ECS configuration
+At the moment, the API running on ECS is creating an SQLite file and using it as the database. You should be aware of this, as you already fixed the same issue locally in `PRAC-4.2`.
+
+You'll need to:
+
+ 1) Edit the task definition from `PRAC-4.3`
+ 2) Add the needed environment variables to the task defintion
+ 3) Re-deploy the ECS task!
+
+#### ⚠️ Warning: Attempting this in a real production environment may cause serious issues.
+Please note that this is a "playground" lab. In a real production environment, you would likely need to take the following points into account:
+
+1) Hardcoding the password and potentially sensitive env variables on the ECS specification isn't the best security practice. [You'll probably want to use the AWS Secrets Manager or the AWS Systems Manager Parameter Store for storing secret materials](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html).
+
+2) RDS it's not a cheap service! In fact, [you can have fun calculating the price here](https://calculator.aws/#/createCalculator/RDSPostgreSQL) [^7]. Probably if you are using this on production you'll have to optimize your SQL-Queries (this means, don't use an [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping), like for example: [SQLAlchemy](https://www.sqlalchemy.org/) for python, [prisma](https://www.prisma.io/) for next-js, etc.).
+You can also use other "cheaper" services like for example [Aurora Serverless V2](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html)
+
+[^7]: Our current configuration, which has sh*t specifications, costs us 183.60 USD per year, which are 15.3 USD per month! 💀
 
 ## 6. Setting up the server! {#sec-setup}
 ### Cloning the repository and set it up:
