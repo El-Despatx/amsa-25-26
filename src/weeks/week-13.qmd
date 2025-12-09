@@ -40,6 +40,8 @@ A service that amazon gives to us, so we can:
 
 ## Architecture 
 
+![](../activities/images/act-4/act_4_full_schema.png){fig-align="center"}
+
 ## Why a SubnetGroup? Why two Availability Zones?
 
 - Because RDS has Multi-Available Zones.
