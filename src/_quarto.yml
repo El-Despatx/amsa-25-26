@@ -33,6 +33,8 @@ website:
           text: "Week 11"
         - href: weeks/week-12.qmd
           text: "Week 12"
+        - href: weeks/week-13.qmd
+          text: "Week 13"
 
       - text: "📚 Activities"
         menu:
@@ -68,6 +70,8 @@ website:
           text: "Week 11"
         - href: weeks/week-12.qmd#extra
           text: "Week 12"
+        - href: weeks/week-13.qmd#extra
+          text: "Week 13"
 
 title: "AMSA"
 

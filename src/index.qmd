@@ -22,6 +22,7 @@ Welcome to **AMSA 2025-2026**, here you’ll find all the lecture slides and res
 -   [Week 10: Dockerfile & DockerHub](weeks/week-10.qmd)
 -   [Week 11: Docker Compose: Orchestrating containers](weeks/week-11.qmd)
 -   [Week 12: AWS Intro and services](weeks/week-12.qmd)
+-   [Week 13: AWS RDS](weeks/week-13.qmd)
 
 ## 📝 Activities
 
@@ -49,6 +50,7 @@ Having said that, we encourage you to give it a try and show us the results, we'
 -   [Week 10: Dockerfile extras](weeks/week-10.qmd#extra)
 -   [Week 11: Docker Compose extras](weeks/week-11.qmd#extra)
 -   [Week 12: AWS Intro and services](weeks/week-12.qmd#extra)
+-   [Week 13: Create your own lambda](weeks/week-13.qmd#extra)
 
 ## 📚 Resources
 
