@@ -69,5 +69,5 @@ A service that amazon gives to us, so we can:
 
 If you really want to understand a little bit more what happens under the hood, you can do the following exercices. Be aware that you should read the "Really Recommended References" first, and then try to do this exercices.
 
-- [Use the AWS Lambda service for doing something cool, or, if you don't have any ideas, do this PraLab from the AMSA Igualada Course!](http://TODO.com)
+- [Use the AWS Lambda service for doing something cool, or, if you don't have any ideas, do this PraLab from the AMSA Igualada Course!](https://amsa-gei-udl-2526-105013.github.io/course/laboratories/05-lambda/01-lambda.html)
 
