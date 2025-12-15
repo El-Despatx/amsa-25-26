@@ -1,5 +1,5 @@
 ---
-subtitle: "Exam Example and Cheat-Sheet"
+subtitle: "Exam Example and Cheat-Sheet (November)"
 format:
   html:
     toc: true
