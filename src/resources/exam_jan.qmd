@@ -1,0 +1,106 @@
+---
+subtitle: "Exam Example and Cheat-Sheet (January)"
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+
+# Week's slides
+
+| **Week** | **Non-Important Content (for exams)**                                                               |
+| :------: | --------------------------------------------------------------------------------------------------- |
+|     9    | -                                                                                                   |
+|    10    | - 													 |
+|    11    | -													 |
+|    12    | IAM												 |
+|    13    | -                                                                                                   |
+
+
+
+# Command Reference
+
+We can split the command reference between the following ones:
+
+- [Docker Commands](https://amsa.lol/resources/docker.html)
+- [Docker File Syntax](https://amsa.lol/weeks/week-10.html#/dockerfile)
+- [Docker Compose Commands](https://amsa.lol/weeks/week-11.html#/some-more-commands)
+- [Docker Compose Syntax (services)](https://docs.docker.com/reference/compose-file/services/)
+
+# Exam Style
+
+## 1) Compartint fitxers entre host i contenidor:
+
+Tens el següent script Python:
+
+```python
+with open("data.txt") as f:
+    print(f.read())
+```
+
+- Crea una imatge Docker mínima que executi aquest script.
+- No copiïs data.txt dins de la imatge.
+- Executa el contenidor de manera que l’arxiu `data.txt` del host es vegi dins del contenidor.
+- El contingut de `data.txt` és: "Hola, Docker!" i s'ha de mostrar a la terminal quan s'executa el contenidor.
+
+  1. Quina és la comanda per construir la imatge Docker? I per executar el contenidor amb l'arxiu `data.txt` del host muntat dins del contenidor?
+  2. Cal reconstruir la imatge Docker si es modifica el contingut de `data.txt` al host? Justifica la teva resposta.
+  3. Quina diferència té incloure l'arxiu `data.txt` dins de la imatge Docker o en la execució del contenidor? Quin impacte té això en el temps de construcció i la mida de la imatge Docker?
+
+## 2) Perquè m'està fallant el següent docker-compose.yml? Com miraries els logs? Com ho arreglaries? Tingues en compte que:
+- El servei `api` mai arrenca, no exposa en cap moment el port 8000...
+- El servei `api` sap connectar-se a una base de dades MariaDB SQL correctament configurada.
+- El port de MariaDB és correcte, és el 3306.
+- L'imatge del registry: `pablo/amsaapi:latest` existeix, i és correcta.
+
+```yaml
+services:
+  api:
+    image: pablo/amsaapi:latest
+    ports:
+      - 8000:8000
+    environment:
+      - PROD=true
+      - DB_HOST=localhost
+      - DB_PORT=3306
+      - DB_NAME=appdb
+      - DB_USER=appuser
+      - DB_PASSWORD=apppassword
+    depends_on:
+      - db
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: appdb
+      MARIADB_USER: appuser
+      MARIADB_PASSWORD: apppassword
+      MARIADB_ROOT_PASSWORD: rootpassword
+```
+
+## 2.1) A més del propi error, es poden millorar dues coses, les podries nombrar?
+
+## 3) Què passa si la meva arquitectura que tinc montada a AWS passa de la primera imatge a la segona? Explica-ho en menys de 3 línies.
+
+![](/resources/images/exam/before.png)
+![](/resources/images/exam/after.png)
+
+## 4) Digues si és verdader o fals:
+
+ - Si executem la comanda `uname -ra` (utilitzada per mostrar informació sobre el kernel que està corrent al sistema) dins d’un contenidor, aquesta pot mostrar diferents valors en funció de la nostra imatge base, per exemple si estic executant una imatge OCI basada en `ubuntu:22.04` (la distribució de linux ubuntu 22.04, ve amb la versió de kernel `5.15`) en la meva distribució de linux `arch` (amb kernel 6.18.0), la comanda `uname -ra` dins del contenidor donarà un output de `5.15`.
+ - A Docker Compose, és estritcament necessari especificar explícitament les xarxes perquè els contenidors es puguin comunicar entre ells. 
+ - ECS és un servei que únicament ens cobra per l'utilització de recursos. => TODO: Change
+ - ECS permet crear una task a partir de qualsevol imatge de qualsevol registry.
+ - RDS, per tal i com el tenim configurat a la pràctica 4.4, és resilient a caigudes de Availability Zones.
+
+
+## 5) Quin seria el millor servei dels explicats a classe (EC2, ECS, Lambda, etc.) per fer el desplegament d’una aplicació que:
+
+- Estigui tot el dia analitzant datasets, amb un volum de peticions constant.
+
+- Implementi un bot de Discord, que ha d’estar sempre disponible però amb càrrega moderada.
+
+- Sigui un e-commerce, on el trànsit és variable i pot augmentar molt en moments puntuals.

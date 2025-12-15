@@ -58,9 +58,10 @@ Having said that, we encourage you to give it a try and show us the results, we'
 -   [Docker Commands](resources/docker.qmd)
 -   [AWS Academy Lab Steps](resources/aws_academy.qmd)
 -   [AWS Cli Auth](resources/aws_cli.qmd)
+-   [January Exam Reference](resources/exam_jan.qmd)
 
 ## 👴🏻👵🏻📚 Previous Class Resources
 
 -   [Python Resources for Beginners](resources/python.qmd)
 -   [Setting up the subject's virtual machine and git brief](resources/vm_git.qmd)
--   [1st Exam Reference](resources/exam.qmd)
+-   [November Exam Reference](resources/exam.qmd)
