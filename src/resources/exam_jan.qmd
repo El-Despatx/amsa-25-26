@@ -81,18 +81,21 @@ services:
       MARIADB_ROOT_PASSWORD: rootpassword
 ```
 
-## 2.1) A més del propi error, es poden millorar dues coses, les podries nombrar?
+## 2.1) A més del propi error, es poden millorar dues coses, pots dir quines són?
 
 ## 3) Què passa si la meva arquitectura que tinc montada a AWS passa de la primera imatge a la segona? Explica-ho en menys de 3 línies.
 
+Before:
 ![](/resources/images/exam/before.png)
+
+After:
 ![](/resources/images/exam/after.png)
 
 ## 4) Digues si és verdader o fals:
 
  - Si executem la comanda `uname -ra` (utilitzada per mostrar informació sobre el kernel que està corrent al sistema) dins d’un contenidor, aquesta pot mostrar diferents valors en funció de la nostra imatge base, per exemple si estic executant una imatge OCI basada en `ubuntu:22.04` (la distribució de linux ubuntu 22.04, ve amb la versió de kernel `5.15`) en la meva distribució de linux `arch` (amb kernel 6.18.0), la comanda `uname -ra` dins del contenidor donarà un output de `5.15`.
  - A Docker Compose, és estritcament necessari especificar explícitament les xarxes perquè els contenidors es puguin comunicar entre ells. 
- - ECS és un servei que únicament ens cobra per l'utilització de recursos. => TODO: Change
+ - ECS és un servei que únicament ens cobra per les requests http/s que rep.
  - ECS permet crear una task a partir de qualsevol imatge de qualsevol registry.
  - RDS, per tal i com el tenim configurat a la pràctica 4.4, és resilient a caigudes de Availability Zones.
 
@@ -101,6 +104,6 @@ services:
 
 - Estigui tot el dia analitzant datasets, amb un volum de peticions constant.
 
-- Implementi un bot de Discord, que ha d’estar sempre disponible però amb càrrega moderada.
+- Implementi un bot de Discord, que ha d'estar sempre disponible però amb càrrega moderada.
 
 - Sigui un e-commerce, on el trànsit és variable i pot augmentar molt en moments puntuals.
