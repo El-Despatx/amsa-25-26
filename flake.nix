@@ -52,6 +52,7 @@
           '';
           installPhase = ''
             mkdir -p $out
+            cp ${./possible_guia_docent.html} $out/possible_guia_docent.html
             cp -r docs/* $out/
           '';
         }; };
