@@ -579,6 +579,8 @@ docker run ferran/amsa:1.0
 
 ## References: {.smaller}
 
+-   Best practices for Dockerfiles: <https://www.youtube.com/watch?v=aZ_y2M2OuEA>
+
 -   Youtube playlist on containers: <https://www.youtube.com/playlist?list=PLozcbFx8FoPH30kYPbPuPsvxASWoLo9XB>
 
 -   Docker docs on `CMD` shell vs exec: <https://docs.docker.com/reference/dockerfile#shell-and-exec-form>
